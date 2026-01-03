@@ -1,0 +1,171 @@
+{% extends "layouts/dashboard.html" %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block title_page%}Accounts{% endblock title_page %}
+{% block toolbar_title %}{{ entity }}{% endblock%}
+
+{% block content %}
+<main class="container-xxl">
+    <form class="form d-flex flex-column flex-lg-row" method="post" enctype="multipart/form-data" action="{% if form.instance.pk %}{% url 'apps.users:account_update' form.instance.pk %}{% else %}{% url 'apps.users:account_create' %}{% endif %}">
+        {% csrf_token %}
+        <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
+            <div class="card card-flush py-4">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h2>{% trans 'Avatar' %}</h2>
+                    </div>
+                </div>
+                <div class="card-body text-center pt-0">
+                    <style>
+                        .image-input-placeholder {
+                            background-image: url('{% if account.user.avatar %}{{ account.user.avatar.url }}{% else %}{% static "assets/media/svg/files/blank-image.svg" %}{% endif %}');
+                        }
+                        [data-bs-theme="dark"] .image-input-placeholder {
+                            background-image: url({% if account.user.avatar %}{{ account.user.avatar.url }}{% else %}{% static "assets/media/svg/files/blank-image-dark.svg" %}{% endif %});
+                        }
+                    </style>
+                    <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3" data-kt-image-input="true">
+                        <div class="image-input-wrapper w-150px h-150px"></div>
+                        <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
+                            <i class="ki-duotone ki-pencil fs-7">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                            </i>
+                            <input type="file" name="avatar" accept=".png, .jpg, .jpeg" />
+                            <input type="hidden" name="avatar_remove" />
+                        </label>
+                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
+                            <i class="ki-duotone ki-cross fs-2">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                            </i>
+                        </span>
+                        <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
+                            <i class="ki-duotone ki-cross fs-2">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                            </i>
+                        </span>
+                    </div>
+                    <div class="text-muted fs-7">
+                        {% trans 'Set the product thumbnail image. Only *.png, *.jpg and *.jpeg image files are accepted' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex flex-column flex-row-fluid {% if not form.instance.pk %}px-20{% endif %}">
+            <div class="card mb-5 mb-xl-10">
+                <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_profile_details" aria-expanded="true" aria-controls="kt_account_profile_details">
+                    <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">{{ entity }} {% trans "Details" %}</h3>
+                    </div>
+                </div>
+
+                <div class="collapse show">
+                    <div class="form fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate">
+                        <div class="card-body border-top p-9">
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label required fw-semibold fs-6">
+                                    {% trans "Full Name" %}
+                                </label>
+                                <div class="col-lg-8">
+                                    <div class="row">
+                                        <div class="col-lg-6 fv-row fv-plugins-icon-container">
+                                            {% render_field form.first_name class="form-control form-control-lg" %}
+                                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                                {{ form.first_name.errors }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6 fv-row fv-plugins-icon-container">
+                                            {% render_field form.last_name class="form-control form-control-lg" %}
+                                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                                {{ form.last_name.errors }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label required fw-semibold fs-6">
+                                    {{ form.email.label }}
+                                </label>
+
+                                <div class="col-lg-{% if not form.instance.pk %}4{% else %}8{% endif %} fv-row fv-plugins-icon-container">
+                                    {% render_field form.email class="form-control form-control-lg" %}
+                                    <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                        {{ form.email.errors }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-5 mb-xl-10">
+                <div class="card-header border-0 cursor-pointer">
+                    <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">{% trans "Permissions Management" %}</h3>
+                    </div>
+                </div>
+
+                <div class="card-body border-top px-9 pt-3 pb-4">
+                    <div class="table-responsive">
+                        <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+                            <thead>
+                                <tr class="fw-bold text-muted">
+                                    <th class="min-w-150px">{% trans "Module" %}</th>
+                                    <th class="min-w-100px text-center">{% trans "View" %}</th>
+                                    <th class="min-w-100px text-center">{% trans "Create" %}</th>
+                                    <th class="min-w-100px text-center">{% trans "Update" %}</th>
+                                    <th class="min-w-100px text-center">{% trans "Delete" %}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if request.user.is_superuser or request.user.is_staff %}
+                                    <!-- Accounts -->
+                                    <tr class="d-none" id="account-permissions-row">
+                                        <td class="fw-bold">{% trans "Accounts" %}</td>
+                                        <td class="text-center">
+                                            <div class="form-check form-check-custom form-check-solid justify-content-center">
+                                                {% render_field form.can_view_account class="form-check-input" %}
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="form-check form-check-custom form-check-solid justify-content-center">
+                                                {% render_field form.can_add_account class="form-check-input" %}
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="form-check form-check-custom form-check-solid justify-content-center">
+                                                {% render_field form.can_change_account class="form-check-input" %}
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="form-check form-check-custom form-check-solid justify-content-center">
+                                                {% render_field form.can_delete_account class="form-check-input" %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer d-flex justify-content-end py-6 px-9">
+                <a href="{{ back_url }}" class="btn btn-light btn-active-light-primary me-2">
+                    {% trans "Discard" %}
+                </a>
+                <button class="btn btn-primary  px-6">{% trans "Save Changes" %}</button>
+            </div>
+        </div>
+    </form>
+</main>
+{% endblock content %}

@@ -1,0 +1,13 @@
+<ul class="breadcrumb fw-semibold fs-base my-1">
+    {% for crumb in breadcrumbs %}
+        {% if not forloop.last %}
+            <li class="breadcrumb-item text-muted">
+                <a href="{{ crumb.url }}" class="text-muted text-hover-primary">
+                    {{ crumb.title }}
+                </a>
+            </li>
+        {% else %}
+            <li class="breadcrumb-item text-dark">{{ crumb.title }}</li>
+        {% endif %}
+    {% endfor %}
+</ul>

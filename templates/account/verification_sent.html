@@ -1,0 +1,27 @@
+{% extends "layouts/home.html" %}
+{% load static %}
+{% load i18n allauth account %}
+{% load widget_tweaks %}
+
+{% block title_page %}
+    {% trans "Verify Your Email Address" %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-column-fluid">
+    <div class="d-flex flex-row-fluid flex-column flex-column-fluid text-center p-10 py-lg-20">
+        <a href="#" class="pt-lg-20 mb-12">
+            <img alt="Logo" src="{% static 'assets/media/logos/logo-compact.svg' %}" class="h-60px" />
+        </a>
+        <h1 class="fw-bold fs-2qx text-gray-800 mb-7">Verify Your Email</h1>
+        <div class="fs-3 fw-semibold text-muted mb-10">
+            We have sent an email
+            <br />please follow a link to verify your email.
+        </div>
+        <div class="text-center mb-10">
+            <a href="{% url "account_login" %}" class="btn btn-lg btn-primary fw-bold">Skip for now</a>
+        </div>
+    </div>
+    <div class="d-flex flex-row-auto bgi-no-repeat bgi-position-x-center bgi-size-contain bgi-position-y-bottom min-h-150px min-h-lg-350px" style="background-image: url({% static 'assets/media/illustrations/sigma-1/7.png' %})"></div>
+</div>
+{% endblock content %}

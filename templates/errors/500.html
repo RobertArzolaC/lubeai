@@ -1,0 +1,28 @@
+{% extends "layouts/home.html" %}
+{% load static %}
+{% load i18n allauth account %}
+{% load widget_tweaks %}
+
+{% block title_page %}
+    {% trans "System Error" %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-row-fluid flex-column flex-column-fluid text-center p-10 py-lg-20">
+    <a href="/craft/index.html" class="pt-lg-20 mb-12">
+        <img alt="Logo" src="{% static "assets/images/logos/logo-default-large.webp" %}" class="h-60px">
+    </a>
+
+    <h1 class="fw-bold fs-2qx text-gray-800 mb-10">System Error</h1>
+
+    <div class="fw-semibold fs-3 text-muted mb-15">
+        Something went wrong! <br> Please try again later.
+    </div>
+
+    <div class="text-center">
+        <a href="/" class="btn btn-lg btn-primary fw-bold">
+            Go back
+        </a>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,359 @@
+/* Font imports */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
+
+/* Report Styles */
+body {
+    font-family: 'Montserrat';
+    font-size: 10pt;
+    line-height: 1.3;
+    color: #333;
+}
+
+/* Header styles */
+.header {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #CCCCCC;
+}
+
+.logo {
+    height: 40px;
+    width: 110px;
+    object-fit: contain;
+}
+
+.lab-info {
+    font-size: 8pt;
+    line-height: 1.4;
+    padding-left: 15px;
+}
+
+/* Patient info section */
+.patient-info {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 0.5pt solid;
+    border-image: linear-gradient(to right, #2A7D95, #F4A261) 1;
+}
+
+.patient-info hr {
+    margin: 10px 0;
+    border: 0;
+    border-top: 1px solid #CCCCCC;
+}
+
+.info-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    font-size: 8pt;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    font-size: 8pt;
+}
+
+/* Panel and Result Item styles */
+.panel {
+    margin-bottom: 30px;
+}
+
+.light-blue-title {
+    background: linear-gradient(to right, #2A7D95, #5E9EA0);
+    color: white;
+    font-weight: bold;
+    padding: 8px 15px;
+    margin-bottom: 10px;
+    margin-top: 40px;
+    font-size: 10pt;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.result-item {
+    display: flex;
+    padding: 15px;
+    margin-bottom: 10px;
+
+    border: 0.5pt solid;
+    border-image: linear-gradient(to right, #2A7D95, #F4A261) 1;
+}
+
+/* Result Title and Message */
+.result-title-container {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.test-name {
+    font-size: 10pt;
+    font-weight: bold;
+    color: #000;
+}
+
+.result-notes {
+    font-size: 8pt;
+    color: #666;
+}
+
+.result-message {
+    font-size: 8pt;
+    padding-right: 15px;
+    font-weight: 500;
+}
+
+.result-message.out-of-range {
+    color: #dc2626;
+    font-weight: 600;
+}
+
+.result-message.normal-range {
+    color: #16a34a;
+}
+
+.result-message.optimal-range {
+    color: #16a34a;
+    font-weight: 600;
+}
+
+/* Range Visualization */
+.range-visualization {
+    width: 60%;
+    padding: 25px 20px;
+    position: relative;
+}
+
+.range-bar-container {
+    position: relative;
+    margin: 30px 0;
+}
+
+.range-item {
+    margin-bottom: 75px;
+}
+
+.range-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Range Bar and Zones */
+.range-bar {
+    height: 4px;
+    position: relative;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+}
+
+.red-line-zone {
+    position: absolute;
+    height: 100%;
+    background-color: #ffebee;
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.normal-zone {
+    position: absolute;
+    height: 100%;
+    background-color: #c8e6c9;
+    border-radius: 5px;
+    z-index: 2;
+}
+
+.optimal-zone {
+    position: absolute;
+    height: 100%;
+    background-color: #00c853;
+    border-radius: 5px;
+    z-index: 3;
+}
+
+/* Range Numbers */
+.range-numbers {
+    position: absolute;
+    width: 100%;
+    font-size: 8pt;
+    color: #666;
+}
+
+.range-numbers.optimal {
+    top: -20px;
+}
+
+.range-numbers.normal {
+    bottom: -7px;
+}
+
+.range-numbers.red-line {
+    bottom: -20px;
+    color: #dc2626;
+}
+
+.range-number {
+    position: absolute;
+    transform: translateX(-50%);
+}
+
+.optimal-range-numbers {
+    color: #00c853;
+}
+
+.red-line-numbers {
+    color: #dc2626;
+}
+
+/* Value Marker */
+.value-marker {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 50%;
+    top: -6px;
+    transform: translateX(-50%);
+    z-index: 6;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.value-marker.out-of-range {
+    border-color: #f44336;
+    background-color: #fff;
+}
+
+.value-marker.optimal-range {
+    border-color: #00c853;
+    background-color: #fff;
+}
+
+.value-marker.normal-range {
+    border-color: #4caf50;
+    background-color: #fff;
+}
+
+/* Marker Value */
+.marker-value {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #45a049;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 8pt;
+    white-space: nowrap;
+    z-index: 7;
+}
+
+.marker-value.out-of-range {
+    border-color: #e83e3e;
+    background-color: #e83e3e;
+}
+
+.marker-value.optimal-range {
+    border-color: #00c853;
+    background-color: #00c853;
+}
+
+.marker-value.normal-range {
+    border-color: #4caf50;
+    background-color: #4caf50;
+}
+
+.marker-value::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 4px;
+    border-style: solid;
+    border-color: inherit transparent transparent transparent;
+}
+
+/* Range Symbols */
+.range-symbol {
+    font-weight: bold;
+    margin: 0 2px;
+}
+
+/* Period Label */
+.range-period-label {
+    font-size: 8pt;
+    color: #666;
+    padding-bottom: 30px;
+    font-weight: 600;
+    text-align: end;
+}
+
+/* Test Status */
+.test-status {
+    font-size: 8pt;
+    color: #666;
+    text-align: right;
+}
+
+/* Disclaimer Section */
+.disclaimer h3 {
+    font-size: 10pt;
+}
+
+.disclaimer p {
+    font-size: 8pt;
+    text-align: justify;
+}
+
+/* Powered By Section */
+.powered-by {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: right;
+    font-size: 8pt;
+    margin-top: 80px;
+}
+
+.powered-by-title {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    position: relative;
+    text-align: center;
+    margin-right: 20px;
+}
+
+.powered-by-title::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 3px; /* Grosor del borde */
+    margin-top: 2px;
+    background: linear-gradient(to right, #2A7D95, #F4A261); /* Colores degradados */
+    border-radius: 2px; /* Bordes redondeados */
+}
+
+/* Media Query for Print */
+@media print {
+    body {
+        padding: 0;
+    }
+
+    .result-item {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}

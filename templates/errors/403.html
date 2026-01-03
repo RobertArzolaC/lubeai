@@ -1,0 +1,20 @@
+{% extends "layouts/home.html" %}
+{% load static %}
+{% load i18n allauth account %}
+{% load widget_tweaks %}
+
+{% block title_page %}
+    {% trans "Forbidden" %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-center flex-column-fluid p-10">
+    <img src="{% static "assets/media/illustrations/sigma-1/403-error.svg" %}" alt="" class="mw-100 mb-10 h-lg-450px" />
+    <h1 class="fw-semibold mb-10" style="color: #A3A3C7">
+        Your user does not have permission to get this page from the server
+    </h1>
+    <a href="/" class="btn btn-primary">
+        Go back
+    </a>
+</div>
+{% endblock content %}

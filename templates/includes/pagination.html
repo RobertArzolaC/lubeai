@@ -1,0 +1,80 @@
+{% load i18n %}
+{% load pagination %}
+
+<div class="row">
+    <div class="col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start">
+        <div id="kt_accounts_table_length" class="dataTables_length">
+            <label>
+                <select name="items_per_page" aria-controls="kt_accounts_table" class="form-select form-select-sm" id="itemsPerPageSelect">
+                    <option value="6" {% if paginator.per_page == 6 %}selected{% endif %}>5</option>
+                    <option value="10" {% if paginator.per_page == 10 %}selected{% endif %}>10</option>
+                    <option value="25" {% if paginator.per_page == 25 %}selected{% endif %}>25</option>
+                    <option value="50" {% if paginator.per_page == 50 %}selected{% endif %}>50</option>
+                </select>
+            </label>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end">
+        {% if is_paginated %}
+        <div id="kt_accounts_table_paginate" class="dataTables_paginate paging_simple_numbers">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li id="kt_accounts_table_previous" class="page-item previous">
+                        <a href="{% param_replace page=page_obj.previous_page_number %}" class="page-link">
+                            <i class="previous"></i>
+                        </a>
+                    </li>
+                {% else %}
+                    <li id="kt_accounts_table_previous" class="page-item previous disabled">
+                        <a href="#" class="page-link">
+                            <i class="previous"></i>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <li class="page-item active">
+                            <a href="#" class="page-link">{{ num }}</a>
+                        </li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <li class="page-item">
+                            <a href="{% param_replace page=num %}" class="page-link">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li id="kt_accounts_table_next" class="page-item next">
+                        <a href="{% param_replace page=page_obj.next_page_number %}" class="page-link">
+                            <i class="next"></i>
+                        </a>
+                    </li>
+                {% else %}
+                    <li id="kt_accounts_table_next" class="page-item next disabled">
+                        <a href="#" class="page-link">
+                            <i class="next"></i>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const itemsPerPageSelect = document.getElementById('itemsPerPageSelect');
+      if (itemsPerPageSelect) {
+          itemsPerPageSelect.addEventListener('change', function() {
+              const selectedValue = this.value;
+              const currentUrl = new URL(window.location.href);
+              currentUrl.searchParams.set('items_per_page', selectedValue);
+              currentUrl.searchParams.delete('page');
+              window.location.href = currentUrl.toString();
+          });
+      }
+  });
+</script>

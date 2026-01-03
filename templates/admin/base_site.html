@@ -1,0 +1,23 @@
+{% extends "admin/base_site.html" %}
+
+{% block extrahead %}
+{{ block.super }}
+<script>
+function copyToClipboard(btn) {
+    const url = btn.getAttribute("data-url");
+    navigator.clipboard.writeText(url)
+        .then(function() {
+            const originalText = btn.textContent;
+            btn.textContent = "¡Copiado!";
+            btn.style.backgroundColor = "#5cb85c";
+            setTimeout(function() {
+                btn.textContent = originalText;
+                btn.style.backgroundColor = "#79aec8";
+            }, 2000);
+        })
+        .catch(function() {
+            alert("Error al copiar al portapapeles");
+        });
+}
+</script>
+{% endblock %}

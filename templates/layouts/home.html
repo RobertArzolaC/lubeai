@@ -1,0 +1,26 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>{{ config.PROJECT_NAME }} | {% block title_page %}{% endblock title_page %}</title>
+		<meta charset="utf-8" />
+		<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
+		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="shortcut icon" href="{% static 'assets/images/logos/logo-minimize.webp' %}" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
+		{% include 'includes/scripts_css.html' %}
+	</head>
+
+	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
+		<script src="{% static 'assets/js/scripts.bundle.js' %}"></script>
+
+		<div class="d-flex flex-column flex-root">
+            {% block content %}{% endblock content %}
+        </div>
+
+        {% include 'includes/scripts_js.html' %}
+		{% include 'includes/alerts.html' %}
+	</body>
+</html>

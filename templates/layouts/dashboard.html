@@ -1,0 +1,52 @@
+{% load static %}
+{% load i18n %}
+{% load breadcrumb_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>{{ config.PROJECT_NAME }} | {% block title_page %}{% endblock title_page %}</title>
+		<meta charset="utf-8" />
+		<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
+		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="shortcut icon" href="{% static 'assets/images/logos/logo-minimize.webp' %}" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
+
+		{% include 'includes/scripts_css.html' %}
+		<script src="{% static 'assets/js/theme.bundle.js' %}"></script>
+	</head>
+
+	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
+		<div class="d-flex flex-column flex-root">
+			<div class="page d-flex flex-row flex-column-fluid">
+				{% include 'includes/aside.html' %}
+				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+					{% include 'includes/navbar.html' %}
+					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content">
+						<div class="toolbar" id="kt_toolbar">
+							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
+								<div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
+									<h1 class="text-gray-900 fw-bold my-1 fs-2">
+										{% block toolbar_title %}{% endblock %}
+										<small class="text-muted fs-6 fw-normal ms-1"></small>
+									</h1>
+									{% breadcrumb as breadcrumbs %}
+    								{% include 'includes/breadcrumb.html' with breadcrumbs=breadcrumbs %}
+								</div>
+								{% block entity_options %}{% endblock %}
+							</div>
+						</div>
+						<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
+							{% block content %}{% endblock content %}
+						</div>
+					</div>
+					{% include 'includes/footer.html' %}
+				</div>
+			</div>
+		</div>
+		{% include 'includes/scripts_js.html' %}
+		{% include 'includes/alerts.html' %}
+		{% block extra_js %}{% endblock extra_js %}
+	</body>
+</html>

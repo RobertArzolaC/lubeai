@@ -1,0 +1,21 @@
+{% extends "layouts/dashboard.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title_page %}Dashboard{% endblock title_page %}
+{% block toolbar_title %}Dashboard{% endblock %}
+
+{% block content %}
+<main class="container-xxl">
+  <div class="row">
+    <div class="text-end mb-4">
+      <small class="text-muted">
+          {% trans "Last updated" %}: {{ last_updated|date:"Y-m-d H:i" }}
+      </small>
+    </div>
+  </div>
+  <div class="row g-xl-8">
+
+  </div>
+</main>
+{% endblock content %}

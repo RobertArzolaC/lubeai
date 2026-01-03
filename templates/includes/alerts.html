@@ -1,0 +1,108 @@
+<script>
+    {% if messages %}
+        {% for message in messages %}
+            Swal.fire({
+                icon: '{{ message.tags }}',
+                title: '{{ message.tags|capfirst }}',
+                text: '{{ message }}',
+                timer: 3500,
+                showConfirmButton: false,
+                position: 'top-end',
+                toast: true,
+                timerProgressBar: true,
+                customClass: {
+                    popup: 'colored-toast',
+                    title: 'swal2-title-custom',
+                    content: 'swal2-content-custom'
+                },
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+        {% endfor %}
+    {% endif %}
+
+    {% if errors %}
+        let modals = [];
+        {% for form_name, form_errors in errors.items %}
+            {% for field, error_list in form_errors.items %}
+                {% for error in error_list %}
+                    modals.push({
+                        icon: 'error',
+                        title: '{{ field }}',
+                        text: '{{ error }}',
+                        timer: 3500,
+                        showConfirmButton: false,
+                        position: 'top-end',
+                        toast: true,
+                        timerProgressBar: true,
+                        customClass: {
+                            popup: 'colored-toast',
+                            title: 'swal2-title-custom',
+                            content: 'swal2-content-custom'
+                        },
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+        if(modals.length > 0){
+            modals.forEach(function(element){
+                Swal.fire(element)
+            })
+        }
+    {% endif %}
+
+    {% if form.errors %}
+        {% for error_list in form.errors.values %}
+            {% for error in error_list %}
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '{{ error }}',
+                    timer: 3500,
+                    showConfirmButton: false,
+                    position: 'top-end',
+                    toast: true,
+                    timerProgressBar: true,
+                    customClass: {
+                        popup: 'colored-toast',
+                        title: 'swal2-title-custom',
+                        content: 'swal2-content-custom'
+                    },
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+
+    function showAlert(title, message, icon='info'){
+        Swal.fire({
+            icon: icon,
+            title: title,
+            text: message,
+            timer: 3500,
+            showConfirmButton: false,
+            position: 'top-end',
+            toast: true,
+            timerProgressBar: true,
+            customClass: {
+                popup: 'colored-toast',
+                title: 'swal2-title-custom',
+                content: 'swal2-content-custom'
+            },
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+    }
+
+</script>

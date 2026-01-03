@@ -1,0 +1,20 @@
+{% extends "layouts/home.html" %}
+{% load static %}
+{% load i18n allauth account %}
+{% load widget_tweaks %}
+
+{% block title_page %}
+    {% trans "Page not found" %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-center flex-column-fluid p-10">
+    <img src="{% static "assets/media/illustrations/sigma-1/18.png" %}" alt="" class="mw-100 mb-10 h-lg-450px" />
+    <h1 class="fw-semibold mb-10" style="color: #A3A3C7">
+        Seems there is nothing here
+    </h1>
+    <a href="/" class="btn btn-primary">
+        Go back
+    </a>
+</div>
+{% endblock content %}
