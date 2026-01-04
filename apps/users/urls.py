@@ -24,6 +24,32 @@ urlpatterns = [
         views.AccountDeleteView.as_view(),
         name="account_delete",
     ),
+    # Organizations URLs
+    path(
+        "organizations/",
+        views.OrganizationListView.as_view(),
+        name="organization_list",
+    ),
+    path(
+        "organizations/create/",
+        views.OrganizationCreateView.as_view(),
+        name="organization_create",
+    ),
+    path(
+        "organizations/<int:pk>/",
+        views.OrganizationDetailView.as_view(),
+        name="organization_detail",
+    ),
+    path(
+        "organizations/<int:pk>/update/",
+        views.OrganizationUpdateView.as_view(),
+        name="organization_update",
+    ),
+    path(
+        "organizations/<int:pk>/delete/",
+        views.OrganizationDeleteView.as_view(),
+        name="organization_delete",
+    ),
     # API URLs
     path(
         "api/toggle-user-status/",

@@ -7,7 +7,14 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import FormView, TemplateView, UpdateView, View
+from django.views.generic import (
+    CreateView,
+    DetailView,
+    FormView,
+    TemplateView,
+    UpdateView,
+    View,
+)
 from django_filters.views import FilterView
 
 from apps.core import mixins as core_mixins
@@ -142,3 +149,87 @@ class AccountUpdateView(
 
 class AccountDeleteView(core_mixins.AjaxDeleteViewMixin):
     model = models.Account
+
+
+# =====================================
+# Organization Views
+# =====================================
+
+
+class OrganizationListView(
+    PermissionRequiredMixin, FilterView, LoginRequiredMixin, SuccessMessageMixin
+):
+    model = models.Organization
+    permission_required = "users.view_organization"
+    filterset_class = filtersets.OrganizationFilter
+    template_name = "users/organization/list.html"
+    context_object_name = "organizations"
+    paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["entity"] = _("Organization")
+        context["entity_plural"] = _("Organizations")
+        context["back_url"] = reverse_lazy("apps.dashboard:index")
+        context["add_entity_url"] = reverse_lazy(
+            "apps.users:organization_create"
+        )
+
+        return context
+
+
+class OrganizationDetailView(
+    PermissionRequiredMixin, DetailView, LoginRequiredMixin
+):
+    model = models.Organization
+    permission_required = "users.view_organization"
+    template_name = "users/organization/detail.html"
+    context_object_name = "organization"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["entity"] = _("Organization")
+        context["back_url"] = reverse_lazy("apps.users:organization_list")
+        context["edit_url"] = reverse_lazy(
+            "apps.users:organization_update", kwargs={"pk": self.object.pk}
+        )
+        return context
+
+
+class OrganizationCreateView(
+    PermissionRequiredMixin, CreateView, LoginRequiredMixin, SuccessMessageMixin
+):
+    model = models.Organization
+    form_class = forms.OrganizationForm
+    permission_required = "users.add_organization"
+    template_name = "users/organization/form.html"
+    success_message = _("Organization created successfully")
+    success_url = reverse_lazy("apps.users:organization_list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["entity"] = _("Organization")
+        context["back_url"] = reverse_lazy("apps.users:organization_list")
+        return context
+
+
+class OrganizationUpdateView(
+    PermissionRequiredMixin, UpdateView, LoginRequiredMixin, SuccessMessageMixin
+):
+    model = models.Organization
+    form_class = forms.OrganizationForm
+    template_name = "users/organization/form.html"
+    permission_required = "users.change_organization"
+    success_message = _("Organization updated successfully")
+    success_url = reverse_lazy("apps.users:organization_list")
+    context_object_name = "organization"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["entity"] = _("Organization")
+        context["back_url"] = reverse_lazy("apps.users:organization_list")
+        return context
+
+
+class OrganizationDeleteView(core_mixins.AjaxDeleteViewMixin):
+    model = models.Organization

@@ -116,3 +116,47 @@ class AccountSettingsForm(forms.ModelForm):
     class Meta:
         model = models.Account
         fields = "__all__"
+
+
+class OrganizationForm(forms.ModelForm):
+    class Meta:
+        model = models.Organization
+        fields = [
+            "name",
+            "description",
+            "address",
+            "zip_code",
+            "country",
+            "region",
+            "subregion",
+            "city",
+            "phone",
+            "email",
+            "is_active",
+        ]
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control"}),
+            "description": forms.Textarea(
+                attrs={"class": "form-control", "rows": 3}
+            ),
+            "address": forms.TextInput(attrs={"class": "form-control"}),
+            "zip_code": forms.TextInput(attrs={"class": "form-control"}),
+            "phone": forms.TextInput(attrs={"class": "form-control"}),
+            "email": forms.EmailInput(attrs={"class": "form-control"}),
+            "is_active": forms.CheckboxInput(
+                attrs={"class": "form-check-input"}
+            ),
+        }
+        labels = {
+            "name": _("Organization Name"),
+            "description": _("Description"),
+            "address": _("Address"),
+            "zip_code": _("Zip Code"),
+            "country": _("Country"),
+            "region": _("Department"),
+            "subregion": _("Province"),
+            "city": _("City"),
+            "phone": _("Phone Number"),
+            "email": _("Email Address"),
+            "is_active": _("Is Active"),
+        }

@@ -1,0 +1,256 @@
+{% extends "layouts/dashboard.html" %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block title_page%}
+    {% if form.instance.pk %}
+        {% trans "Edit Organization" %}
+    {% else %}
+        {% trans "Create Organization" %}
+    {% endif %}
+{% endblock title_page %}
+
+{% block toolbar_title %}
+    {% if form.instance.pk %}
+        {% trans "Edit" %}: {{ form.instance.name }}
+    {% else %}
+        {% trans "Create Organization" %}
+    {% endif %}
+{% endblock%}
+
+{% block content %}
+<main class="container-xxl">
+    <form class="form d-flex flex-column" method="post" enctype="multipart/form-data"
+          action="{% if form.instance.pk %}{% url 'apps.users:organization_update' form.instance.pk %}{% else %}{% url 'apps.users:organization_create' %}{% endif %}">
+        {% csrf_token %}
+
+        <!-- Basic Information Card -->
+        <div class="card mb-5 mb-xl-10">
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_organization_basic_info" aria-expanded="true" aria-controls="kt_organization_basic_info">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0">{% trans "Basic Information" %}</h3>
+                </div>
+            </div>
+
+            <div id="kt_organization_basic_info" class="collapse show">
+                <div class="card-body border-top p-9">
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">
+                            {{ form.name.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.name class="form-control form-control-lg" placeholder="Organization name" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.name.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.description.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.description class="form-control form-control-lg" placeholder="Organization description" rows="3" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.description.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.is_active.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row">
+                            <div class="form-check form-switch">
+                                {% render_field form.is_active class="form-check-input" %}
+                                <span class="form-check-label fw-semibold text-muted">
+                                    {% trans "Is this organization active?" %}
+                                </span>
+                            </div>
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.is_active.errors }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Address Information Card -->
+        <div class="card mb-5 mb-xl-10">
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_organization_address_info" aria-expanded="true" aria-controls="kt_organization_address_info">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0">{% trans "Address Information" %}</h3>
+                </div>
+            </div>
+
+            <div id="kt_organization_address_info" class="collapse show">
+                <div class="card-body border-top p-9">
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.country.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.country class="form-select form-select-lg" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.country.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.region.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.region class="form-select form-select-lg" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.region.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.subregion.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.subregion class="form-select form-select-lg" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.subregion.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.city.label }}
+                        </label>
+                        <div class="col-lg-4 fv-row fv-plugins-icon-container">
+                            {% render_field form.city class="form-select form-select-lg" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.city.errors }}
+                            </div>
+                        </div>
+                        <div class="col-lg-4 fv-row fv-plugins-icon-container">
+                            <label class="form-label fw-semibold fs-6">{{ form.district.label }}</label>
+                            {% render_field form.district class="form-select form-select-lg" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.district.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.address.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.address class="form-control form-control-lg" placeholder="Street address" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.address.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.zip_code.label }}
+                        </label>
+                        <div class="col-lg-4 fv-row fv-plugins-icon-container">
+                            {% render_field form.zip_code class="form-control form-control-lg" placeholder="Zip code" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.zip_code.errors }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Information Card -->
+        <div class="card mb-5 mb-xl-10">
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_organization_contact_info" aria-expanded="true" aria-controls="kt_organization_contact_info">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0">{% trans "Contact Information" %}</h3>
+                </div>
+            </div>
+
+            <div id="kt_organization_contact_info" class="collapse show">
+                <div class="card-body border-top p-9">
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.email.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.email class="form-control form-control-lg" placeholder="organization@example.com" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.email.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.phone.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.phone class="form-control form-control-lg" placeholder="+51 999 999 999" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.phone.errors }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="card">
+            <div class="card-footer d-flex justify-content-end py-6 px-9">
+                <a href="{{ back_url }}" class="btn btn-light btn-active-light-primary me-2">
+                    {% trans "Discard" %}
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    {% if form.instance.pk %}
+                        {% trans "Save Changes" %}
+                    {% else %}
+                        {% trans "Create Organization" %}
+                    {% endif %}
+                </button>
+            </div>
+        </div>
+    </form>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Form validation
+    $('form').on('submit', function(e) {
+        var name = $('input[name="name"]').val().trim();
+
+        if (!name) {
+            e.preventDefault();
+            Swal.fire({
+                title: '{% trans "Error" %}',
+                text: '{% trans "Organization name is required" %}',
+                icon: 'error',
+                confirmButtonText: '{% trans "OK" %}'
+            });
+            $('input[name="name"]').focus();
+            return false;
+        }
+    });
+
+    // Initialize collapsible cards
+    $('[data-bs-toggle="collapse"]').on('click', function() {
+        $(this).toggleClass('collapsed');
+    });
+});
+</script>
+{% endblock %}

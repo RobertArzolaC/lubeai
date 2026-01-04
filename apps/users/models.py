@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
-from django_extensions.db.fields import AutoSlugField
 from model_utils.models import SoftDeletableModel, TimeStampedModel
 
 from apps.core import models as core_models
@@ -19,9 +18,6 @@ class Organization(
     core_models.NameDescription,
     core_models.IsActive,
 ):
-    slug = AutoSlugField(populate_from="name", unique=True, editable=True)
-    tax_id = models.CharField(max_length=20, unique=True)
-
     class Meta:
         verbose_name = _("Organization")
         verbose_name_plural = _("Organizations")
