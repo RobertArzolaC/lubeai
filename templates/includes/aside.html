@@ -37,6 +37,21 @@
           {% endif %}
         </div>
         <div class="menu-item">
+          {% if perms.users.view_organization %}
+            <a class="menu-link {% if "organizations" in request.path %}active{% endif %}" href="{% url 'apps.users:organization_list' %}">
+              <span class="menu-icon">
+                <i class="ki-duotone ki-briefcase fs-2 me-2">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+              </span>
+              <span class="menu-title">
+                {% trans 'Organizations' %}
+              </span>
+            </a>
+          {% endif %}
+        </div>
+        <div class="menu-item">
           <div class="menu-content">
             <div class="separator mx-1 my-4"></div>
           </div>

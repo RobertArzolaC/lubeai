@@ -4,72 +4,206 @@
 {% load widget_tweaks %}
 
 {% block title_page %}
-    {% trans "Sign In" %}
+    {% trans "Sign In" %} - Industrial Dashboard
 {% endblock %}
 
 {% block content %}
-<div class="d-flex flex-column flex-lg-row flex-column-fluid">
-    <div class="d-flex flex-column flex-lg-row-auto bg-primary w-xl-600px positon-xl-relative">
+<div class="lubricant-login-container d-flex flex-column flex-lg-row flex-column-fluid">
+    <!-- Brand Side Panel -->
+    <div class="lubricant-login-brand d-flex flex-column flex-lg-row-auto w-xl-600px position-xl-relative">
         <div class="d-flex flex-column position-xl-fixed top-0 bottom-0 w-xl-600px scroll-y">
+            <!-- Industrial Pattern Background -->
             <div class="d-flex flex-row-fluid flex-column text-center p-5 p-lg-10 pt-lg-20">
-                <div class="py-2 py-lg-20">
+                <!-- Logo Section -->
+                <div class="py-2 py-lg-10 mb-4">
+                    <img
+                        alt="{{ config.PROJECT_NAME }} Logo"
+                        src="{% static 'assets/images/logos/logo.png' %}"
+                        class="lubricant-logo max-h-75px"
+                        height="50"
+                    />
                 </div>
-                <h1 class="d-none d-lg-block fw-bold text-white fs-2qx pb-5 pb-md-10">
+
+                <!-- Brand Title -->
+                <h1 class="lubricant-brand-title d-none d-lg-block fs-2qx pb-5 pb-md-8">
+                    <i class="fas fa-cog lubricant-icon me-3 lubricant-pulse"></i>
                     Welcome to {{ config.PROJECT_NAME }}
                 </h1>
-                <p class="d-none d-lg-block fw-semibold fs-2 text-white">
-                    Transform your laboratory management with integrated sample tracking, automated test
-                    <br />workflows and precise result validation
-                </p>
+
+                <!-- Brand Description -->
+                <div class="d-none d-lg-block">
+                    <p class="lubricant-brand-subtitle fs-2 mb-4">
+                        <i class="fas fa-oil-can lubricant-icon me-2"></i>
+                        Transform your lubricant business with intelligent automation
+                    </p>
+                    <p class="lubricant-brand-subtitle fs-4 opacity-75">
+                        Advanced dashboard generation • Real-time analytics • Industrial-grade reliability
+                    </p>
+                </div>
+
+                <!-- Mobile Brand -->
+                <div class="d-lg-none text-center py-4">
+                    <h2 class="lubricant-brand-title fs-1 mb-3">
+                        {{ config.PROJECT_NAME }}
+                    </h2>
+                    <p class="lubricant-brand-subtitle fs-6">
+                        Industrial Dashboard Platform
+                    </p>
+                </div>
             </div>
-            <div class="d-none d-lg-block d-flex flex-row-auto bgi-no-repeat bgi-position-x-center bgi-size-contain bgi-position-y-bottom min-h-100px min-h-lg-350px" style="background-image: url({% static 'assets/media/illustrations/sigma-1/17.png' %})"></div>
+
+            <!-- Industrial Illustration -->
+            <div class="d-none d-lg-block d-flex flex-row-auto justify-content-center align-items-end pb-10">
+                <div class="text-center">
+                    <i class="fas fa-industry lubricant-icon fa-5x opacity-50 mb-4"></i>
+                    <div class="d-flex justify-content-center gap-3">
+                        <i class="fas fa-gear lubricant-icon fa-2x"></i>
+                        <i class="fas fa-oil-can text-warning fa-2x"></i>
+                        <i class="fas fa-gauge lubricant-icon fa-2x"></i>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="d-flex flex-column flex-lg-row-fluid py-10">
-        <div class="d-flex flex-center flex-column flex-column-fluid">
-            <div class="w-lg-500px p-10 p-lg-15 mx-auto">
+
+    <!-- Login Form Side -->
+    <div class="d-flex flex-column flex-lg-row-fluid justify-content-center align-items-center py-10">
+        <div class="w-100 w-lg-500px px-4 px-lg-0">
+            <!-- Main Login Form -->
+            <div class="lubricant-login-form">
+                <!-- Form Header -->
                 <div class="text-center mb-10">
-                    <a href="/" class="py-2 py-lg-20">
-                        <img alt="Logo" src="{% static 'assets/images/logos/logo.png' %}" class="max-h-50px logo-default" height="30" />
-                    </a>
+                    <!-- Mobile Logo -->
+                    <div class="d-lg-none mb-6">
+                        <img alt="Logo" src="{% static 'assets/images/logos/logo.png' %}" class="lubricant-logo max-h-50px" height="35" />
+                    </div>
+
+                    <h1 class="text-lubricant-primary mb-4 fs-2x fw-bold">
+                        <i class="fas fa-sign-in-alt lubricant-icon me-3"></i>
+                        Industrial Access
+                    </h1>
+                    <p class="text-lubricant-secondary fs-6 fw-semibold mb-6">
+                        Sign in to your dashboard platform
+                    </p>
+                    <hr class="lubricant-divider">
                 </div>
+
+                <!-- Login Form -->
                 <form class="form w-100" method="POST" action="{% url "account_login" %}">
                     {% csrf_token %}
-                    <div class="text-center mb-10">
-                        <h1 class="text-gray-900 mb-3">
-                            Sign In
-                        </h1>
-                    </div>
-                    <div class="fv-row mb-10">
-                        {{ form.login|add_label_class:"form-label fs-6 fw-bold text-gray-900" }}
-                        {{ form.login|add_class:"form-control form-control-lg" }}
-                        {% if form.login.errors %}
-                            <div class="invalid-feedback">{{ form.login.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="fv-row mb-10">
-                        <div class="d-flex flex-stack mb-2">
-                            {{ form.password|add_label_class:"form-label fw-bold text-gray-900 fs-6 mb-0" }}
-                            {% if form.password.errors %}
-                                <div class="invalid-feedback">{{ form.password.errors }}</div>
+
+                    <!-- Login Field -->
+                    <div class="fv-row mb-7">
+                        {{ form.login|add_label_class:"lubricant-form-label required" }}
+                        <div class="position-relative">
+                            <div class="input-group">
+                                <span class="input-group-text bg-lubricant-surface border-end-0">
+                                    <i class="fas fa-user text-lubricant-secondary"></i>
+                                </span>
+                                {{ form.login|add_class:"lubricant-form-control border-start-0 ps-5" }}
+                            </div>
+                            {% if form.login.errors %}
+                                <div class="lubricant-error mt-2">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    {{ form.login.errors.0 }}
+                                </div>
                             {% endif %}
-                            <a href="{% url 'account_reset_password' %}" class="link-primary fs-6 fw-bold">
-                                Forgot Password ?
-                            </a>
                         </div>
-                        {{ form.password|add_class:"form-control form-control-lg" }}
                     </div>
-                    <div class="text-center">
-                        {% if redirect_field_value %}
-                            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-                        {% endif %}
-                        <button type="submit" class="btn btn-lg btn-primary w-100 mb-5">
-                            <span class="indicator-label">Continue</span>
+
+                    <!-- Password Field -->
+                    <div class="fv-row mb-7">
+                        {{ form.password|add_label_class:"lubricant-form-label required" }}
+                        <div class="position-relative">
+                            <div class="input-group">
+                                <span class="input-group-text bg-lubricant-surface border-end-0">
+                                    <i class="fas fa-lock text-lubricant-secondary"></i>
+                                </span>
+                                {{ form.password|add_class:"lubricant-form-control border-start-0 ps-5" }}
+                                <span class="input-group-text bg-lubricant-surface border-start-0 cursor-pointer" onclick="togglePasswordVisibility()">
+                                    <i class="fas fa-eye text-lubricant-secondary" id="togglePasswordIcon"></i>
+                                </span>
+                            </div>
+                            {% if form.password.errors %}
+                                <div class="lubricant-error mt-2">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    {{ form.password.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Forgot Password Link -->
+                    <div class="d-flex justify-content-start mb-8">
+                        <a href="{% url 'account_reset_password' %}" class="lubricant-link fs-7 fw-semibold">
+                            <i class="fas fa-question-circle me-2"></i>
+                            ¿Forgot your password?
+                        </a>
+                    </div>
+
+                    <!-- Hidden Fields -->
+                    {% if redirect_field_value %}
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                    {% endif %}
+
+                    <!-- Submit Button -->
+                    <div class="d-grid mb-6">
+                        <button type="submit" class="btn btn-lg btn-primary py-4">
+                            <span class="indicator-label fs-5 fw-bold">
+                                <i class="fas fa-arrow-right me-3"></i>
+                                Access Dashboard
+                            </span>
                         </button>
                     </div>
+
+                    <!-- Security Notice -->
+                    <div class="text-center">
+                        <small class="text-lubricant-medium d-flex align-items-center justify-content-center">
+                            <i class="fas fa-shield-alt me-2"></i>
+                            Secure industrial-grade authentication
+                        </small>
+                    </div>
                 </form>
+            </div>
+
+            <!-- Footer Information -->
+            <div class="text-center mt-6">
+                <p class="text-lubricant-medium fs-7">
+                    <i class="fas fa-copyright me-1"></i>
+                    {{ config.PROJECT_NAME }} - Industrial Dashboard Platform
+                </p>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Password Toggle Script -->
+<script>
+function togglePasswordVisibility() {
+    const passwordInput = document.querySelector('input[name="password"]');
+    const toggleIcon = document.getElementById('togglePasswordIcon');
+
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+    }
+}
+
+// Add loading animation on form submit
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const submitBtn = document.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', function() {
+        submitBtn.classList.add('lubricant-loading');
+        submitBtn.innerHTML = '<i class="fas fa-cog fa-spin me-2"></i>Authenticating...';
+        submitBtn.disabled = true;
+    });
+});
+</script>
 {% endblock content %}

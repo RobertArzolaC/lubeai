@@ -1,0 +1,334 @@
+/*
+ * Lubricant Theme - Custom CSS for Industrial Lubricant Company Dashboard
+ * Color Palette: Industrial blues, mechanical grays, energy oranges
+ */
+
+:root {
+  /* Industrial Color Palette */
+  --lubricant-primary: #1a365d;      /* Deep industrial blue */
+  --lubricant-secondary: #2d5a87;    /* Medium industrial blue */
+  --lubricant-accent: #ff8c00;       /* Energy orange */
+  --lubricant-accent-light: #ffb347; /* Light energy orange */
+
+  /* Mechanical Grays */
+  --lubricant-dark: #1a202c;         /* Dark charcoal */
+  --lubricant-medium: #4a5568;       /* Medium gray */
+  --lubricant-light: #e2e8f0;        /* Light gray */
+  --lubricant-surface: #f7fafc;      /* Surface white-gray */
+
+  /* Status Colors */
+  --lubricant-success: #38a169;      /* Machine green */
+  --lubricant-warning: #d69e2e;      /* Maintenance yellow */
+  --lubricant-danger: #e53e3e;       /* Alert red */
+
+  /* Gradients */
+  --lubricant-gradient-primary: linear-gradient(135deg, var(--lubricant-primary) 0%, var(--lubricant-secondary) 100%);
+  --lubricant-gradient-accent: linear-gradient(135deg, var(--lubricant-accent) 0%, var(--lubricant-accent-light) 100%);
+  --lubricant-gradient-surface: linear-gradient(135deg, #ffffff 0%, var(--lubricant-surface) 100%);
+
+  /* Shadows */
+  --lubricant-shadow-sm: 0 2px 4px rgba(26, 54, 93, 0.1);
+  --lubricant-shadow-md: 0 4px 12px rgba(26, 54, 93, 0.15);
+  --lubricant-shadow-lg: 0 8px 25px rgba(26, 54, 93, 0.25);
+  --lubricant-shadow-xl: 0 20px 40px rgba(26, 54, 93, 0.3);
+}
+
+/* Override Bootstrap Primary Colors */
+.btn-primary {
+    background: var(--lubricant-gradient-primary) !important;
+    border-color: var(--lubricant-primary) !important;
+    box-shadow: var(--lubricant-shadow-md);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: var(--lubricant-secondary) !important;
+    border-color: var(--lubricant-secondary) !important;
+    box-shadow: var(--lubricant-shadow-lg);
+    transform: translateY(-2px);
+}
+
+.btn-primary:focus, .btn-primary:active {
+    background: var(--lubricant-primary) !important;
+    border-color: var(--lubricant-primary) !important;
+    box-shadow: 0 0 0 0.2rem rgba(26, 54, 93, 0.25) !important;
+}
+
+/* Background Primary Override */
+.bg-primary {
+    background: var(--lubricant-gradient-primary) !important;
+}
+
+/* Login Page Specific Styles */
+.lubricant-login-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--lubricant-surface) 0%, #ffffff 50%, var(--lubricant-light) 100%);
+}
+
+.lubricant-login-brand {
+    background: var(--lubricant-gradient-primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.lubricant-login-brand::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="industrial" patternUnits="userSpaceOnUse" width="20" height="20"><circle cx="10" cy="10" r="1.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23industrial)"/></svg>') repeat;
+    z-index: 1;
+}
+
+.lubricant-login-brand > * {
+    position: relative;
+    z-index: 2;
+}
+
+.lubricant-login-form {
+    background: var(--lubricant-gradient-surface);
+    box-shadow: var(--lubricant-shadow-xl);
+    border-radius: 16px;
+    padding: 3rem;
+    border: 1px solid rgba(26, 54, 93, 0.1);
+}
+
+/* Enhanced Form Controls */
+.lubricant-form-control {
+    border: 2px solid var(--lubricant-light);
+    border-radius: 12px;
+    padding: 1.25rem 1.75rem;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+    width: 100%;
+    min-height: 58px;
+}
+
+.lubricant-form-control:focus {
+    border-color: var(--lubricant-secondary);
+    box-shadow: 0 0 0 0.2rem rgba(45, 90, 135, 0.25);
+    background: rgba(255, 255, 255, 1);
+}
+
+.lubricant-form-control:hover {
+    border-color: var(--lubricant-secondary);
+    background: rgba(255, 255, 255, 1);
+}
+
+/* Input Group Consistency */
+.input-group {
+    width: 100%;
+}
+
+.input-group .lubricant-form-control {
+    flex: 1;
+    min-width: 0;
+}
+
+.input-group-text {
+    padding: 1.25rem 1rem;
+    min-height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--lubricant-light);
+}
+
+/* Form Labels */
+.lubricant-form-label {
+    color: var(--lubricant-dark);
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.025em;
+}
+
+/* Industrial Icons */
+.lubricant-icon {
+    color: var(--lubricant-accent);
+    filter: drop-shadow(0 2px 4px rgba(255, 140, 0, 0.3));
+}
+
+/* Logo Enhancements */
+.lubricant-logo {
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    transition: transform 0.3s ease;
+}
+
+.lubricant-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Brand Text Styling */
+.lubricant-brand-title {
+    color: #ffffff;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.025em;
+}
+
+.lubricant-brand-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 400;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    line-height: 1.6;
+}
+
+/* Link Styles */
+.lubricant-link {
+    color: var(--lubricant-secondary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.lubricant-link:hover {
+    color: var(--lubricant-accent);
+    text-decoration: underline;
+}
+
+/* Error States */
+.lubricant-error {
+    color: var(--lubricant-danger);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    display: block;
+}
+
+.is-invalid.lubricant-form-control {
+    border-color: var(--lubricant-danger);
+    box-shadow: 0 0 0 0.2rem rgba(229, 62, 62, 0.25);
+}
+
+/* Loading States */
+.lubricant-loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.lubricant-loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: lubricantLoading 2s infinite;
+}
+
+@keyframes lubricantLoading {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+    .lubricant-login-form {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+        border-radius: 12px;
+    }
+
+    .lubricant-form-control {
+        padding: 0.875rem 1.25rem;
+        font-size: 1rem;
+    }
+
+    .lubricant-brand-title {
+        font-size: 1.75rem;
+    }
+
+    .lubricant-brand-subtitle {
+        font-size: 1rem;
+        padding: 0 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .lubricant-login-form {
+        padding: 1.5rem 1rem;
+        margin: 0.5rem;
+    }
+
+    .lubricant-form-control {
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+    }
+
+    .lubricant-brand-title {
+        font-size: 1.5rem;
+    }
+
+    .lubricant-brand-subtitle {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+}
+
+/* Industrial Animation Effects */
+@keyframes industrialPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.lubricant-pulse {
+    animation: industrialPulse 3s infinite ease-in-out;
+}
+
+/* Enhanced Focus Effects */
+.lubricant-form-control:focus + .lubricant-form-label,
+.lubricant-form-control:not(:placeholder-shown) + .lubricant-form-label {
+    color: var(--lubricant-secondary);
+    font-size: 0.875rem;
+    transform: translateY(-0.5rem);
+}
+
+/* Industrial Dividers */
+.lubricant-divider {
+    height: 2px;
+    background: var(--lubricant-gradient-primary);
+    border: none;
+    border-radius: 1px;
+    margin: 2rem 0;
+}
+
+/* Success States */
+.lubricant-success-message {
+    background: linear-gradient(135deg, var(--lubricant-success), #48bb78);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--lubricant-shadow-md);
+    margin-bottom: 1.5rem;
+}
+
+/* Industrial Theme Specific Utilities */
+.text-lubricant-primary { color: var(--lubricant-primary) !important; }
+.text-lubricant-secondary { color: var(--lubricant-secondary) !important; }
+.text-lubricant-accent { color: var(--lubricant-accent) !important; }
+.bg-lubricant-primary { background-color: var(--lubricant-primary) !important; }
+.bg-lubricant-secondary { background-color: var(--lubricant-secondary) !important; }
+.bg-lubricant-accent { background-color: var(--lubricant-accent) !important; }
+.border-lubricant-primary { border-color: var(--lubricant-primary) !important; }
+.border-lubricant-secondary { border-color: var(--lubricant-secondary) !important; }
+
+/* Button variations */
+.btn-lubricant-accent {
+    background: var(--lubricant-gradient-accent);
+    border: none;
+    color: white;
+    font-weight: 600;
+    box-shadow: var(--lubricant-shadow-md);
+    transition: all 0.3s ease;
+}
+
+.btn-lubricant-accent:hover {
+    background: var(--lubricant-accent);
+    box-shadow: var(--lubricant-shadow-lg);
+    transform: translateY(-2px);
+    color: white;
+}
