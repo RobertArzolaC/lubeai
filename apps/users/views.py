@@ -164,6 +164,7 @@ class OrganizationListView(
     filterset_class = filtersets.OrganizationFilter
     template_name = "users/organization/list.html"
     context_object_name = "organizations"
+    ordering = ["is_active", "name"]
     paginate_by = 5
 
     def get_context_data(self, **kwargs):

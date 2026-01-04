@@ -33,7 +33,7 @@ class MachineListView(
     filterset_class = filtersets.MachineFilter
     template_name = "equipment/machine/list.html"
     context_object_name = "machines"
-    paginate_by = 10
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -240,7 +240,7 @@ class MachineBulkUploadView(
             "DESCRIPCIÓN",
             "MODELO",
             "COMPONENTES ASOCIADOS",
-            "ESTADO"
+            "ESTADO",
         ]
 
         # If first cell matches any header pattern, skip the row
@@ -248,7 +248,11 @@ class MachineBulkUploadView(
             return True
 
         # Skip if multiple columns contain header patterns (header row detection)
-        header_matches = sum(1 for cell in row_values if any(pattern in cell for pattern in header_patterns))
+        header_matches = sum(
+            1
+            for cell in row_values
+            if any(pattern in cell for pattern in header_patterns)
+        )
         if header_matches >= 2:  # If 2 or more columns contain header text
             return True
 

@@ -95,7 +95,7 @@
                                     {{ form.email.label }}
                                 </label>
 
-                                <div class="col-lg-{% if not form.instance.pk %}4{% else %}8{% endif %} fv-row fv-plugins-icon-container">
+                                <div class="col-lg-8 fv-row fv-plugins-icon-container">
                                     {% render_field form.email class="form-control form-control-lg" %}
                                     <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                         {{ form.email.errors }}
