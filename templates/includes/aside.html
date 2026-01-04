@@ -52,6 +52,21 @@
           {% endif %}
         </div>
         <div class="menu-item">
+          {% if perms.equipment.view_machine %}
+            <a class="menu-link {% if "machines" in request.path %}active{% endif %}" href="{% url 'apps.equipment:machine_list' %}">
+              <span class="menu-icon">
+                <i class="ki-duotone ki-setting-2 fs-2 me-2">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+              </span>
+              <span class="menu-title">
+                {% trans 'Machines' %}
+              </span>
+            </a>
+          {% endif %}
+        </div>
+        <div class="menu-item">
           <div class="menu-content">
             <div class="separator mx-1 my-4"></div>
           </div>

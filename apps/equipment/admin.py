@@ -73,9 +73,9 @@ class MachineAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
 
-@admin.register(models.MachineType)
-class MachineTypeAdmin(admin.ModelAdmin):
-    """Admin configuration for MachineType model."""
+@admin.register(models.ComponentType)
+class ComponentTypeAdmin(admin.ModelAdmin):
+    """Admin configuration for ComponentType model."""
 
     list_display = (
         "name",

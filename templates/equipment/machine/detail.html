@@ -1,0 +1,269 @@
+{% extends "layouts/dashboard.html" %}
+{% load static %}
+{% load i18n %}
+{% load breadcrumb_tags %}
+
+{% block title_page%}
+    {{ machine.name }}
+{% endblock title_page %}
+
+{% block toolbar_title %}
+    {{ entity }}: {{ machine.name }}
+{% endblock%}
+
+{% block entity_options %}
+<div class="d-flex align-items-center flex-nowrap text-nowrap py-1">
+    {% if perms.equipment.change_machine %}
+        <a href="{{ edit_url }}" class="btn btn-primary me-2">
+            <i class="ki-duotone ki-pencil fs-2">
+                <span class="path1"></span>
+                <span class="path2"></span>
+            </i>
+            {% trans 'Edit' %}
+        </a>
+    {% endif %}
+    {% if perms.equipment.delete_machine %}
+        <button type="button" class="btn btn-danger delete-btn"
+                data-url="{% url 'apps.equipment:machine_delete' machine.pk %}"
+                data-name="{{ machine.name }}">
+            <i class="ki-duotone ki-trash fs-2">
+                <span class="path1"></span>
+                <span class="path2"></span>
+                <span class="path3"></span>
+                <span class="path4"></span>
+                <span class="path5"></span>
+            </i>
+            {% trans 'Delete' %}
+        </button>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+<main class="container-xxl">
+    <div class="row g-5 g-xl-8">
+        <!-- Machine Information Card -->
+        <div class="col-xl-6">
+            <div class="card card-flush h-lg-100">
+                <div class="card-header pt-7">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bold text-gray-800">{% trans "Machine Information" %}</span>
+                    </h3>
+                </div>
+                <div class="card-body pt-6">
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Name" %}</label>
+                        <div class="col-lg-8">
+                            <span class="fw-bold fs-6 text-gray-800">{{ machine.name }}</span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Serial Number" %}</label>
+                        <div class="col-lg-8">
+                            <span class="fw-bold fs-6 text-gray-800">{{ machine.serial_number }}</span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Model" %}</label>
+                        <div class="col-lg-8">
+                            <span class="fw-bold fs-6 text-gray-800">{{ machine.model }}</span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Status" %}</label>
+                        <div class="col-lg-8">
+                            {% if machine.is_active %}
+                                <span class="badge badge-light-success fs-7 fw-bold">{% trans "Active" %}</span>
+                            {% else %}
+                                <span class="badge badge-light-danger fs-7 fw-bold">{% trans "Inactive" %}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Created" %}</label>
+                        <div class="col-lg-8">
+                            <span class="fw-semibold fs-6 text-gray-600">{{ machine.created|date:"M d, Y" }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Organization Card -->
+        <div class="col-xl-6">
+            <div class="card card-flush h-lg-100">
+                <div class="card-header pt-7">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bold text-gray-800">{% trans "Organization" %}</span>
+                    </h3>
+                </div>
+                <div class="card-body pt-6">
+                    {% if machine.organization %}
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Name" %}</label>
+                        <div class="col-lg-8">
+                            <span class="fw-bold fs-6 text-gray-800">{{ machine.organization.name }}</span>
+                        </div>
+                    </div>
+
+                    {% if machine.organization.email %}
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Email" %}</label>
+                        <div class="col-lg-8">
+                            <a href="mailto:{{ machine.organization.email }}" class="fw-bold fs-6 text-gray-800 text-hover-primary">{{ machine.organization.email }}</a>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if machine.organization.phone %}
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Phone" %}</label>
+                        <div class="col-lg-8">
+                            <span class="fw-bold fs-6 text-gray-800">{{ machine.organization.phone }}</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% else %}
+                    <div class="text-center py-10">
+                        <div class="text-gray-400">
+                            <i class="ki-duotone ki-briefcase fs-2x mb-3">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                            </i>
+                            <div class="fw-bold">{% trans "No organization assigned" %}</div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Components Card -->
+    <div class="row g-5 g-xl-8 mt-2">
+        <div class="col-xl-12">
+            <div class="card card-flush">
+                <div class="card-header pt-7">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bold text-gray-800">{% trans "Components" %}</span>
+                        <span class="text-gray-500 mt-1 fw-semibold fs-6">{{ components.count }} {% trans "components installed" %}</span>
+                    </h3>
+                </div>
+                <div class="card-body pt-6">
+                    {% if components %}
+                    <table class="table align-middle table-row-dashed fs-6 gy-5">
+                        <thead>
+                            <tr class="text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                                <th class="min-w-125px">{% trans "Type" %}</th>
+                                <th class="min-w-125px">{% trans "Serial Number" %}</th>
+                                <th class="min-w-150px">{% trans "Installation Date" %}</th>
+                                <th class="min-w-100px">{% trans "Status" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-600 fw-semibold">
+                            {% for component in components %}
+                            <tr>
+                                <td>
+                                    {% if component.type %}
+                                        <span class="text-gray-800">{{ component.type.name }}</span>
+                                    {% else %}
+                                        <span class="text-muted">{% trans "Unknown Type" %}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="text-gray-800">{{ component.serial_number }}</span>
+                                </td>
+                                <td>
+                                    <span class="text-gray-800">{{ component.installation_datetime|date:"M d, Y H:i" }}</span>
+                                </td>
+                                <td>
+                                    {% if component.is_active %}
+                                        <span class="badge badge-light-success">{% trans "Active" %}</span>
+                                    {% else %}
+                                        <span class="badge badge-light-danger">{% trans "Inactive" %}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="text-center py-10">
+                        <div class="text-gray-400">
+                            <i class="ki-duotone ki-element-11 fs-2x mb-3">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                                <span class="path3"></span>
+                                <span class="path4"></span>
+                            </i>
+                            <div class="fw-bold">{% trans "No components installed" %}</div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    $('.delete-btn').click(function(e) {
+        e.preventDefault();
+        var url = $(this).data('url');
+        var name = $(this).data('name');
+
+        Swal.fire({
+            title: '{% trans "Are you sure?" %}',
+            text: '{% trans "You are about to delete" %} ' + name,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: '{% trans "Yes, delete it!" %}',
+            cancelButtonText: '{% trans "Cancel" %}'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: {
+                        'csrfmiddlewaretoken': $('[name=csrfmiddlewaretoken]').val()
+                    },
+                    success: function(data) {
+                        if (data.status === 'success') {
+                            Swal.fire(
+                                '{% trans "Deleted!" %}',
+                                data.message,
+                                'success'
+                            ).then(() => {
+                                window.location.href = '{% url "apps.equipment:machine_list" %}';
+                            });
+                        } else {
+                            Swal.fire(
+                                '{% trans "Error!" %}',
+                                data.message,
+                                'error'
+                            );
+                        }
+                    },
+                    error: function() {
+                        Swal.fire(
+                            '{% trans "Error!" %}',
+                            '{% trans "Something went wrong. Please try again." %}',
+                            'error'
+                        );
+                    }
+                });
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

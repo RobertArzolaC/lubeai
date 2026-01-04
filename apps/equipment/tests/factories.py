@@ -28,7 +28,7 @@ class MachineTypeFactory(factory.django.DjangoModelFactory):
     """Factory for MachineType model."""
 
     class Meta:
-        model = models.MachineType
+        model = models.ComponentType
 
     name = factory.Sequence(lambda n: f"Machine Type {n}")
     description = factory.Faker("text", max_nb_chars=200)
@@ -46,7 +46,9 @@ class ComponentFactory(factory.django.DjangoModelFactory):
     machine = factory.SubFactory(MachineFactory)
     type = factory.SubFactory(MachineTypeFactory)
     serial_number = factory.Sequence(lambda n: f"COMP-{n:06d}")
-    installation_datetime = factory.Faker("date_time_this_year", tzinfo=factory.Faker("pytimezone"))
+    installation_datetime = factory.Faker(
+        "date_time_this_year", tzinfo=factory.Faker("pytimezone")
+    )
     is_active = True
     created_by = factory.SubFactory(user_factories.UserFactory)
     modified_by = factory.SelfAttribute("created_by")

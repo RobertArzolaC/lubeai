@@ -1,5 +1,3 @@
-"""Equipment models."""
-
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel
@@ -57,25 +55,23 @@ class Machine(TimeStampedModel, BaseUserTracked, IsActive):
         return f"{self.name} ({self.serial_number})"
 
 
-class MachineType(
+class ComponentType(
     TimeStampedModel,
     BaseUserTracked,
     core_models.NameDescription,
     core_models.IsActive,
 ):
     """
-    Machine Type model.
+    Component Type model.
 
-    Represents categories/types of industrial machines
+    Represents categories/types of industrial components
     (e.g., Pump, Motor, Compressor, Turbine, etc.)
     """
 
     class Meta:
-        verbose_name = _("Machine Type")
-        verbose_name_plural = _("Machine Types")
+        verbose_name = _("Component Type")
+        verbose_name_plural = _("Component Types")
         ordering = ("name",)
-
-    # __str__ is inherited from NameDescription
 
 
 class Component(TimeStampedModel, BaseUserTracked, IsActive):
@@ -93,7 +89,7 @@ class Component(TimeStampedModel, BaseUserTracked, IsActive):
         help_text=_("Machine this component belongs to"),
     )
     type = models.ForeignKey(
-        MachineType,
+        ComponentType,
         verbose_name=_("Type"),
         on_delete=models.SET_NULL,
         null=True,

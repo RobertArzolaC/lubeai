@@ -8,6 +8,8 @@ class PermissionFormMixin:
     PERMISSION_MAPPING = {
         "account": {"app": "users", "model": "account"},
         "organization": {"app": "users", "model": "organization"},
+        "machine": {"app": "equipment", "model": "machine"},
+        "component": {"app": "equipment", "model": "component"},
     }
 
     def __init__(self, *args, **kwargs):

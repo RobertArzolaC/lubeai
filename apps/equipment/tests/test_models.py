@@ -92,7 +92,9 @@ class MachineModelTestCase(TestCase):
 
         machines = models.Machine.objects.all()
         names = [m.name for m in machines]
-        self.assertEqual(names, ["Alpha Machine", "Beta Machine", "Zebra Machine"])
+        self.assertEqual(
+            names, ["Alpha Machine", "Beta Machine", "Zebra Machine"]
+        )
 
 
 class MachineTypeModelTestCase(TestCase):
@@ -112,7 +114,9 @@ class MachineTypeModelTestCase(TestCase):
         )
 
         self.assertEqual(machine_type.name, "Hydraulic Pump")
-        self.assertEqual(machine_type.description, "High-pressure hydraulic pumps")
+        self.assertEqual(
+            machine_type.description, "High-pressure hydraulic pumps"
+        )
         self.assertTrue(machine_type.is_active)
         self.assertIsNotNone(machine_type.created)
         self.assertIsNotNone(machine_type.modified)
@@ -133,7 +137,7 @@ class MachineTypeModelTestCase(TestCase):
         factories.MachineTypeFactory(name="Alpha Type")
         factories.MachineTypeFactory(name="Beta Type")
 
-        types = models.MachineType.objects.all()
+        types = models.ComponentType.objects.all()
         names = [t.name for t in types]
         self.assertEqual(names, ["Alpha Type", "Beta Type", "Zebra Type"])
 

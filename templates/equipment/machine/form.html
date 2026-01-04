@@ -1,0 +1,314 @@
+{% extends "layouts/dashboard.html" %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block title_page%}
+    {% if form.instance.pk %}
+        {% trans "Edit Machine" %}
+    {% else %}
+        {% trans "Create Machine" %}
+    {% endif %}
+{% endblock title_page %}
+
+{% block toolbar_title %}
+    {% if form.instance.pk %}
+        {% trans "Edit" %}: {{ form.instance.name }}
+    {% else %}
+        {% trans "Create Machine" %}
+    {% endif %}
+{% endblock%}
+
+{% block content %}
+<main class="container-xxl">
+    <form class="form d-flex flex-column" method="post"
+          action="{% if form.instance.pk %}{% url 'apps.equipment:machine_update' form.instance.pk %}{% else %}{% url 'apps.equipment:machine_create' %}{% endif %}">
+        {% csrf_token %}
+
+        <!-- Machine Information Card -->
+        <div class="card mb-5 mb-xl-10">
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_machine_info" aria-expanded="true" aria-controls="kt_machine_info">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0">{% trans "Machine Information" %}</h3>
+                </div>
+            </div>
+
+            <div id="kt_machine_info" class="collapse show">
+                <div class="card-body border-top p-9">
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.organization.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.organization class="form-select form-select-lg" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.organization.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">
+                            {{ form.name.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.name class="form-control form-control-lg" placeholder="Machine name" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.name.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">
+                            {{ form.serial_number.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.serial_number class="form-control form-control-lg" placeholder="Unique serial number" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.serial_number.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">
+                            {{ form.model.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.model class="form-control form-control-lg" placeholder="Machine model" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.model.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.is_active.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row">
+                            <div class="form-check form-switch">
+                                {% render_field form.is_active class="form-check-input" %}
+                                <span class="form-check-label fw-semibold text-muted">
+                                    {% trans "Is this machine active?" %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Components Card -->
+        <div class="card mb-5 mb-xl-10">
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_components_info" aria-expanded="true" aria-controls="kt_components_info">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0">{% trans "Components" %}</h3>
+                </div>
+                <div class="card-toolbar">
+                    <button type="button" class="btn btn-sm btn-light-primary" id="add-component">
+                        <i class="ki-duotone ki-plus fs-3"></i>
+                        {% trans "Add Component" %}
+                    </button>
+                </div>
+            </div>
+
+            <div id="kt_components_info" class="collapse show">
+                <div class="card-body border-top p-9">
+                    {{ component_formset.management_form }}
+
+                    <div id="component-formset">
+                        {% for component_form in component_formset %}
+                        <div class="component-form border rounded p-4 mb-4 {% if component_form.instance.pk %}bg-light-primary{% endif %}">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="fw-bold text-gray-700 mb-0">
+                                    {% trans "Component" %} #<span class="component-number">{{ forloop.counter }}</span>
+                                </h5>
+                                <button type="button" class="btn btn-sm btn-icon btn-light-danger remove-component">
+                                    <i class="ki-duotone ki-trash fs-3">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                        <span class="path4"></span>
+                                        <span class="path5"></span>
+                                    </i>
+                                </button>
+                            </div>
+
+                            {% if component_form.instance.pk %}
+                                {{ component_form.id }}
+                            {% endif %}
+
+                            <div class="row">
+                                <div class="col-lg-3 mb-4">
+                                    <label class="form-label fw-semibold">{% trans "Type" %}</label>
+                                    {% render_field component_form.type class="form-select" %}
+                                    {{ component_form.type.errors }}
+                                </div>
+                                <div class="col-lg-3 mb-4">
+                                    <label class="form-label required fw-semibold">{% trans "Serial Number" %}</label>
+                                    {% render_field component_form.serial_number class="form-control" placeholder="Serial number" %}
+                                    {{ component_form.serial_number.errors }}
+                                </div>
+                                <div class="col-lg-3 mb-4">
+                                    <label class="form-label required fw-semibold">{% trans "Installation Date" %}</label>
+                                    {% render_field component_form.installation_datetime class="form-control" %}
+                                    {{ component_form.installation_datetime.errors }}
+                                </div>
+                                <div class="col-lg-3 mb-4">
+                                    <label class="form-label fw-semibold">{% trans "Active" %}</label>
+                                    <div class="form-check form-switch mt-2">
+                                        {% render_field component_form.is_active class="form-check-input" %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-none">
+                                {{ component_form.DELETE }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div id="empty-form" class="d-none">
+                        <div class="component-form border rounded p-4 mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="fw-bold text-gray-700 mb-0">
+                                    {% trans "Component" %} #<span class="component-number">0</span>
+                                </h5>
+                                <button type="button" class="btn btn-sm btn-icon btn-light-danger remove-component">
+                                    <i class="ki-duotone ki-trash fs-3">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                        <span class="path4"></span>
+                                        <span class="path5"></span>
+                                    </i>
+                                </button>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 mb-4">
+                                    <label class="form-label fw-semibold">{% trans "Type" %}</label>
+                                    {{ component_formset.empty_form.type }}
+                                </div>
+                                <div class="col-lg-3 mb-4">
+                                    <label class="form-label required fw-semibold">{% trans "Serial Number" %}</label>
+                                    {{ component_formset.empty_form.serial_number }}
+                                </div>
+                                <div class="col-lg-3 mb-4">
+                                    <label class="form-label required fw-semibold">{% trans "Installation Date" %}</label>
+                                    {{ component_formset.empty_form.installation_datetime }}
+                                </div>
+                                <div class="col-lg-3 mb-4">
+                                    <label class="form-label fw-semibold">{% trans "Active" %}</label>
+                                    <div class="form-check form-switch mt-2">
+                                        {{ component_formset.empty_form.is_active }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-none">
+                                {{ component_formset.empty_form.DELETE }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="card">
+            <div class="card-footer d-flex justify-content-end py-6 px-9">
+                <a href="{{ back_url }}" class="btn btn-light btn-active-light-primary me-2">
+                    {% trans "Discard" %}
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    {% if form.instance.pk %}
+                        {% trans "Save Changes" %}
+                    {% else %}
+                        {% trans "Create Machine" %}
+                    {% endif %}
+                </button>
+            </div>
+        </div>
+    </form>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Initialize total forms counter
+    var totalForms = $('#id_components-TOTAL_FORMS');
+    var formNum = parseInt(totalForms.val());
+
+    // Add new component form
+    $('#add-component').click(function() {
+        var emptyForm = $('#empty-form').html();
+        var newForm = emptyForm.replace(/__prefix__/g, formNum);
+
+        $('#component-formset').append(newForm);
+        totalForms.val(formNum + 1);
+        formNum++;
+
+        // Update form numbers
+        updateFormNumbers();
+
+        // Apply styles to new form elements
+        $('#component-formset .component-form:last-child select').addClass('form-select');
+        $('#component-formset .component-form:last-child input[type="text"]').addClass('form-control');
+        $('#component-formset .component-form:last-child input[type="datetime-local"]').addClass('form-control');
+        $('#component-formset .component-form:last-child input[type="checkbox"]').addClass('form-check-input');
+    });
+
+    // Remove component form
+    $(document).on('click', '.remove-component', function() {
+        var form = $(this).closest('.component-form');
+        var deleteInput = form.find('input[name$="-DELETE"]');
+
+        if (deleteInput.length && form.find('input[name$="-id"]').val()) {
+            // Existing form - mark for deletion
+            deleteInput.prop('checked', true);
+            form.addClass('d-none');
+        } else {
+            // New form - remove from DOM
+            form.remove();
+            totalForms.val(parseInt(totalForms.val()) - 1);
+            formNum--;
+        }
+
+        updateFormNumbers();
+    });
+
+    // Update component form numbers
+    function updateFormNumbers() {
+        $('#component-formset .component-form:visible').each(function(index) {
+            $(this).find('.component-number').text(index + 1);
+        });
+    }
+
+    // Form validation
+    $('form').on('submit', function(e) {
+        var name = $('input[name="name"]').val().trim();
+        var serial = $('input[name="serial_number"]').val().trim();
+        var model = $('input[name="model"]').val().trim();
+
+        if (!name || !serial || !model) {
+            e.preventDefault();
+            Swal.fire({
+                title: '{% trans "Error" %}',
+                text: '{% trans "Please fill all required fields" %}',
+                icon: 'error',
+                confirmButtonText: '{% trans "OK" %}'
+            });
+            return false;
+        }
+    });
+
+    // Initialize on page load
+    updateFormNumbers();
+});
+</script>
+{% endblock %}
