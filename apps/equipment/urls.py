@@ -13,6 +13,16 @@ urlpatterns = [
         name="machine_create",
     ),
     path(
+        "machines/bulk-upload/",
+        views.MachineBulkUploadView.as_view(),
+        name="machine_bulk_upload",
+    ),
+    path(
+        "machines/bulk-upload/template/",
+        views.MachineBulkTemplateView.as_view(),
+        name="machine_bulk_template",
+    ),
+    path(
         "machines/<int:pk>/",
         views.MachineDetailView.as_view(),
         name="machine_detail",

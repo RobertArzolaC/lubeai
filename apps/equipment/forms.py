@@ -62,3 +62,33 @@ ComponentFormSet = inlineformset_factory(
     extra=1,
     can_delete=True,
 )
+
+
+class MachineBulkUploadForm(forms.Form):
+    """Form for bulk uploading machines from Excel file."""
+
+    file = forms.FileField(
+        label=_("Excel File"),
+        help_text=_("Upload an Excel file (.xlsx) with machine data"),
+        widget=forms.FileInput(
+            attrs={
+                "class": "form-control",
+                "accept": ".xlsx",
+            }
+        ),
+    )
+
+    def clean_file(self):
+        """Validate uploaded file."""
+        file = self.cleaned_data.get("file")
+
+        if file:
+            # Check file extension
+            if not file.name.lower().endswith(".xlsx"):
+                raise forms.ValidationError(_("Only .xlsx files are allowed"))
+
+            # Check file size (5MB max)
+            if file.size > 5 * 1024 * 1024:  # 5MB
+                raise forms.ValidationError(_("File size cannot exceed 5MB"))
+
+        return file

@@ -1,0 +1,171 @@
+{% extends "layouts/dashboard.html" %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block title_page %}{% trans "Bulk Upload" %} {{ entity }}{% endblock %}
+
+{% block toolbar_title %}
+    {% trans "Bulk Upload" %} {{ entity }}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">{% trans "Upload Excel File" %}</h5>
+                <div class="card-actions">
+                    <a href="{% url 'apps.equipment:machine_bulk_template' %}"
+                       class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-download"></i> {% trans "Download Template" %}
+                    </a>
+                    <a href="{{ back_url }}" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-arrow-left"></i> {% trans "Back" %}
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Instructions -->
+                <div class="alert alert-info" role="alert">
+                    <h6 class="alert-heading">
+                        <i class="fas fa-info-circle"></i> {% trans "Instructions" %}
+                    </h6>
+                    <ul class="mb-0">
+                        <li>{% trans "Download the Excel template using the button above" %}</li>
+                        <li>{% trans "Fill in the machine data according to the column headers" %}</li>
+                        <li>{% trans "Column A: Machine Name (required)" %}</li>
+                        <li>{% trans "Column B: Organization Name (must exist in system)" %}</li>
+                        <li>{% trans "Column C: Serial Number (required, unique)" %}</li>
+                        <li>{% trans "Column D: Model (required)" %}</li>
+                        <li>{% trans "Column E: Components (comma-separated)" %}</li>
+                        <li>{% trans "Upload only .xlsx files (maximum 5MB)" %}</li>
+                        <li>{% trans "If a machine with the same serial number exists, it will be updated" %}</li>
+                        <li>{% trans "Component types will be created automatically if they don't exist" %}</li>
+                    </ul>
+                </div>
+
+                <!-- Upload Form -->
+                <form method="post" enctype="multipart/form-data" class="mt-4">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label for="{{ form.file.id_for_label }}" class="form-label">
+                                    {{ form.file.label }}
+                                </label>
+                                {{ form.file|add_class:"form-control" }}
+                                {% if form.file.help_text %}
+                                    <div class="form-text">{{ form.file.help_text }}</div>
+                                {% endif %}
+                                {% if form.file.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.file.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-upload"></i> {% trans "Upload File" %}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Expected Excel Format -->
+                <div class="mt-5">
+                    <h6>{% trans "Expected Excel Format:" %}</h6>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>A</th>
+                                    <th>B</th>
+                                    <th>C</th>
+                                    <th>D</th>
+                                    <th>E</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-secondary">
+                                    <td><strong>{% trans "MACHINE NAME" %}</strong></td>
+                                    <td><strong>{% trans "ORGANIZATION" %}</strong></td>
+                                    <td><strong>{% trans "SERIAL NUMBER" %}</strong></td>
+                                    <td><strong>{% trans "MODEL" %}</strong></td>
+                                    <td><strong>{% trans "COMPONENTS" %}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>A5K-837 / NEVALLOS</td>
+                                    <td>NEUMA PERU</td>
+                                    <td>A5K-837</td>
+                                    <td>FREIGHTLINE R M2-212</td>
+                                    <td>MOTOR</td>
+                                </tr>
+                                <tr>
+                                    <td>V5R-720 / JOSALE</td>
+                                    <td>NEUMA PERU</td>
+                                    <td>V5R-720</td>
+                                    <td>INTERNATIONAL</td>
+                                    <td>MOTOR, PUMP</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <small class="text-muted">
+                        {% trans "Note: The first row should be the title, the second row contains column headers, and data starts from the third row." %}
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // File upload validation
+    const fileInput = document.querySelector('input[type="file"]');
+    const submitBtn = document.querySelector('button[type="submit"]');
+
+    if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+
+            if (file) {
+                // Check file extension
+                if (!file.name.toLowerCase().endsWith('.xlsx')) {
+                    alert('{% trans "Only .xlsx files are allowed" %}');
+                    fileInput.value = '';
+                    return;
+                }
+
+                // Check file size (5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('{% trans "File size cannot exceed 5MB" %}');
+                    fileInput.value = '';
+                    return;
+                }
+
+                // Enable submit button
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.disabled = true;
+            }
+        });
+
+        // Initially disable submit button if no file
+        submitBtn.disabled = !fileInput.files.length;
+    }
+
+    // Form submission handler
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function() {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {% trans "Processing..." %}';
+        });
+    }
+});
+</script>
+{% endblock %}

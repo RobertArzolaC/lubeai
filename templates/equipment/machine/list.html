@@ -13,10 +13,13 @@
 {% endblock%}
 
 {% block entity_options %}
-<div class="d-flex align-items-center flex-nowrap text-nowrap py-1">
+<div class="d-flex align-items-center flex-nowrap text-nowrap py-1 gap-2">
     {% if perms.equipment.add_machine %}
         <a href="{{ add_entity_url }}" class="btn btn-primary">
             {% trans 'Add Machine' %}
+        </a>
+        <a href="{% url 'apps.equipment:machine_bulk_upload' %}" class="btn btn-outline-primary">
+            <i class="fas fa-file-upload"></i> {% trans 'Bulk Upload' %}
         </a>
     {% endif %}
 </div>
