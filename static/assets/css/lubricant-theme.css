@@ -4,33 +4,64 @@
  */
 
 :root {
-  /* Industrial Color Palette */
-  --lubricant-primary: #1a365d;      /* Deep industrial blue */
-  --lubricant-secondary: #2d5a87;    /* Medium industrial blue */
-  --lubricant-accent: #ff8c00;       /* Energy orange */
-  --lubricant-accent-light: #ffb347; /* Light energy orange */
+    /* Industrial Color Palette */
+    --lubricant-primary: #1a365d;      /* Deep industrial blue */
+    --lubricant-secondary: #2d5a87;    /* Medium industrial blue */
+    --lubricant-accent: #ff8c00;       /* Energy orange */
+    --lubricant-accent-light: #ffb347; /* Light energy orange */
 
-  /* Mechanical Grays */
-  --lubricant-dark: #1a202c;         /* Dark charcoal */
-  --lubricant-medium: #4a5568;       /* Medium gray */
-  --lubricant-light: #e2e8f0;        /* Light gray */
-  --lubricant-surface: #f7fafc;      /* Surface white-gray */
+    /* Mechanical Grays */
+    --lubricant-dark: #1a202c;         /* Dark charcoal */
+    --lubricant-medium: #4a5568;       /* Medium gray */
+    --lubricant-light: #e2e8f0;        /* Light gray */
+    --lubricant-surface: #f7fafc;      /* Surface white-gray */
 
-  /* Status Colors */
-  --lubricant-success: #38a169;      /* Machine green */
-  --lubricant-warning: #d69e2e;      /* Maintenance yellow */
-  --lubricant-danger: #e53e3e;       /* Alert red */
+    /* Status Colors */
+    --lubricant-success: #38a169;      /* Machine green */
+    --lubricant-warning: #d69e2e;      /* Maintenance yellow */
+    --lubricant-danger: #e53e3e;       /* Alert red */
 
-  /* Gradients */
-  --lubricant-gradient-primary: linear-gradient(135deg, var(--lubricant-primary) 0%, var(--lubricant-secondary) 100%);
-  --lubricant-gradient-accent: linear-gradient(135deg, var(--lubricant-accent) 0%, var(--lubricant-accent-light) 100%);
-  --lubricant-gradient-surface: linear-gradient(135deg, #ffffff 0%, var(--lubricant-surface) 100%);
+    /* Gradients */
+    --lubricant-gradient-primary: linear-gradient(135deg, var(--lubricant-primary) 0%, var(--lubricant-secondary) 100%);
+    --lubricant-gradient-accent: linear-gradient(135deg, var(--lubricant-accent) 0%, var(--lubricant-accent-light) 100%);
+    --lubricant-gradient-surface: linear-gradient(135deg, #ffffff 0%, var(--lubricant-surface) 100%);
 
-  /* Shadows */
-  --lubricant-shadow-sm: 0 2px 4px rgba(26, 54, 93, 0.1);
-  --lubricant-shadow-md: 0 4px 12px rgba(26, 54, 93, 0.15);
-  --lubricant-shadow-lg: 0 8px 25px rgba(26, 54, 93, 0.25);
-  --lubricant-shadow-xl: 0 20px 40px rgba(26, 54, 93, 0.3);
+    /* Shadows */
+    --lubricant-shadow-sm: 0 2px 4px rgba(26, 54, 93, 0.1);
+    --lubricant-shadow-md: 0 4px 12px rgba(26, 54, 93, 0.15);
+    --lubricant-shadow-lg: 0 8px 25px rgba(26, 54, 93, 0.25);
+    --lubricant-shadow-xl: 0 20px 40px rgba(26, 54, 93, 0.3);
+}
+
+/* Dark Theme Variables */
+[data-bs-theme="dark"] {
+    /* Industrial Color Palette - Dark Mode */
+    --lubricant-primary: #4299e1;      /* Bright industrial blue */
+    --lubricant-secondary: #63b3ed;    /* Light industrial blue */
+    --lubricant-accent: #ffa726;       /* Warm orange */
+    --lubricant-accent-light: #ffcc80; /* Lighter orange */
+
+    /* Mechanical Grays - Dark Mode */
+    --lubricant-dark: #e2e8f0;         /* Light text for dark bg */
+    --lubricant-medium: #a0aec0;       /* Medium gray for dark */
+    --lubricant-light: #2d3748;        /* Dark gray borders */
+    --lubricant-surface: #1a202c;      /* Dark surface */
+
+    /* Status Colors - Dark Mode */
+    --lubricant-success: #68d391;      /* Bright machine green */
+    --lubricant-warning: #f6e05e;      /* Bright maintenance yellow */
+    --lubricant-danger: #fc8181;       /* Bright alert red */
+
+    /* Gradients - Dark Mode */
+    --lubricant-gradient-primary: linear-gradient(135deg, #2a4365 0%, #3182ce 100%);
+    --lubricant-gradient-accent: linear-gradient(135deg, var(--lubricant-accent) 0%, var(--lubricant-accent-light) 100%);
+    --lubricant-gradient-surface: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+
+    /* Shadows - Dark Mode */
+    --lubricant-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+    --lubricant-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --lubricant-shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.5);
+    --lubricant-shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
 
 /* Override Bootstrap Primary Colors */
@@ -65,6 +96,10 @@
     background: linear-gradient(135deg, var(--lubricant-surface) 0%, #ffffff 50%, var(--lubricant-light) 100%);
 }
 
+[data-bs-theme="dark"] .lubricant-login-container {
+    background: linear-gradient(135deg, var(--lubricant-surface) 0%, #2d3748 50%, var(--lubricant-light) 100%);
+}
+
 .lubricant-login-brand {
     background: var(--lubricant-gradient-primary);
     position: relative;
@@ -95,6 +130,10 @@
     border: 1px solid rgba(26, 54, 93, 0.1);
 }
 
+[data-bs-theme="dark"] .lubricant-login-form {
+    border: 1px solid rgba(66, 153, 225, 0.2);
+}
+
 /* Enhanced Form Controls */
 .lubricant-form-control {
     border: 2px solid var(--lubricant-light);
@@ -107,15 +146,28 @@
     min-height: 58px;
 }
 
+[data-bs-theme="dark"] .lubricant-form-control {
+    background: rgba(45, 55, 72, 0.9);
+    color: var(--lubricant-dark);
+}
+
 .lubricant-form-control:focus {
     border-color: var(--lubricant-secondary);
     box-shadow: 0 0 0 0.2rem rgba(45, 90, 135, 0.25);
     background: rgba(255, 255, 255, 1);
 }
 
+[data-bs-theme="dark"] .lubricant-form-control:focus {
+    background: rgba(45, 55, 72, 1);
+}
+
 .lubricant-form-control:hover {
     border-color: var(--lubricant-secondary);
     background: rgba(255, 255, 255, 1);
+}
+
+[data-bs-theme="dark"] .lubricant-form-control:hover {
+    background: rgba(45, 55, 72, 1);
 }
 
 /* Input Group Consistency */

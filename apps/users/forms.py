@@ -1,9 +1,12 @@
 from allauth.account.forms import SignupForm
 from allauth.account.models import EmailAddress
 from allauth.account.utils import send_email_confirmation
+from constance import config
 from django import forms
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.db import transaction
+from django.db.models import Q
+from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 
 from apps.users import mixins, models
@@ -36,6 +39,12 @@ class AccountCreationForm(mixins.PermissionFormMixin, SignupForm):
     first_name = forms.CharField(max_length=30, label="First name")
     last_name = forms.CharField(max_length=30, label="Last name")
     avatar = forms.ImageField(required=False)
+    organization = forms.ModelChoiceField(
+        queryset=models.Organization.objects.filter(is_active=True),
+        required=True,
+        label=_("Organization"),
+        empty_label=_("Select an organization"),
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -59,14 +68,22 @@ class AccountCreationForm(mixins.PermissionFormMixin, SignupForm):
 
             user.first_name = self.cleaned_data["first_name"]
             user.last_name = self.cleaned_data["last_name"]
-            user.user_type = self.cleaned_data["user_type"]
             user.avatar = self.cleaned_data["avatar"]
             user.must_change_password = True
 
-            temp_password = models.User.objects.make_random_password()
+            temp_password = get_random_string(12)
             user.set_password(temp_password)
             user.save()
             self.save_permissions(user)
+
+            # Create or update Account with organization
+            account, created = models.Account.objects.get_or_create(
+                user=user,
+                defaults={"organization": self.cleaned_data["organization"]},
+            )
+            if not created:
+                account.organization = self.cleaned_data["organization"]
+                account.save()
 
             EmailAddress.objects.get_or_create(
                 user=user, email=user.email, primary=True, verified=False
@@ -86,11 +103,36 @@ class AccountUpdateForm(mixins.PermissionFormMixin, forms.ModelForm):
 
     class Meta:
         model = models.Account
-        fields = ["avatar"]
+        fields = ["avatar", "organization"]
 
     def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
         self._user = user
+
+        # Configure organization field with dynamic queryset
+        active_organizations = models.Organization.objects.filter(
+            is_active=True
+        )
+        if self.instance and self.instance.organization:
+            # Include current organization even if inactive
+            current_org = self.instance.organization
+
+            organizations_queryset = models.Organization.objects.filter(
+                Q(is_active=True) | Q(pk=current_org.pk)
+            ).distinct()
+            self.fields["organization"] = forms.ModelChoiceField(
+                queryset=organizations_queryset,
+                required=True,
+                label=_("Organization"),
+                initial=current_org,
+            )
+        else:
+            self.fields["organization"] = forms.ModelChoiceField(
+                queryset=active_organizations,
+                required=True,
+                label=_("Organization"),
+            )
+
         if self.instance and self.instance.user:
             self.fields["first_name"].initial = self.instance.user.first_name
             self.fields["last_name"].initial = self.instance.user.last_name
@@ -110,6 +152,16 @@ class AccountUpdateForm(mixins.PermissionFormMixin, forms.ModelForm):
         self.save_permissions(user)
 
         return account
+
+    def clean_organization(self):
+        organization = self.cleaned_data.get("organization")
+        if organization and not organization.is_active:
+            # Allow current organization even if inactive, but reject new inactive ones
+            if self.instance and self.instance.organization != organization:
+                raise forms.ValidationError(
+                    _("Selected organization is not active")
+                )
+        return organization
 
 
 class AccountSettingsForm(forms.ModelForm):

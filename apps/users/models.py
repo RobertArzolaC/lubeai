@@ -61,9 +61,7 @@ class Account(SoftDeletableModel, TimeStampedModel):
     organization = models.ForeignKey(
         Organization,
         verbose_name=_("Organization"),
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
+        on_delete=models.CASCADE,
         related_name="accounts",
     )
 

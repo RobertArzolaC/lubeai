@@ -18,10 +18,15 @@ class AccountFilter(django_filters.FilterSet):
             (False, _("Inactive")),
         ),
     )
+    organization = django_filters.ModelChoiceFilter(
+        queryset=models.Organization.objects.filter(is_active=True),
+        empty_label=_("All Organizations"),
+        label=_("Organization"),
+    )
 
     class Meta:
         model = models.Account
-        fields = ["name_search", "is_active"]
+        fields = ["name_search", "is_active", "organization"]
 
     def filter_by_name(self, queryset, name, value):
         return queryset.filter(

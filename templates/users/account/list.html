@@ -37,11 +37,9 @@
                 <div class="w-100 ms-4">
                     {% render_field filter.form.is_active class="form-select"%}
                 </div>
-                {% if request.user.is_superuser or request.user.is_staff %}
-                    <div class="w-100 ms-4">
-                        {% render_field filter.form.is_organization class="form-select"%}
-                    </div>
-                {% endif %}
+                <div class="w-100 ms-4">
+                    {% render_field filter.form.organization class="form-select"%}
+                </div>
                 <button type="submit" class="btn btn-light-primary ms-4 d-flex">
                     <span class="svg-icon svg-icon-2 me-1">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -103,28 +101,17 @@
                                 >
                                     {% trans 'Verified' %}
                                 </th>
-                                {% if request.user.is_superuser or request.user.is_staff %}
-                                    <th
-                                        class="text-end min-w-100px sorting"
-                                        tabindex="0"
-                                        aria-controls="kt_ecommerce_products_table"
-                                        rowspan="1"
-                                        colspan="1"
-                                        aria-label="Price: activate to sort column ascending"
-                                        style="width: 138.914px"
-                                    >
-                                        {% trans 'Is Organization' %}
-                                    </th>
-                                    <th
-                                        class="text-end min-w-100px sorting"
-                                        tabindex="0"
-                                        rowspan="1"
-                                        colspan="1"
-                                        style="width: 138.914px"
-                                    >
-                                        {% trans 'Is Child Account' %}
-                                    </th>
-                                {% endif %}
+                                <th
+                                    class="text-end min-w-100px sorting"
+                                    tabindex="0"
+                                    aria-controls="kt_ecommerce_products_table"
+                                    rowspan="1"
+                                    colspan="1"
+                                    aria-label="Price: activate to sort column ascending"
+                                    style="width: 138.914px"
+                                >
+                                    {% trans 'Organization' %}
+                                </th>
                                 <th
                                     class="text-end min-w-70px sorting_disabled"
                                     rowspan="1"
@@ -186,30 +173,9 @@
                                             </div>
                                         {% endif %}
                                     </td>
-                                    {% if request.user.is_superuser or request.user.is_staff %}
-                                        <td class="text-end pe-0">
-                                            {% if account.is_organization %}
-                                                <div class="badge badge-light-success">
-                                                    {% trans "Yes" %}
-                                                </div>
-                                            {% else %}
-                                                <div class="badge badge-light-danger">
-                                                    {% trans "No" %}
-                                                </div>
-                                            {% endif %}
-                                        </td>
-                                        <td class="text-end pe-0">
-                                            {% if account.is_child_account %}
-                                                <div class="badge badge-light-success">
-                                                    {% trans "Yes" %}
-                                                </div>
-                                            {% else %}
-                                                <div class="badge badge-light-danger">
-                                                    {% trans "No" %}
-                                                </div>
-                                            {% endif %}
-                                        </td>
-                                    {% endif %}
+                                    <td class="text-end pe-0">
+                                        {{ account.organization }}
+                                    </td>
                                     <td class="text-end">
                                         <a
                                             href="#"

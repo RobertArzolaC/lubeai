@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import (
     PermissionRequiredMixin,
 )
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
@@ -93,6 +94,13 @@ class AccountListView(
     template_name = "users/account/list.html"
     context_object_name = "accounts"
     paginate_by = 5
+
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .exclude(Q(user__is_staff=True) | Q(user__is_superuser=True))
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

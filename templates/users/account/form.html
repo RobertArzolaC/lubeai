@@ -102,6 +102,19 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label required fw-semibold fs-6">
+                                    {{ form.organization.label }}
+                                </label>
+
+                                <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                                    {% render_field form.organization class="form-select form-select-lg" %}
+                                    <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                        {{ form.organization.errors }}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
