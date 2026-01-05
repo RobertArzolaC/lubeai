@@ -1,4 +1,5 @@
-"""Reports views."""
+import logging
+from datetime import datetime
 
 import openpyxl
 from django.contrib import messages
@@ -11,6 +12,7 @@ from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.http import HttpResponse
 from django.urls import reverse_lazy
+from django.utils.dateparse import parse_date
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import (
     CreateView,
@@ -26,6 +28,8 @@ from apps.core import mixins as core_mixins
 from apps.equipment import models as equipment_models
 from apps.reports import filtersets, forms, models
 from apps.users import models as users_models
+
+logger = logging.getLogger(__name__)
 
 
 class ReportListView(
@@ -162,19 +166,35 @@ class ReportBulkUploadView(
 
     def form_valid(self, form):
         excel_file = form.cleaned_data["file"]
+        user_email = self.request.user.email
+
+        logger.info(
+            f"Starting bulk upload - User: {user_email}, File: {excel_file.name}"
+        )
+
         try:
             results = self._process_excel_file(excel_file)
             self._show_results_messages(results)
         except Exception as e:
+            error_msg = str(e)
+            logger.exception(
+                f"Bulk upload file processing error - User: {user_email}, "
+                f"File: {excel_file.name}, Error: {error_msg}"
+            )
             messages.error(
                 self.request,
-                _("Error processing file: %(error)s") % {"error": str(e)},
+                _("Error processing file: %(error)s") % {"error": error_msg},
             )
         return super().form_valid(form)
 
     def _process_excel_file(self, excel_file):
         """Process Excel file and create/update reports."""
         results = {"created": 0, "updated": 0, "errors": [], "skipped": 0}
+        user_email = self.request.user.email
+
+        logger.debug(
+            f"Processing Excel file - User: {user_email}, File: {excel_file.name}"
+        )
 
         try:
             workbook = openpyxl.load_workbook(excel_file)
@@ -200,12 +220,29 @@ class ReportBulkUploadView(
                         elif result == "updated":
                             results["updated"] += 1
                 except ValidationError as e:
-                    results["errors"].append(f"Row {row_num}: {e.message}")
+                    error_msg = f"Row {row_num}: {e.message}"
+                    results["errors"].append(error_msg)
+                    logger.error(
+                        f"Bulk upload validation error - User: {user_email}, "
+                        f"File: {excel_file.name}, {error_msg}"
+                    )
                 except Exception as e:
-                    results["errors"].append(f"Row {row_num}: {str(e)}")
+                    error_msg = f"Row {row_num}: {str(e)}"
+                    results["errors"].append(error_msg)
+                    logger.exception(
+                        f"Bulk upload unexpected error - User: {user_email}, "
+                        f"File: {excel_file.name}, {error_msg}"
+                    )
 
         finally:
             workbook.close()
+
+        logger.info(
+            f"Finished processing Excel file - User: {user_email}, "
+            f"File: {excel_file.name}, Created: {results['created']}, "
+            f"Updated: {results['updated']}, Skipped: {results['skipped']}, "
+            f"Errors: {len(results['errors'])}"
+        )
 
         return results
 
@@ -268,20 +305,43 @@ class ReportBulkUploadView(
         if machine_name:
             try:
                 machine = equipment_models.Machine.objects.get(
-                    name__iexact=machine_name, is_active=True
+                    organization=organization,
+                    name__iexact=machine_name,
+                    is_active=True,
                 )
             except equipment_models.Machine.DoesNotExist:
+                logger.debug(
+                    f"Machine lookup failed - Row {row_num}, "
+                    f"Machine: {machine_name}, Organization: {organization_name}"
+                )
                 raise ValidationError(
                     _("Machine '%(name)s' not found") % {"name": machine_name}
+                )
+            except equipment_models.Machine.MultipleObjectsReturned:
+                logger.debug(
+                    f"Multiple machines found - Row {row_num}, "
+                    f"Machine: {machine_name}, Organization: {organization_name}"
+                )
+                raise ValidationError(
+                    _("Multiple machines found with name '%(name)s'")
+                    % {"name": machine_name}
                 )
 
         component = None
         if component_name:
             try:
+                component_name = component_name.replace("  ", " ").strip()
                 component = equipment_models.Component.objects.get(
-                    name__iexact=component_name, is_active=True
+                    machine=machine,
+                    type__name__iexact=component_name,
+                    is_active=True,
                 )
             except equipment_models.Component.DoesNotExist:
+                logger.debug(
+                    f"Component lookup failed - Row {row_num}, "
+                    f"Component: {component_name}, Machine: {machine_name}, "
+                    f"Organization: {organization_name}"
+                )
                 raise ValidationError(
                     _("Component '%(name)s' not found")
                     % {"name": component_name}
@@ -295,11 +355,11 @@ class ReportBulkUploadView(
                 "machine": machine,
                 "component": component,
                 "lubricant": lubricant or "",
-                "lubricant_hours_kms": lubricant_hours_kms,
+                "lubricant_hours_kms": self._parse_number(lubricant_hours_kms),
                 "serial_number_code": serial_number_code or "",
-                "sample_date": sample_date,
+                "sample_date": self._parse_date(sample_date),
                 "per_number": per_number or "",
-                "reception_date": reception_date,
+                "reception_date": self._parse_date(reception_date),
                 "status": status or models.choices.ReportStatus.PENDING,
                 "condition": condition or models.choices.ReportCondition.NORMAL,
                 "notes": notes or "",
@@ -310,6 +370,52 @@ class ReportBulkUploadView(
         )
 
         return "created" if created else "updated"
+
+    def _parse_number(self, number_value):
+        """Parse number value to integer or float."""
+        if "-" in str(number_value):
+            return 0
+
+        if "horas" in str(number_value).lower():
+            number_value = str(number_value).lower()
+            return number_value.replace("horas", "").strip()
+
+        if "km" in str(number_value).lower():
+            number_value = str(number_value).lower()
+            return number_value.replace("km", "").strip()
+
+        return number_value
+
+    def _parse_date(self, date_string):
+        """Parse date string to Django date object."""
+
+        if not date_string:
+            return None
+
+        # Convert to string if it's not already
+        date_str = str(date_string).strip()
+
+        # Handle common date formats
+        date_formats = [
+            "%d/%m/%Y",  # 18/12/2025
+            "%d-%m-%Y",  # 18-12-2025
+            "%Y-%m-%d",  # 2025-12-18 (ISO format)
+            "%m/%d/%Y",  # 12/18/2025 (US format)
+        ]
+
+        for date_format in date_formats:
+            try:
+                parsed_datetime = datetime.strptime(date_str, date_format)
+                return parsed_datetime.date()
+            except ValueError:
+                continue
+
+        # Try Django's built-in parser as fallback
+        parsed_date = parse_date(date_str)
+        if parsed_date:
+            return parsed_date
+
+        return None
 
     def _show_results_messages(self, results):
         """Show result messages to user."""
@@ -337,6 +443,12 @@ class ReportBulkUploadView(
         if results["errors"]:
             for error in results["errors"]:
                 messages.error(self.request, error)
+
+        logger.info(
+            f"Bulk upload summary displayed - User: {self.request.user.email}, "
+            f"Created: {results['created']}, Updated: {results['updated']}, "
+            f"Skipped: {results['skipped']}, Errors: {len(results['errors'])}"
+        )
 
 
 class ReportBulkTemplateView(
