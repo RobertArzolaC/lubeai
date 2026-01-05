@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import PermissionDenied
 from django.utils.translation import gettext_lazy as _
 
 
@@ -66,3 +67,50 @@ class PermissionFormMixin:
                     user.user_permissions.remove(permission)
             except (Permission.DoesNotExist, ContentType.DoesNotExist):
                 continue
+
+
+class OrganizationRequiredMixin:
+    """
+    Mixin that ensures users have an organization associated.
+
+    - Staff/superusers without organization can access (general dashboard)
+    - Regular users without organization get 403 Forbidden
+    - Users with organization see filtered content for their organization only
+    """
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            # Let the LoginRequiredMixin handle this
+            return super().dispatch(request, *args, **kwargs)
+
+        # Staff and superusers without organization can access general dashboard
+        if request.user.is_staff or request.user.is_superuser:
+            return super().dispatch(request, *args, **kwargs)
+
+        # Regular users must have an organization
+        if not self.get_user_organization():
+            raise PermissionDenied(
+                _("Access denied. You must belong to an organization.")
+            )
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_user_organization(self):
+        """Return the organization associated with the current user."""
+        user = getattr(self.request, "user", None)
+        if not user or not user.is_authenticated:
+            return None
+
+        # Check if user has an account with organization
+        if (
+            hasattr(user, "account")
+            and user.account
+            and user.account.organization
+        ):
+            return user.account.organization
+
+        return None
+
+    def has_organization_access(self):
+        """Check if user should see organization-filtered content."""
+        return bool(self.get_user_organization())

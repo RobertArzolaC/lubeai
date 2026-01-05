@@ -360,7 +360,7 @@ class ReportBulkUploadView(
                 "sample_date": self._parse_date(sample_date),
                 "per_number": per_number or "",
                 "reception_date": self._parse_date(reception_date),
-                "status": status or models.choices.ReportStatus.PENDING,
+                "status": self._parse_status(status),
                 "condition": condition or models.choices.ReportCondition.NORMAL,
                 "notes": notes or "",
                 "is_active": True,
@@ -370,6 +370,23 @@ class ReportBulkUploadView(
         )
 
         return "created" if created else "updated"
+
+    def _parse_status(self, status_value):
+        """Parse status value to valid ReportStatus choice."""
+        if not status_value:
+            return models.choices.ReportStatus.PENDING
+
+        options = dict(
+            pendiente="PENDING",
+            revisado="REVIEWED",
+            aprobado="APPROVED",
+            rechazado="REJECTED",
+        )
+        status_key = str(status_value).strip().lower()
+        if status_key in options:
+            return options[status_key]
+
+        return models.choices.ReportStatus.PENDING
 
     def _parse_number(self, number_value):
         """Parse number value to integer or float."""
