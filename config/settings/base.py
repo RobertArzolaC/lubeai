@@ -53,6 +53,7 @@ LOCAL_APPS = [
     "apps.authentication.apps.AuthenticationConfig",
     "apps.users.apps.UsersConfig",
     "apps.equipment.apps.EquipmentConfig",
+    "apps.reports.apps.ReportsConfig",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
