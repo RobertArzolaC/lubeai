@@ -1,0 +1,202 @@
+{% extends "layouts/dashboard.html" %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block title_page %}{% trans "Bulk Upload" %} {{ entity_plural }}{% endblock %}
+
+{% block toolbar_title %}
+    {% trans "Bulk Upload" %} {{ entity_plural }}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">{% trans "Upload Excel File" %}</h5>
+                <div class="card-actions">
+                    <a href="{{ template_url }}"
+                       class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-download"></i> {% trans "Download Template" %}
+                    </a>
+                    <a href="{{ back_url }}" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-arrow-left"></i> {% trans "Back" %}
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Instructions -->
+                <div class="alert alert-info" role="alert">
+                    <h6 class="alert-heading">
+                        <i class="fas fa-info-circle"></i> {% trans "Instructions" %}
+                    </h6>
+                    <ul class="mb-0">
+                        <li>{% trans "Download the Excel template using the button above" %}</li>
+                        <li>{% trans "Fill in the report data according to the column headers" %}</li>
+                        <li>{% trans "Column A: Lab Number (required, unique)" %}</li>
+                        <li>{% trans "Column B: Organization Name (must exist in system)" %}</li>
+                        <li>{% trans "Column C: Machine Name (must exist in system)" %}</li>
+                        <li>{% trans "Column D: Component Name (must exist in system)" %}</li>
+                        <li>{% trans "Column E: Lubricant (optional)" %}</li>
+                        <li>{% trans "Column F: Lubricant Hours/Kms (optional)" %}</li>
+                        <li>{% trans "Column G: Serial Number Code (optional)" %}</li>
+                        <li>{% trans "Column H: Sample Date (YYYY-MM-DD format)" %}</li>
+                        <li>{% trans "Column I: PER Number (optional)" %}</li>
+                        <li>{% trans "Column J: Reception Date (YYYY-MM-DD format, optional)" %}</li>
+                        <li>{% trans "Column K: Status (PENDING, REVIEWED, APPROVED, REJECTED)" %}</li>
+                        <li>{% trans "Column L: Condition (NORMAL, CAUTION, CRITICAL, SEVERE)" %}</li>
+                        <li>{% trans "Column M: Notes (optional)" %}</li>
+                        <li>{% trans "Upload only .xlsx files (maximum 5MB)" %}</li>
+                        <li>{% trans "If a report with the same lab number exists, it will be updated" %}</li>
+                    </ul>
+                </div>
+
+                <!-- Upload Form -->
+                <form method="post" enctype="multipart/form-data" class="mt-4" id="uploadForm">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label for="{{ form.file.id_for_label }}" class="form-label">
+                                    {{ form.file.label }}
+                                </label>
+                                {{ form.file|add_class:"form-control" }}
+                                {% if form.file.help_text %}
+                                    <div class="form-text">{{ form.file.help_text }}</div>
+                                {% endif %}
+                                {% if form.file.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.file.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary" id="uploadBtn">
+                                <span class="indicator-label">
+                                    <i class="fas fa-upload"></i> {% trans "Upload File" %}
+                                </span>
+                                <span class="indicator-progress" style="display: none;">
+                                    {% trans "Processing..." %}
+                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Expected Excel Format -->
+                <div class="mt-5">
+                    <h6>{% trans "Expected Excel Format:" %}</h6>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>A</th>
+                                    <th>B</th>
+                                    <th>C</th>
+                                    <th>D</th>
+                                    <th>E</th>
+                                    <th>F</th>
+                                    <th>G</th>
+                                    <th>H</th>
+                                    <th>I</th>
+                                    <th>J</th>
+                                    <th>K</th>
+                                    <th>L</th>
+                                    <th>M</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-secondary">
+                                    <td><strong>{% trans "LAB NUMBER" %}</strong></td>
+                                    <td><strong>{% trans "ORGANIZATION" %}</strong></td>
+                                    <td><strong>{% trans "MACHINE" %}</strong></td>
+                                    <td><strong>{% trans "COMPONENT" %}</strong></td>
+                                    <td><strong>{% trans "LUBRICANT" %}</strong></td>
+                                    <td><strong>{% trans "LUBRICANT HOURS/KMS" %}</strong></td>
+                                    <td><strong>{% trans "SERIAL NUMBER CODE" %}</strong></td>
+                                    <td><strong>{% trans "SAMPLE DATE" %}</strong></td>
+                                    <td><strong>{% trans "PER NUMBER" %}</strong></td>
+                                    <td><strong>{% trans "RECEPTION DATE" %}</strong></td>
+                                    <td><strong>{% trans "STATUS" %}</strong></td>
+                                    <td><strong>{% trans "CONDITION" %}</strong></td>
+                                    <td><strong>{% trans "NOTES" %}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>LAB001</td>
+                                    <td>Acme Corp</td>
+                                    <td>Engine 001</td>
+                                    <td>Motor</td>
+                                    <td>Shell Oil</td>
+                                    <td>1000</td>
+                                    <td>SN123456</td>
+                                    <td>2024-01-01</td>
+                                    <td>PER001</td>
+                                    <td>2024-01-02</td>
+                                    <td>PENDING</td>
+                                    <td>NORMAL</td>
+                                    <td>Example notes</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // File validation
+    const fileInput = document.getElementById('{{ form.file.id_for_label }}');
+    const uploadForm = document.getElementById('uploadForm');
+    const uploadBtn = document.getElementById('uploadBtn');
+
+    fileInput.addEventListener('change', function() {
+        const file = this.files[0];
+        const errorDiv = this.parentNode.querySelector('.invalid-feedback');
+        
+        // Remove existing error
+        if (errorDiv) {
+            errorDiv.remove();
+        }
+        
+        if (file) {
+            // Check file extension
+            const validExtensions = ['.xlsx', '.xls'];
+            const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
+            
+            if (!validExtensions.includes(fileExtension)) {
+                showFileError('{% trans "Only Excel files (.xlsx, .xls) are allowed." %}');
+                this.value = '';
+                return;
+            }
+            
+            // Check file size (5MB max)
+            const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+            if (file.size > maxSize) {
+                showFileError('{% trans "File size cannot exceed 5MB." %}');
+                this.value = '';
+                return;
+            }
+        }
+    });
+
+    function showFileError(message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'invalid-feedback d-block';
+        errorDiv.textContent = message;
+        fileInput.parentNode.appendChild(errorDiv);
+    }
+
+    uploadForm.addEventListener('submit', function() {
+        // Show loading state
+        uploadBtn.querySelector('.indicator-label').style.display = 'none';
+        uploadBtn.querySelector('.indicator-progress').style.display = 'inline-block';
+        uploadBtn.disabled = true;
+    });
+</script>
+{% endblock %}

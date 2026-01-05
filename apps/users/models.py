@@ -63,6 +63,8 @@ class Account(SoftDeletableModel, TimeStampedModel):
         verbose_name=_("Organization"),
         on_delete=models.CASCADE,
         related_name="accounts",
+        blank=True,
+        null=True,
     )
 
     class Meta:

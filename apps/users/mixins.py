@@ -10,6 +10,7 @@ class PermissionFormMixin:
         "organization": {"app": "users", "model": "organization"},
         "machine": {"app": "equipment", "model": "machine"},
         "component": {"app": "equipment", "model": "component"},
+        "report": {"app": "reports", "model": "report"},
     }
 
     def __init__(self, *args, **kwargs):

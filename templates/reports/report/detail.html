@@ -1,0 +1,310 @@
+{% extends "layouts/dashboard.html" %}
+{% load static %}
+{% load i18n %}
+{% load breadcrumb_tags %}
+
+{% block title_page%}
+    {{ report.lab_number }}
+{% endblock title_page %}
+
+{% block toolbar_title %}
+    {{ entity }}: {{ report.lab_number }}
+{% endblock%}
+
+{% block entity_options %}
+<div class="d-flex align-items-center flex-nowrap text-nowrap py-1">
+    {% if perms.reports.change_report %}
+        <a href="{{ edit_url }}" class="btn btn-primary me-2">
+            <i class="ki-duotone ki-pencil fs-2">
+                <span class="path1"></span>
+                <span class="path2"></span>
+            </i>
+            {% trans 'Edit' %}
+        </a>
+    {% endif %}
+    {% if perms.reports.delete_report %}
+        <button type="button" class="btn btn-danger delete-btn"
+                data-url="{% url 'apps.reports:report_delete' report.pk %}"
+                data-name="{{ report.lab_number }}">
+            <i class="ki-duotone ki-trash fs-2">
+                <span class="path1"></span>
+                <span class="path2"></span>
+                <span class="path3"></span>
+                <span class="path4"></span>
+                <span class="path5"></span>
+            </i>
+            {% trans 'Delete' %}
+        </button>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+<main class="container-xxl">
+    <div class="row g-5 g-xl-8">
+        <!-- Report Information Card -->
+        <div class="col-xl-6">
+            <div class="card card-flush h-lg-100">
+                <div class="card-header pt-7">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bold text-gray-800">{% trans "Report Information" %}</span>
+                    </h3>
+                </div>
+                <div class="card-body pt-6">
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Lab Number" %}</label>
+                        <div class="col-lg-8">
+                            <span class="fw-bold fs-6 text-gray-800">{{ report.lab_number }}</span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "PER Number" %}</label>
+                        <div class="col-lg-8">
+                            {% if report.per_number %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.per_number }}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Serial Number Code" %}</label>
+                        <div class="col-lg-8">
+                            {% if report.serial_number_code %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.serial_number_code }}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Status" %}</label>
+                        <div class="col-lg-8">
+                            {% if report.status == 'PENDING' %}
+                                <span class="badge badge-warning fs-7 fw-bold">{{ report.get_status_display }}</span>
+                            {% elif report.status == 'REVIEWED' %}
+                                <span class="badge badge-info fs-7 fw-bold">{{ report.get_status_display }}</span>
+                            {% elif report.status == 'APPROVED' %}
+                                <span class="badge badge-success fs-7 fw-bold">{{ report.get_status_display }}</span>
+                            {% elif report.status == 'REJECTED' %}
+                                <span class="badge badge-danger fs-7 fw-bold">{{ report.get_status_display }}</span>
+                            {% else %}
+                                <span class="badge badge-secondary fs-7 fw-bold">{{ report.get_status_display }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Condition" %}</label>
+                        <div class="col-lg-8">
+                            {% if report.condition == 'NORMAL' %}
+                                <span class="badge badge-success fs-7 fw-bold">{{ report.get_condition_display }}</span>
+                            {% elif report.condition == 'CAUTION' %}
+                                <span class="badge badge-warning fs-7 fw-bold">{{ report.get_condition_display }}</span>
+                            {% elif report.condition == 'CRITICAL' %}
+                                <span class="badge badge-danger fs-7 fw-bold">{{ report.get_condition_display }}</span>
+                            {% elif report.condition == 'SEVERE' %}
+                                <span class="badge badge-dark fs-7 fw-bold">{{ report.get_condition_display }}</span>
+                            {% else %}
+                                <span class="badge badge-secondary fs-7 fw-bold">{{ report.get_condition_display }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Active" %}</label>
+                        <div class="col-lg-8">
+                            {% if report.is_active %}
+                                <span class="badge badge-light-success fs-7 fw-bold">{% trans "Active" %}</span>
+                            {% else %}
+                                <span class="badge badge-light-danger fs-7 fw-bold">{% trans "Inactive" %}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Created" %}</label>
+                        <div class="col-lg-8">
+                            <span class="fw-semibold fs-6 text-gray-600">{{ report.created|date:"M d, Y H:i" }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Information Card -->
+        <div class="col-xl-6">
+            <div class="card card-flush h-lg-100">
+                <div class="card-header pt-7">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bold text-gray-800">{% trans "Related Information" %}</span>
+                    </h3>
+                </div>
+                <div class="card-body pt-6">
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Organization" %}</label>
+                        <div class="col-lg-8">
+                            {% if report.organization %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.organization.name }}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Machine" %}</label>
+                        <div class="col-lg-8">
+                            {% if report.machine %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.machine.name }}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Component" %}</label>
+                        <div class="col-lg-8">
+                            {% if report.component %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.component.name }}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Lubricant" %}</label>
+                        <div class="col-lg-8">
+                            {% if report.lubricant %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.lubricant }}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Lubricant Hours/Kms" %}</label>
+                        <div class="col-lg-8">
+                            {% if report.lubricant_hours_kms %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.lubricant_hours_kms }}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dates Card -->
+        <div class="col-xl-6">
+            <div class="card card-flush h-lg-100">
+                <div class="card-header pt-7">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bold text-gray-800">{% trans "Important Dates" %}</span>
+                    </h3>
+                </div>
+                <div class="card-body pt-6">
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Sample Date" %}</label>
+                        <div class="col-lg-8">
+                            {% if report.sample_date %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.sample_date|date:"M d, Y" }}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Reception Date" %}</label>
+                        <div class="col-lg-8">
+                            {% if report.reception_date %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.reception_date|date:"M d, Y" }}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Last Updated" %}</label>
+                        <div class="col-lg-8">
+                            <span class="fw-semibold fs-6 text-gray-600">{{ report.modified|date:"M d, Y H:i" }}</span>
+                        </div>
+                    </div>
+
+                    {% if report.created_by %}
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Created By" %}</label>
+                        <div class="col-lg-8">
+                            <span class="fw-semibold fs-6 text-gray-600">{{ report.created_by.get_full_name|default:report.created_by.username }}</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Notes Card -->
+        <div class="col-xl-6">
+            <div class="card card-flush h-lg-100">
+                <div class="card-header pt-7">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bold text-gray-800">{% trans "Notes" %}</span>
+                    </h3>
+                </div>
+                <div class="card-body pt-6">
+                    {% if report.notes %}
+                        <div class="text-gray-800">
+                            {{ report.notes|linebreaks }}
+                        </div>
+                    {% else %}
+                        <div class="text-muted">
+                            {% trans "No notes available" %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Delete functionality
+    document.querySelector('.delete-btn')?.addEventListener('click', function() {
+        const url = this.dataset.url;
+        const name = this.dataset.name;
+
+        if (confirm(`{% trans "Are you sure you want to delete report" %} ${name}?`)) {
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || '',
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    window.location.href = "{% url 'apps.reports:report_list' %}";
+                } else {
+                    alert(data.message || 'Error deleting report');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error deleting report');
+            });
+        }
+    });
+</script>
+{% endblock %}

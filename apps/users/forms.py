@@ -51,16 +51,27 @@ class AccountCreationForm(mixins.PermissionFormMixin, SignupForm):
         self.fields.pop("password1", None)
         self.fields.pop("password2", None)
 
-    def clean(self):
-        cleaned_data = super().clean()
-        email = cleaned_data.get("email")
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
 
         if models.User.objects.filter(email=email).exists():
             raise forms.ValidationError(
                 _("An account with this email already exists")
             )
 
-        return cleaned_data
+        return email
+
+    def clean_organization(self):
+        organization = self.cleaned_data.get("organization")
+
+        if not organization:
+            raise forms.ValidationError(_("This field is required"))
+
+        if organization and not organization.is_active:
+            raise forms.ValidationError(
+                _("Selected organization is not active")
+            )
+        return organization
 
     def save(self, request):
         with transaction.atomic():
@@ -114,7 +125,6 @@ class AccountUpdateForm(mixins.PermissionFormMixin, forms.ModelForm):
             is_active=True
         )
         if self.instance and self.instance.organization:
-            # Include current organization even if inactive
             current_org = self.instance.organization
 
             organizations_queryset = models.Organization.objects.filter(

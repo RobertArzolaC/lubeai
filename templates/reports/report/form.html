@@ -1,0 +1,296 @@
+{% extends "layouts/dashboard.html" %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block title_page%}
+    {{ form_title }}
+{% endblock title_page %}
+
+{% block toolbar_title %}
+    {{ form_title }}
+{% endblock%}
+
+{% block content %}
+<main class="container-xxl">
+    <form class="form d-flex flex-column" method="post"
+          action="{% if form.instance.pk %}{% url 'apps.reports:report_update' form.instance.pk %}{% else %}{% url 'apps.reports:report_create' %}{% endif %}">
+        {% csrf_token %}
+
+        <!-- Report Information Card -->
+        <div class="card mb-5 mb-xl-10">
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_report_info" aria-expanded="true" aria-controls="kt_report_info">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0">{% trans "Report Information" %}</h3>
+                </div>
+            </div>
+
+            <div id="kt_report_info" class="collapse show">
+                <div class="card-body border-top p-9">
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">
+                            {{ form.lab_number.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.lab_number class="form-control form-control-lg" placeholder="Laboratory identification number" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.lab_number.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.per_number.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.per_number class="form-control form-control-lg" placeholder="PER identification number" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.per_number.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.serial_number_code.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.serial_number_code class="form-control form-control-lg" placeholder="Serial number code from report" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.serial_number_code.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">
+                            {{ form.sample_date.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.sample_date class="form-control form-control-lg" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.sample_date.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.reception_date.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.reception_date class="form-control form-control-lg" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.reception_date.errors }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Information Card -->
+        <div class="card mb-5 mb-xl-10">
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_report_related" aria-expanded="true" aria-controls="kt_report_related">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0">{% trans "Related Information" %}</h3>
+                </div>
+            </div>
+
+            <div id="kt_report_related" class="collapse show">
+                <div class="card-body border-top p-9">
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">
+                            {{ form.organization.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.organization class="form-select form-select-lg" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.organization.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">
+                            {{ form.machine.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.machine class="form-select form-select-lg" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.machine.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">
+                            {{ form.component.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.component class="form-select form-select-lg" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.component.errors }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lubricant Information Card -->
+        <div class="card mb-5 mb-xl-10">
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_report_lubricant" aria-expanded="false" aria-controls="kt_report_lubricant">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0">{% trans "Lubricant Information" %}</h3>
+                </div>
+            </div>
+
+            <div id="kt_report_lubricant" class="collapse">
+                <div class="card-body border-top p-9">
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.lubricant.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.lubricant class="form-control form-control-lg" placeholder="Lubricant type/brand" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.lubricant.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.lubricant_hours_kms.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.lubricant_hours_kms class="form-control form-control-lg" placeholder="Hours or kilometers" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.lubricant_hours_kms.errors }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status and Condition Card -->
+        <div class="card mb-5 mb-xl-10">
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_report_status" aria-expanded="true" aria-controls="kt_report_status">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0">{% trans "Status and Condition" %}</h3>
+                </div>
+            </div>
+
+            <div id="kt_report_status" class="collapse show">
+                <div class="card-body border-top p-9">
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.status.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.status class="form-select form-select-lg" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.status.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.condition.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.condition class="form-select form-select-lg" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.condition.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.is_active.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row">
+                            <div class="form-check form-switch">
+                                {% render_field form.is_active class="form-check-input" %}
+                                <span class="form-check-label fw-semibold text-muted">
+                                    {% trans "Is this report active?" %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notes Card -->
+        <div class="card mb-5 mb-xl-10">
+            <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_report_notes" aria-expanded="false" aria-controls="kt_report_notes">
+                <div class="card-title m-0">
+                    <h3 class="fw-bold m-0">{% trans "Notes" %}</h3>
+                </div>
+            </div>
+
+            <div id="kt_report_notes" class="collapse">
+                <div class="card-body border-top p-9">
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.notes.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.notes class="form-control form-control-lg" placeholder="Additional notes or observations" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.notes.errors }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-end">
+            <a href="{{ back_url }}" class="btn btn-light me-5">{% trans "Cancel" %}</a>
+            <button type="submit" class="btn btn-primary">
+                <span class="indicator-label">
+                    {% if form.instance.pk %}
+                        {% trans "Update Report" %}
+                    {% else %}
+                        {% trans "Create Report" %}
+                    {% endif %}
+                </span>
+                <span class="indicator-progress">
+                    {% trans "Please wait..." %}
+                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                </span>
+            </button>
+        </div>
+    </form>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Form validation and submission
+    const form = document.querySelector('form');
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', function() {
+        // Show loading state
+        submitBtn.querySelector('.indicator-label').style.display = 'none';
+        submitBtn.querySelector('.indicator-progress').style.display = 'inline-block';
+        submitBtn.disabled = true;
+    });
+
+    // Required field indicators
+    document.querySelectorAll('label').forEach(label => {
+        if (label.classList.contains('required')) {
+            label.innerHTML += '<span class="required text-danger"> *</span>';
+        }
+    });
+</script>
+{% endblock %}
