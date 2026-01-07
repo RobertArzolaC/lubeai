@@ -15,8 +15,7 @@
             <div class="card-header">
                 <h5 class="card-title">{% trans "Upload Excel File" %}</h5>
                 <div class="card-actions">
-                    <a href="{{ template_url }}"
-                       class="btn btn-outline-primary btn-sm">
+                    <a href="{{ template_url }}" class="btn btn-outline-primary btn-sm">
                         <i class="fas fa-download"></i> {% trans "Download Template" %}
                     </a>
                     <a href="{{ back_url }}" class="btn btn-outline-secondary btn-sm">
@@ -158,23 +157,23 @@
     fileInput.addEventListener('change', function() {
         const file = this.files[0];
         const errorDiv = this.parentNode.querySelector('.invalid-feedback');
-        
+
         // Remove existing error
         if (errorDiv) {
             errorDiv.remove();
         }
-        
+
         if (file) {
             // Check file extension
             const validExtensions = ['.xlsx', '.xls'];
             const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
-            
+
             if (!validExtensions.includes(fileExtension)) {
                 showFileError('{% trans "Only Excel files (.xlsx, .xls) are allowed." %}');
                 this.value = '';
                 return;
             }
-            
+
             // Check file size (5MB max)
             const maxSize = 5 * 1024 * 1024; // 5MB in bytes
             if (file.size > maxSize) {

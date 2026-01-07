@@ -3,9 +3,10 @@
 {% load humanize %}
 
 <nav id="kt_aside" class="aside aside-default aside-hoverable" data-kt-drawer="true" data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_toggle">
-  <div class="aside-logo flex-column-auto px-10 pt-9 pb-5" id="kt_aside_logo">
+  <div class="aside-logo d-flex flex-column align-items-center px-10 py-9" id="kt_aside_logo">
     <a href="{% url "apps.dashboard:index" %}">
       <img alt="Logo" src="{% static 'assets/images/logos/logo.png' %}" class="max-h-50px logo-default" height="60" />
+      <span class="text-dark fs-3 fw-bold">LubeAI</span>
     </a>
   </div>
   <div class="aside-menu flex-column-fluid ps-3 pe-1">

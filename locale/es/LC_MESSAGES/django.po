@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-04 21:57-0500\n"
+"POT-Creation-Date: 2026-01-06 19:41-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,7 +27,7 @@ msgid "Last Name"
 msgstr "Apellido"
 
 #: apps/authentication/forms.py:29 apps/core/models.py:37
-#: apps/users/forms.py:101 templates/equipment/machine/detail.html:115
+#: apps/users/forms.py:112 templates/equipment/machine/detail.html:115
 #: templates/users/account/list.html:80
 #: templates/users/organization/detail.html:102
 #: templates/users/organization/list.html:55 templates/users/settings.html:74
@@ -38,7 +38,7 @@ msgstr "Correo electrónico"
 msgid "The email address is not registered with us."
 msgstr "La dirección de correo electrónico no está registrada con nosotros."
 
-#: apps/core/choices.py:6
+#: apps/core/choices.py:6 apps/reports/choices.py:8
 msgid "Pending"
 msgstr "Pendiente"
 
@@ -62,67 +62,55 @@ msgstr "Fallido"
 msgid "Canceled"
 msgstr "Cancelado"
 
-#: apps/core/choices.py:12
+#: apps/core/choices.py:12 apps/reports/choices.py:10
 msgid "Approved"
 msgstr "Aprobado"
 
 #: apps/core/choices.py:16
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:25
 msgid "January"
 msgstr "Enero"
 
 #: apps/core/choices.py:17
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:26
 msgid "February"
 msgstr "Febrero"
 
 #: apps/core/choices.py:18
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:27
 msgid "March"
 msgstr "Marzo"
 
 #: apps/core/choices.py:19
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:28
 msgid "April"
 msgstr "Abril"
 
 #: apps/core/choices.py:20
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:29
 msgid "May"
 msgstr "Mayo"
 
 #: apps/core/choices.py:21
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:30
 msgid "June"
 msgstr "Junio"
 
 #: apps/core/choices.py:22
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:31
 msgid "July"
 msgstr "Julio"
 
 #: apps/core/choices.py:23
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:32
 msgid "August"
 msgstr "Agosto"
 
 #: apps/core/choices.py:24
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:33
 msgid "September"
 msgstr "Septiembre"
 
 #: apps/core/choices.py:25
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:34
 msgid "October"
 msgstr "Octubre"
 
 #: apps/core/choices.py:26
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:35
 msgid "November"
 msgstr "Noviembre"
 
 #: apps/core/choices.py:27
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:36
 msgid "December"
 msgstr "Diciembre"
 
@@ -158,7 +146,7 @@ msgstr "Otro"
 msgid "You do not have permission to delete this account."
 msgstr "No tienes permiso para eliminar esta cuenta."
 
-#: apps/core/models.py:16 apps/users/admin.py:140 apps/users/forms.py:205
+#: apps/core/models.py:16 apps/users/admin.py:140 apps/users/forms.py:215
 #: templates/users/organization/detail.html:149
 msgid "Address"
 msgstr "Dirección"
@@ -173,7 +161,7 @@ msgstr "Código postal"
 msgid "Phone"
 msgstr "Teléfono"
 
-#: apps/core/models.py:64 apps/users/forms.py:28 apps/users/forms.py:99
+#: apps/core/models.py:64 apps/users/forms.py:28 apps/users/forms.py:110
 #: templates/users/settings.html:60
 msgid "First name"
 msgstr "Nombre"
@@ -219,7 +207,7 @@ msgstr "Cuenta de usuario asociada con esta persona"
 msgid "Name"
 msgstr "Nombre"
 
-#: apps/core/models.py:140 apps/users/forms.py:204
+#: apps/core/models.py:140 apps/users/forms.py:214
 #: templates/users/organization/detail.html:63
 msgid "Description"
 msgstr "Descripción"
@@ -241,11 +229,15 @@ msgid "Primary key of the related object."
 msgstr "Clave primaria del objeto relacionado."
 
 #: apps/core/models.py:174 apps/equipment/filtersets.py:21
-#: apps/users/filtersets.py:15 apps/users/filtersets.py:46
+#: apps/reports/filtersets.py:31 apps/reports/filtersets.py:43
+#: apps/reports/models.py:91 apps/users/filtersets.py:15
+#: apps/users/filtersets.py:46 templates/dashboard/export.html:71
+#: templates/dashboard/index.html:49 templates/dashboard/index.html:213
 #: templates/equipment/machine/detail.html:76
 #: templates/equipment/machine/detail.html:164
 #: templates/equipment/machine/list.html:65
-#: templates/users/account/list.html:91
+#: templates/reports/report/detail.html:84
+#: templates/reports/report/list.html:74 templates/users/account/list.html:91
 #: templates/users/organization/detail.html:71
 #: templates/users/organization/list.html:58
 msgid "Status"
@@ -280,69 +272,71 @@ msgid "Status Histories"
 msgstr "Historiales de estado"
 
 #: apps/core/templatetags/breadcrumb_tags.py:14
+#: templates/dashboard/export.html:17
 msgid "Dashboard"
 msgstr "Tablero"
 
 #: apps/equipment/admin.py:43 apps/equipment/admin.py:104
 #: apps/equipment/admin.py:169 apps/users/admin.py:132
 #: templates/users/organization/form.html:32
-#, fuzzy
-#| msgid "Account Information"
 msgid "Basic Information"
-msgstr "Información de la Cuenta"
+msgstr "Información Básica"
 
 #: apps/equipment/admin.py:55 apps/equipment/admin.py:114
 #: apps/equipment/admin.py:181 apps/users/admin.py:153
-#, fuzzy
-#| msgid "Account Information"
 msgid "Audit Information"
-msgstr "Información de la Cuenta"
+msgstr "Información de auditoría"
 
-#: apps/equipment/filtersets.py:11 apps/users/filtersets.py:10
-#: apps/users/filtersets.py:41
+#: apps/equipment/filtersets.py:11 apps/reports/filtersets.py:16
+#: apps/users/filtersets.py:10 apps/users/filtersets.py:41
 msgid "Search"
 msgstr "Buscar"
 
-#: apps/equipment/filtersets.py:15 apps/users/filtersets.py:23
-#, fuzzy
-#| msgid "Organization"
+#: apps/equipment/filtersets.py:15 apps/reports/filtersets.py:20
+#: apps/users/filtersets.py:23
 msgid "All Organizations"
-msgstr "Organización"
+msgstr "Todas las Organizaciones"
 
 #: apps/equipment/filtersets.py:16 apps/equipment/models.py:20
-#: apps/users/filtersets.py:24 apps/users/forms.py:45 apps/users/forms.py:126
-#: apps/users/forms.py:133 apps/users/models.py:22 apps/users/models.py:63
+#: apps/reports/filtersets.py:21 apps/reports/models.py:21
+#: apps/users/filtersets.py:24 apps/users/forms.py:45 apps/users/forms.py:136
+#: apps/users/forms.py:143 apps/users/models.py:22 apps/users/models.py:63
 #: apps/users/views.py:180 apps/users/views.py:200 apps/users/views.py:220
 #: apps/users/views.py:238 templates/equipment/machine/detail.html:101
 #: templates/equipment/machine/list.html:63
-#: templates/users/account/list.html:113 templates/users/profile.html:69
-#: templates/users/profile.html:103 templates/users/settings.html:103
+#: templates/reports/report/detail.html:148
+#: templates/reports/report/list.html:70 templates/users/account/list.html:113
+#: templates/users/profile.html:69 templates/users/profile.html:103
+#: templates/users/settings.html:103
 msgid "Organization"
 msgstr "Organización"
 
-#: apps/equipment/filtersets.py:20 apps/users/filtersets.py:14
-#: apps/users/filtersets.py:45
-#, fuzzy
-#| msgid "Is active"
+#: apps/equipment/filtersets.py:20 apps/reports/filtersets.py:42
+#: apps/users/filtersets.py:14 apps/users/filtersets.py:45
 msgid "Is Active?"
-msgstr "Está activo"
+msgstr "¿Está activa?"
 
-#: apps/equipment/filtersets.py:23 apps/users/filtersets.py:17
-#: apps/users/filtersets.py:48 templates/equipment/machine/detail.html:79
+#: apps/equipment/filtersets.py:23 apps/reports/filtersets.py:45
+#: apps/users/filtersets.py:17 apps/users/filtersets.py:48
+#: templates/equipment/machine/detail.html:79
 #: templates/equipment/machine/detail.html:185
 #: templates/equipment/machine/form.html:160
 #: templates/equipment/machine/form.html:205
 #: templates/equipment/machine/list.html:105
+#: templates/reports/report/detail.html:118
+#: templates/reports/report/detail.html:121
 #: templates/users/account/list.html:157
 #: templates/users/organization/detail.html:74
 #: templates/users/organization/list.html:106
 msgid "Active"
 msgstr "Activo"
 
-#: apps/equipment/filtersets.py:24 apps/users/filtersets.py:18
-#: apps/users/filtersets.py:49 templates/equipment/machine/detail.html:81
+#: apps/equipment/filtersets.py:24 apps/reports/filtersets.py:46
+#: apps/users/filtersets.py:18 apps/users/filtersets.py:49
+#: templates/equipment/machine/detail.html:81
 #: templates/equipment/machine/detail.html:187
 #: templates/equipment/machine/list.html:107
+#: templates/reports/report/detail.html:123
 #: templates/users/account/list.html:161
 #: templates/users/organization/detail.html:76
 #: templates/users/organization/list.html:108
@@ -351,33 +345,31 @@ msgstr "Inactivo"
 
 #: apps/equipment/forms.py:55
 msgid "Select Component Type"
-msgstr ""
+msgstr "Seleccione el Tipo de Componente"
 
-#: apps/equipment/forms.py:71
-#, fuzzy
-#| msgid "Excel"
+#: apps/equipment/forms.py:71 apps/reports/forms.py:100
 msgid "Excel File"
-msgstr "Excel"
+msgstr "Archivo de Excel"
 
 #: apps/equipment/forms.py:72
 msgid "Upload an Excel file (.xlsx) with machine data"
-msgstr ""
+msgstr "Sube un archivo de Excel (.xlsx) con datos de la máquina"
 
-#: apps/equipment/forms.py:88 templates/equipment/machine/bulk_upload.html:138
+#: apps/equipment/forms.py:88 templates/equipment/machine/bulk_upload.html:137
 msgid "Only .xlsx files are allowed"
-msgstr ""
+msgstr "Solo se permiten archivos .xlsx"
 
-#: apps/equipment/forms.py:92 templates/equipment/machine/bulk_upload.html:145
+#: apps/equipment/forms.py:92 templates/equipment/machine/bulk_upload.html:144
 msgid "File size cannot exceed 5MB"
-msgstr ""
+msgstr "El tamaño del archivo no puede exceder los 5MB"
 
 #: apps/equipment/models.py:25
 msgid "Organization that owns this machine"
-msgstr ""
+msgstr "Organización que posee esta máquina"
 
 #: apps/equipment/models.py:30
 msgid "Machine name or identifier"
-msgstr ""
+msgstr "Nombre o identificador de la máquina"
 
 #: apps/equipment/models.py:33 apps/equipment/models.py:101
 #: templates/equipment/machine/detail.html:62
@@ -386,126 +378,336 @@ msgstr ""
 #: templates/equipment/machine/form.html:197
 #: templates/equipment/machine/list.html:61
 msgid "Serial Number"
-msgstr ""
+msgstr "Número de serie"
 
 #: apps/equipment/models.py:36
 msgid "Unique serial number of the machine"
-msgstr ""
+msgstr "Número de serie único de la máquina"
 
 #: apps/equipment/models.py:39 templates/equipment/machine/detail.html:69
 #: templates/equipment/machine/list.html:62
 msgid "Model"
-msgstr ""
+msgstr "Modelo"
 
 #: apps/equipment/models.py:41
 msgid "Machine model or type designation"
-msgstr ""
+msgstr "Designación del modelo o tipo de máquina"
 
 #: apps/equipment/models.py:45 apps/equipment/models.py:86
 #: apps/equipment/views.py:40 apps/equipment/views.py:59
 #: apps/equipment/views.py:80 apps/equipment/views.py:114
-#: apps/equipment/views.py:153
+#: apps/equipment/views.py:153 apps/reports/filtersets.py:26
+#: apps/reports/models.py:30 templates/dashboard/export.html:50
+#: templates/dashboard/index.html:31 templates/dashboard/index.html:211
+#: templates/reports/report/detail.html:159
+#: templates/reports/report/list.html:71
 msgid "Machine"
-msgstr ""
+msgstr "Máquina"
 
 #: apps/equipment/models.py:46 apps/equipment/views.py:41
-#: templates/includes/aside.html:64
+#: templates/includes/aside.html:65
 msgid "Machines"
-msgstr ""
+msgstr "Máquinas"
 
 #: apps/equipment/models.py:72
-#, fuzzy
-#| msgid "Document type"
 msgid "Component Type"
-msgstr "Tipo de documento"
+msgstr "Tipo de Componente"
 
 #: apps/equipment/models.py:73
-#, fuzzy
-#| msgid "Document type"
 msgid "Component Types"
-msgstr "Tipo de documento"
+msgstr "Tipos de Componente"
 
 #: apps/equipment/models.py:89
 msgid "Machine this component belongs to"
-msgstr ""
+msgstr "Máquina a la que pertenece este componente"
 
 #: apps/equipment/models.py:93 templates/equipment/machine/detail.html:161
 #: templates/equipment/machine/form.html:145
 #: templates/equipment/machine/form.html:193
-#, fuzzy
-#| msgid "User Type"
 msgid "Type"
-msgstr "Tipo de Usuario"
+msgstr "Tipo"
 
 #: apps/equipment/models.py:98
 msgid "Type/category of this component"
-msgstr ""
+msgstr "Tipo/categoría de este componente"
 
 #: apps/equipment/models.py:103
-#, fuzzy
-#| msgid "Document number"
 msgid "Component serial number"
-msgstr "Número de documento"
+msgstr "Número de serie del componente"
 
 #: apps/equipment/models.py:106
 msgid "Installation Date & Time"
-msgstr ""
+msgstr "Fecha y hora de instalación"
 
 #: apps/equipment/models.py:107
 msgid "When this component was installed"
-msgstr ""
+msgstr "Cuándo se instaló este componente"
 
-#: apps/equipment/models.py:111 templates/equipment/machine/form.html:126
+#: apps/equipment/models.py:111 apps/reports/models.py:39
+#: templates/equipment/machine/form.html:126
 #: templates/equipment/machine/form.html:178
-#, fuzzy
-#| msgid "Completed"
+#: templates/reports/report/detail.html:170
+#: templates/reports/report/list.html:72
 msgid "Component"
-msgstr "Completado"
+msgstr "Componente"
 
 #: apps/equipment/models.py:112 templates/equipment/machine/detail.html:152
 #: templates/equipment/machine/form.html:107
 #: templates/equipment/machine/list.html:64
-#, fuzzy
-#| msgid "Completed"
 msgid "Components"
-msgstr "Completado"
+msgstr "Componentes"
 
 #: apps/equipment/views.py:75
-#, fuzzy
-#| msgid "Account created successfully"
 msgid "Machine created successfully"
-msgstr "Cuenta creada con éxito"
+msgstr "Máquina creada con éxito"
 
 #: apps/equipment/views.py:108
-#, fuzzy
-#| msgid "Account updated successfully"
 msgid "Machine updated successfully"
-msgstr "Cuenta actualizada con éxito"
+msgstr "Máquina actualizada con éxito"
 
 #: apps/equipment/views.py:272
-#, fuzzy
-#| msgid "User ID is required"
 msgid "Machine name is required"
-msgstr "Se requiere ID de usuario"
+msgstr "Se requiere nombre de la máquina"
 
 #: apps/equipment/views.py:274
-#, fuzzy
-#| msgid "User ID is required"
 msgid "Serial number is required"
-msgstr "Se requiere ID de usuario"
+msgstr "Se requiere número de serie"
 
 #: apps/equipment/views.py:276
-#, fuzzy
-#| msgid "User ID is required"
 msgid "Model is required"
-msgstr "Se requiere ID de usuario"
+msgstr "Se requiere modelo"
+
+#: apps/reports/choices.py:9
+msgid "Reviewed"
+msgstr "Revisado"
+
+#: apps/reports/choices.py:11
+msgid "Rejected"
+msgstr "Rechazado"
+
+#: apps/reports/choices.py:17
+msgid "Normal"
+msgstr "Normal"
+
+#: apps/reports/choices.py:18 templates/dashboard/index.html:119
+msgid "Caution"
+msgstr "Precaución"
+
+#: apps/reports/choices.py:19
+msgid "Critical"
+msgstr "Crítico"
+
+#: apps/reports/choices.py:20
+msgid "Severe"
+msgstr "Severo"
+
+#: apps/reports/filtersets.py:25 templates/dashboard/export.html:52
+#: templates/dashboard/index.html:33
+msgid "All Machines"
+msgstr "Todas las máquinas"
+
+#: apps/reports/filtersets.py:30 templates/dashboard/export.html:73
+#: templates/dashboard/index.html:51
+msgid "All Statuses"
+msgstr "Todos los estados"
+
+#: apps/reports/filtersets.py:36 templates/dashboard/export.html:64
+#: templates/dashboard/index.html:42
+msgid "All Conditions"
+msgstr "Todas las condiciones"
+
+#: apps/reports/filtersets.py:37 apps/reports/models.py:98
+#: templates/dashboard/export.html:62 templates/dashboard/index.html:40
+#: templates/dashboard/index.html:212 templates/reports/report/detail.html:101
+#: templates/reports/report/list.html:75
+msgid "Condition"
+msgstr "Condición"
+
+#: apps/reports/forms.py:91
+msgid "A report with this lab number already exists."
+msgstr "Ya existe un informe con este número de laboratorio."
+
+#: apps/reports/forms.py:102
+msgid "Upload an Excel file (.xlsx) with report data. Maximum size: 5MB"
+msgstr "Sube un archivo de Excel (.xlsx) con datos del informe. Tamaño máximo: 5MB"
+
+#: apps/reports/forms.py:116 templates/reports/report/bulk_upload.html:173
+msgid "Only Excel files (.xlsx, .xls) are allowed."
+msgstr "Solo se permiten archivos de Excel (.xlsx, .xls)."
+
+#: apps/reports/forms.py:121 templates/reports/report/bulk_upload.html:181
+msgid "File size cannot exceed 5MB."
+msgstr "El tamaño del archivo no puede exceder los 5MB."
+
+#: apps/reports/models.py:26
+msgid "Organization/Client associated with this report"
+msgstr "Organización/Cliente asociado con este informe"
+
+#: apps/reports/models.py:35
+msgid "Machine/Equipment associated with this report"
+msgstr "Máquina/Equipo asociado con este informe"
+
+#: apps/reports/models.py:44
+msgid "Component associated with this report"
+msgstr "Componente asociado con este informe"
+
+#: apps/reports/models.py:47 templates/dashboard/index.html:210
+#: templates/reports/report/detail.html:55
+#: templates/reports/report/list.html:69
+msgid "Lab Number"
+msgstr "Número de laboratorio"
+
+#: apps/reports/models.py:50
+msgid "Laboratory identification number (No. Lab)"
+msgstr "Ñúmero de identificación del laboratorio (No. Lab)"
+
+#: apps/reports/models.py:53 templates/reports/report/detail.html:181
+msgid "Lubricant"
+msgstr "Lubricante"
+
+#: apps/reports/models.py:56
+msgid "Lubricant type/brand used"
+msgstr "Tipo/marca de lubricante utilizado"
+
+#: apps/reports/models.py:59 templates/reports/report/detail.html:192
+msgid "Lubricant Hours/Kms"
+msgstr "Horas/Kms de Lubricante"
+
+#: apps/reports/models.py:64
+msgid "Hours or kilometers of lubricant usage"
+msgstr "Horas o kilómetros de uso del lubricante"
+
+#: apps/reports/models.py:67 templates/reports/report/detail.html:73
+msgid "Serial Number Code"
+msgstr "Código de número de serie"
+
+#: apps/reports/models.py:70
+msgid "Serial number code from the report (Cod./Num. De Serie)"
+msgstr "Código de número de serie del informe (Cod./Num. De Serie)"
+
+#: apps/reports/models.py:73 templates/dashboard/index.html:214
+#: templates/reports/report/detail.html:215
+#: templates/reports/report/list.html:73
+msgid "Sample Date"
+msgstr "Fecha de muestra"
+
+#: apps/reports/models.py:76
+msgid "Date when the sample was taken (Fecha Muestra)"
+msgstr "Fecha en que se tomó la muestra (Fecha Muestra)"
+
+#: apps/reports/models.py:79 templates/reports/report/detail.html:62
+msgid "PER Number"
+msgstr "Número de PER"
+
+#: apps/reports/models.py:82
+msgid "PER identification number (No. PER)"
+msgstr "Número de identificación PER (No. PER)"
+
+#: apps/reports/models.py:85 templates/reports/report/detail.html:226
+msgid "Reception Date"
+msgstr "Fecha de recepción"
+
+#: apps/reports/models.py:88
+msgid "Date when the sample was received (Fecha de Recepción)"
+msgstr "Fecha en que se recibió la muestra (Fecha de Recepción)"
+
+#: apps/reports/models.py:95
+msgid "Current status of the report"
+msgstr "Estado actual del informe"
+
+#: apps/reports/models.py:102
+msgid "Equipment condition assessment"
+msgstr "Evaluación de la condición del equipo"
+
+#: apps/reports/models.py:105 templates/reports/report/detail.html:260
+#: templates/reports/report/form.html:234
+msgid "Notes"
+msgstr "Notas"
+
+#: apps/reports/models.py:107
+msgid "Additional notes or observations"
+msgstr "Notas adicionales u observaciones"
+
+#: apps/reports/models.py:111 apps/reports/views.py:51 apps/reports/views.py:75
+#: apps/reports/views.py:100 apps/reports/views.py:128
+#: apps/reports/views.py:159
+msgid "Report"
+msgstr "Reporte"
+
+#: apps/reports/models.py:112 apps/reports/views.py:52
+#: apps/reports/views.py:160 templates/includes/aside.html:80
+#: templates/reports/report/list.html:8
+msgid "Reports"
+msgstr "Reportes"
+
+#: apps/reports/views.py:95
+msgid "Report created successfully"
+msgstr "Reporte creado con éxito"
+
+#: apps/reports/views.py:102 templates/reports/report/form.html:263
+msgid "Create Report"
+msgstr "Crear Reporte"
+
+#: apps/reports/views.py:123
+msgid "Report updated successfully"
+msgstr "Reporte actualizado con éxito"
+
+#: apps/reports/views.py:130
+msgid "Edit Report"
+msgstr "Editar Reporte"
+
+#: apps/reports/views.py:186
+#, python-format
+msgid "Error processing file: %(error)s"
+msgstr "Error al procesar el archivo: %(error)s"
+
+#: apps/reports/views.py:289
+msgid "Lab Number is required"
+msgstr "Se requiere número de laboratorio"
+
+#: apps/reports/views.py:300
+#, fuzzy, python-format
+#| msgid "Is Organization"
+msgid "Organization '%(name)s' not found"
+msgstr "Organización '%(name)s' no encontrada"
+
+#: apps/reports/views.py:318
+#, fuzzy, python-format
+#| msgid "User ID is required"
+msgid "Machine '%(name)s' not found"
+msgstr "Máquina '%(name)s' no encontrada"
+
+#: apps/reports/views.py:326
+#, python-format
+msgid "Multiple machines found with name '%(name)s'"
+msgstr "Múltiples máquinas encontradas con el nombre '%(name)s'"
+
+#: apps/reports/views.py:346
+#, python-format
+msgid "Component '%(name)s' not found"
+msgstr "Componente '%(name)s' no encontrado"
+
+#: apps/reports/views.py:442
+#, fuzzy, python-format
+#| msgid "Successfully verified account."
+msgid "Successfully created %(count)d reports"
+msgstr "Reporte creado con éxito."
+
+#: apps/reports/views.py:449
+#, fuzzy, python-format
+#| msgid "Successfully verified account."
+msgid "Successfully updated %(count)d reports"
+msgstr "Reporte actualizado con éxito."
+
+#: apps/reports/views.py:456
+#, python-format
+msgid "Skipped %(count)d header/title rows"
+msgstr "Omitidas %(count)d filas de encabezado/título"
 
 #: apps/users/admin.py:136 templates/users/organization/detail.html:96
 #: templates/users/organization/form.html:178
-#, fuzzy
-#| msgid "Account Information"
 msgid "Contact Information"
-msgstr "Información de la Cuenta"
+msgstr "Información de Contacto"
 
 #: apps/users/api.py:24
 msgid "Invalid action"
@@ -531,68 +733,60 @@ msgstr "Se requiere ID de usuario"
 msgid "Verification email has been successfully sent"
 msgstr "El correo electrónico de verificación se ha enviado con éxito"
 
-#: apps/users/forms.py:30 apps/users/forms.py:100
+#: apps/users/forms.py:30 apps/users/forms.py:111
 #: templates/users/settings.html:68
 msgid "Last name"
 msgstr "Apellido"
 
 #: apps/users/forms.py:46
-#, fuzzy
-#| msgid "Is Organization"
 msgid "Select an organization"
-msgstr "Es Organización"
+msgstr "Seleccionar una organización"
 
-#: apps/users/forms.py:60
+#: apps/users/forms.py:59
 msgid "An account with this email already exists"
 msgstr "Ya existe una cuenta con este correo electrónico."
 
-#: apps/users/forms.py:162
+#: apps/users/forms.py:68
+msgid "This field is required"
+msgstr "Este campo es obligatorio"
+
+#: apps/users/forms.py:72 apps/users/forms.py:172
 msgid "Selected organization is not active"
-msgstr ""
-
-#: apps/users/forms.py:203
-#, fuzzy
-#| msgid "Organization"
-msgid "Organization Name"
-msgstr "Organización"
-
-#: apps/users/forms.py:206 templates/users/organization/detail.html:184
-#, fuzzy
-#| msgid "Zip code"
-msgid "Zip Code"
-msgstr "Código postal"
-
-#: apps/users/forms.py:207 templates/users/organization/detail.html:177
-msgid "Country"
-msgstr ""
-
-#: apps/users/forms.py:208
-msgid "Department"
-msgstr ""
-
-#: apps/users/forms.py:209
-msgid "Province"
-msgstr ""
-
-#: apps/users/forms.py:210 templates/users/organization/detail.html:156
-msgid "City"
-msgstr ""
-
-#: apps/users/forms.py:211
-#, fuzzy
-#| msgid "November"
-msgid "Phone Number"
-msgstr "Noviembre"
-
-#: apps/users/forms.py:212
-#, fuzzy
-#| msgid "email address"
-msgid "Email Address"
-msgstr "dirección de correo electrónico"
+msgstr "La organización seleccionada no está activa"
 
 #: apps/users/forms.py:213
-#, fuzzy
-#| msgid "Is active"
+msgid "Organization Name"
+msgstr "Nombre de la Organización"
+
+#: apps/users/forms.py:216 templates/users/organization/detail.html:184
+msgid "Zip Code"
+msgstr "Código Postal"
+
+#: apps/users/forms.py:217 templates/users/organization/detail.html:177
+msgid "Country"
+msgstr "País"
+
+#: apps/users/forms.py:218
+msgid "Department"
+msgstr "Departamento"
+
+#: apps/users/forms.py:219
+msgid "Province"
+msgstr "Provincia"
+
+#: apps/users/forms.py:220 templates/users/organization/detail.html:156
+msgid "City"
+msgstr "Ciudad"
+
+#: apps/users/forms.py:221
+msgid "Phone Number"
+msgstr "Número de Teléfono"
+
+#: apps/users/forms.py:222
+msgid "Email Address"
+msgstr "Dirección de Correo Electrónico"
+
+#: apps/users/forms.py:223
 msgid "Is Active"
 msgstr "Está activo"
 
@@ -608,24 +802,26 @@ msgstr "El superusuario debe tener is_staff=True."
 msgid "Superuser must have is_superuser=True."
 msgstr "El superusuario debe tener is_superuser=True."
 
+#: apps/users/mixins.py:93
+msgid "Access denied. You must belong to an organization."
+msgstr "Acceso denegado. Debes pertenecer a una organización."
+
 #: apps/users/models.py:23 apps/users/views.py:181
-#: templates/includes/aside.html:49
-#, fuzzy
-#| msgid "Organization"
+#: templates/includes/aside.html:50
 msgid "Organizations"
-msgstr "Organización"
+msgstr "Organizaciones"
 
 #: apps/users/models.py:32
 msgid "email address"
 msgstr "dirección de correo electrónico"
 
-#: apps/users/models.py:69 apps/users/views.py:107 apps/users/views.py:130
+#: apps/users/models.py:71 apps/users/views.py:107 apps/users/views.py:130
 #: apps/users/views.py:153
 msgid "Account"
 msgstr "Cuenta"
 
-#: apps/users/models.py:70 apps/users/views.py:108
-#: templates/includes/aside.html:34 templates/includes/navbar.html:124
+#: apps/users/models.py:72 apps/users/views.py:108
+#: templates/includes/aside.html:35 templates/includes/navbar.html:124
 #: templates/users/account/form.html:146 templates/users/profile.html:158
 msgid "Accounts"
 msgstr "Cuentas"
@@ -651,40 +847,36 @@ msgid "Account updated successfully"
 msgstr "Cuenta actualizada con éxito"
 
 #: apps/users/views.py:215
-#, fuzzy
-#| msgid "Account created successfully"
 msgid "Organization created successfully"
-msgstr "Cuenta creada con éxito"
+msgstr "Organización creada con éxito"
 
 #: apps/users/views.py:232
-#, fuzzy
-#| msgid "Settings updated successfully"
 msgid "Organization updated successfully"
-msgstr "Configuración actualizada con éxito"
+msgstr "Organización actualizada con éxito"
 
-#: config/settings/base.py:152
+#: config/settings/base.py:153
 msgid "Spanish"
 msgstr "Español"
 
-#: config/settings/base.py:153
+#: config/settings/base.py:154
 msgid "English"
 msgstr "Inglés"
 
 #: config/settings/tools/django_constance.py:16
 msgid "Project name."
-msgstr "Nombre del proyecto."
+msgstr "Nombre del Proyecto."
 
 #: config/settings/tools/django_constance.py:17
 msgid "Company logo"
-msgstr "Logo de la empresa"
+msgstr "Logo de la Empresa"
 
 #: config/settings/tools/django_constance.py:18
 msgid "Website domain."
-msgstr "Dominio del sitio web."
+msgstr "Dominio del Sitio Web."
 
 #: config/settings/tools/django_constance.py:19
 msgid "Test json field"
-msgstr "Campo json de prueba"
+msgstr "Campo Json de Prueba"
 
 #: config/settings/tools/django_constance.py:20
 msgid "Enable sending emails."
@@ -717,6 +909,11 @@ msgid ""
 "%(email)s\">%(email)s</a> is an email address for user %(user_display)s.\n"
 "                        "
 msgstr ""
+"\n"
+"                            Por favor confirme que <a href=\"mailto:%(email)s\">"
+"%(email)s</a> es una dirección de correo electrónico para el usuario "
+"%(user_display)s.\n"
+"                        "
 
 #: templates/account/email_confirm.html:32
 msgid "After confirming your email, please follow these steps:"
@@ -764,11 +961,6 @@ msgstr ""
 "Por favor <a href=\"%(email_url)s\">emita una nueva solicitud de "
 "confirmación de correo electrónico</a>."
 
-#: templates/account/login.html:37 templates/account/login.html:50
-#: templates/account/login.html:173
-msgid "PREDICTIVE LUBRICANT ANALYST"
-msgstr "ANALISTA PREDICTIVO DE LUBRICANTES"
-
 #: templates/account/password_reset.html:6
 #: templates/account/password_reset_done.html:8
 #: templates/account/password_reset_done.html:18
@@ -805,118 +997,288 @@ msgstr "Registro"
 msgid "Verify Your Email Address"
 msgstr "Verificar su dirección de correo electrónico"
 
-#: templates/dashboard/index.html:13
+#: templates/dashboard/export.html:5 templates/dashboard/export.html:13
+#: templates/dashboard/export.html:22
+msgid "Export Data"
+msgstr "Exportar Datos"
+
+#: templates/dashboard/export.html:33
+msgid "Export Filters"
+msgstr "Filtros de Exportación"
+
+#: templates/dashboard/export.html:39 templates/dashboard/index.html:23
+msgid "Start Date"
+msgstr "Fecha de Inicio"
+
+#: templates/dashboard/export.html:43 templates/dashboard/index.html:27
+msgid "End Date"
+msgstr "Fecha de Fin"
+
+#: templates/dashboard/export.html:87
+msgid "Preview Count"
+msgstr "Vista previa del conteo"
+
+#: templates/dashboard/export.html:94 templates/dashboard/index.html:62
+msgid "Clear"
+msgstr "Limpiar"
+
+#: templates/dashboard/export.html:106
+msgid "Export Preview"
+msgstr "Vista previa de exportación"
+
+#: templates/dashboard/export.html:115
+msgid "Click 'Preview Count' to see how many records will be exported"
+msgstr "Haga clic en 'Vista previa del conteo' para ver cuántos registros se exportarán"
+
+#: templates/dashboard/export.html:122
+msgid "Total Records"
+msgstr "Registros Totales"
+
+#: templates/dashboard/export.html:127
+msgid "Will Export"
+msgstr "Se Exportará"
+
+#: templates/dashboard/export.html:137
+#, python-format
+msgid ""
+"\n"
+"                  Export is limited to %(max)s records for performance "
+"reasons.\n"
+"                "
+msgstr ""
+"\n"
+"                  La exportación está limitada a %(max)s registros por "
+"razones de rendimiento.\n"
+"                "
+
+#: templates/dashboard/export.html:147
+msgid "Download Excel"
+msgstr "Descargar Excel"
+
+#: templates/dashboard/export.html:154
+msgid "Loading..."
+msgstr "Cargando..."
+
+#: templates/dashboard/export.html:156
+msgid "Checking records..."
+msgstr "Comprobando registros..."
+
+#: templates/dashboard/export.html:170
+msgid "Export Information"
+msgstr "Información de Exportación"
+
+#: templates/dashboard/export.html:173
+msgid "Excel format (.xlsx)"
+msgstr "Formato Excel (.xlsx)"
+
+#: templates/dashboard/export.html:174
+#, python-format
+msgid "Maximum %(max)s records per export"
+msgstr "Máximo de %(max)s registros por exportación"
+
+#: templates/dashboard/export.html:175
+msgid "Filtered by your organization"
+msgstr "Filtrado por su organización"
+
+#: templates/dashboard/export.html:176
+msgid "Includes all report details"
+msgstr "Incluye todos los detalles del informe"
+
+#: templates/dashboard/export.html:244
+msgid "Error loading preview. Please try again."
+msgstr "Error al cargar la vista previa. Por favor, inténtelo de nuevo."
+
+#: templates/dashboard/export.html:277
+msgid "Export started! The file will download shortly."
+msgstr "¡Exportación iniciada! El archivo se descargará en breve."
+
+#: templates/dashboard/index.html:17
+msgid "Dashboard Filters"
+msgstr "Filtros del Tablero"
+
+#: templates/dashboard/index.html:59 templates/equipment/machine/list.html:52
+#: templates/reports/report/list.html:61 templates/users/account/list.html:49
+#: templates/users/organization/list.html:46
+msgid "Filter"
+msgstr "Filtrar"
+
+#: templates/dashboard/index.html:83
+msgid "Total Reports"
+msgstr "Total de Informes"
+
+#: templates/dashboard/index.html:101
+msgid "Normal Condition"
+msgstr "Condición Normal"
+
+#: templates/dashboard/index.html:137
+msgid "Critical/Severe"
+msgstr "Crítico/Severo"
+
+#: templates/dashboard/index.html:153
+msgid "Condition Distribution"
+msgstr "Distribución de Condición"
+
+#: templates/dashboard/index.html:154
+msgid "Reports by equipment condition"
+msgstr "Reportes por condición del equipo"
+
+#: templates/dashboard/index.html:168
+msgid "Status Distribution"
+msgstr "Distribución de estado"
+
+#: templates/dashboard/index.html:169
+msgid "Reports by processing status"
+msgstr "Reportes por estado de procesamiento"
+
+#: templates/dashboard/index.html:185
+msgid "Historical Trend"
+msgstr "Tendencia Histórica"
+
+#: templates/dashboard/index.html:186
+msgid "Reports over time"
+msgstr "Reportes a lo largo del tiempo"
+
+#: templates/dashboard/index.html:202
+msgid "Latest Reports"
+msgstr "Últimos Reportes"
+
+#: templates/dashboard/index.html:236 templates/reports/report/list.html:192
+msgid "No reports found"
+msgstr "No se encontraron reportes"
+
+#: templates/dashboard/index.html:250 templates/dashboard/index.html:266
 msgid "Last updated"
 msgstr "Última actualización"
+
+#: templates/dashboard/index.html:262
+msgid "General Dashboard"
+msgstr "Tablero General"
+
+#: templates/dashboard/index.html:263
+msgid "Welcome to the administrative dashboard"
+msgstr "Bienvenido al tablero administrativo"
 
 #: templates/equipment/machine/bulk_upload.html:5
 #: templates/equipment/machine/bulk_upload.html:8
 #: templates/equipment/machine/list.html:22
+#: templates/reports/report/bulk_upload.html:5
+#: templates/reports/report/bulk_upload.html:8
+#: templates/reports/report/list.html:22
 msgid "Bulk Upload"
-msgstr ""
+msgstr "Carga Masiva"
 
 #: templates/equipment/machine/bulk_upload.html:16
+#: templates/reports/report/bulk_upload.html:16
 msgid "Upload Excel File"
-msgstr ""
+msgstr "Subir archivo de Excel"
 
-#: templates/equipment/machine/bulk_upload.html:20
+#: templates/equipment/machine/bulk_upload.html:19
+#: templates/reports/report/bulk_upload.html:20
 msgid "Download Template"
-msgstr ""
+msgstr "Descargar plantilla"
 
-#: templates/equipment/machine/bulk_upload.html:23
+#: templates/equipment/machine/bulk_upload.html:22
+#: templates/reports/report/bulk_upload.html:23
 msgid "Back"
-msgstr ""
+msgstr "Regresar"
 
-#: templates/equipment/machine/bulk_upload.html:31
-#, fuzzy
-#| msgid "Collection Instructions"
+#: templates/equipment/machine/bulk_upload.html:30
+#: templates/reports/report/bulk_upload.html:31
 msgid "Instructions"
-msgstr "Instrucciones de colección"
+msgstr "Instrucciones"
+
+#: templates/equipment/machine/bulk_upload.html:33
+#: templates/reports/report/bulk_upload.html:34
+msgid "Download the Excel template using the button above"
+msgstr "Descargue la plantilla de Excel utilizando el botón de arriba"
 
 #: templates/equipment/machine/bulk_upload.html:34
-msgid "Download the Excel template using the button above"
-msgstr ""
+msgid "Fill in the machine data according to the column headers"
+msgstr "Complete los datos de la máquina según los encabezados de columna"
 
 #: templates/equipment/machine/bulk_upload.html:35
-msgid "Fill in the machine data according to the column headers"
-msgstr ""
+msgid "Column A: Machine Name (required)"
+msgstr "Columna A: Nombre de la máquina (requerido)"
 
 #: templates/equipment/machine/bulk_upload.html:36
-msgid "Column A: Machine Name (required)"
-msgstr ""
+#: templates/reports/report/bulk_upload.html:37
+msgid "Column B: Organization Name (must exist in system)"
+msgstr "Columna B: Nombre de la organización (debe existir en el sistema)"
 
 #: templates/equipment/machine/bulk_upload.html:37
-msgid "Column B: Organization Name (must exist in system)"
-msgstr ""
+msgid "Column C: Serial Number (required, unique)"
+msgstr "Columna C: Número de serie (requerido, único)"
 
 #: templates/equipment/machine/bulk_upload.html:38
-msgid "Column C: Serial Number (required, unique)"
-msgstr ""
+msgid "Column D: Model (required)"
+msgstr "Columna D: Modelo (requerido)"
 
 #: templates/equipment/machine/bulk_upload.html:39
-msgid "Column D: Model (required)"
-msgstr ""
+msgid "Column E: Components (comma-separated)"
+msgstr "Columna E: Componentes (separados por comas)"
 
 #: templates/equipment/machine/bulk_upload.html:40
-msgid "Column E: Components (comma-separated)"
-msgstr ""
+#: templates/reports/report/bulk_upload.html:49
+msgid "Upload only .xlsx files (maximum 5MB)"
+msgstr "Suba solo archivos .xlsx (máximo 5MB)"
 
 #: templates/equipment/machine/bulk_upload.html:41
-msgid "Upload only .xlsx files (maximum 5MB)"
-msgstr ""
+msgid "If a machine with the same serial number exists, it will be updated"
+msgstr "Si existe una máquina con el mismo número de serie, se actualizará"
 
 #: templates/equipment/machine/bulk_upload.html:42
-msgid "If a machine with the same serial number exists, it will be updated"
-msgstr ""
-
-#: templates/equipment/machine/bulk_upload.html:43
 msgid "Component types will be created automatically if they don't exist"
-msgstr ""
+msgstr "Los tipos de componentes se crearán automáticamente si no existen"
 
-#: templates/equipment/machine/bulk_upload.html:69
+#: templates/equipment/machine/bulk_upload.html:68
+#: templates/reports/report/bulk_upload.html:77
 msgid "Upload File"
-msgstr ""
+msgstr "Subir archivo"
 
-#: templates/equipment/machine/bulk_upload.html:77
+#: templates/equipment/machine/bulk_upload.html:76
+#: templates/reports/report/bulk_upload.html:90
 msgid "Expected Excel Format:"
-msgstr ""
+msgstr "Formato de Excel esperado:"
+
+#: templates/equipment/machine/bulk_upload.html:90
+msgid "MACHINE NAME"
+msgstr "NOMBRE DE LA MÁQUINA"
 
 #: templates/equipment/machine/bulk_upload.html:91
-msgid "MACHINE NAME"
-msgstr ""
+#: templates/reports/report/bulk_upload.html:113
+msgid "ORGANIZATION"
+msgstr "ORGANIZACIÓN"
 
 #: templates/equipment/machine/bulk_upload.html:92
-msgid "ORGANIZATION"
-msgstr ""
+msgid "SERIAL NUMBER"
+msgstr "NÚMERO DE SERIE"
 
 #: templates/equipment/machine/bulk_upload.html:93
-msgid "SERIAL NUMBER"
-msgstr ""
+msgid "MODEL"
+msgstr "MODELO"
 
 #: templates/equipment/machine/bulk_upload.html:94
-msgid "MODEL"
-msgstr ""
-
-#: templates/equipment/machine/bulk_upload.html:95
 msgid "COMPONENTS"
-msgstr ""
+msgstr "COMPONENTES"
 
-#: templates/equipment/machine/bulk_upload.html:115
+#: templates/equipment/machine/bulk_upload.html:114
 msgid ""
 "Note: The first row should be the title, the second row contains column "
 "headers, and data starts from the third row."
 msgstr ""
+"Nota: La primera fila debe ser el título, la segunda fila contiene los "
+"encabezados de columna, y los datos comienzan desde la tercera fila."
 
-#: templates/equipment/machine/bulk_upload.html:166
-#, fuzzy
-#| msgid "Processing"
+#: templates/equipment/machine/bulk_upload.html:165
+#: templates/reports/report/bulk_upload.html:80
 msgid "Processing..."
-msgstr "En proceso"
+msgstr "En proceso..."
 
 #: templates/equipment/machine/detail.html:22
 #: templates/equipment/machine/form.html:16
 #: templates/equipment/machine/list.html:123
-#: templates/users/account/list.html:212
+#: templates/reports/report/detail.html:22
+#: templates/reports/report/list.html:170 templates/users/account/list.html:212
 #: templates/users/organization/detail.html:22
 #: templates/users/organization/form.html:16
 #: templates/users/organization/list.html:124
@@ -925,50 +1287,47 @@ msgstr "Editar"
 
 #: templates/equipment/machine/detail.html:36
 #: templates/equipment/machine/list.html:131
-#: templates/users/account/form.html:139 templates/users/account/list.html:195
+#: templates/reports/report/detail.html:36
+#: templates/reports/report/list.html:177
+#: templates/reports/report/list.html:225 templates/users/account/form.html:139
+#: templates/users/account/list.html:195
 #: templates/users/organization/detail.html:36
 #: templates/users/organization/list.html:132 templates/users/profile.html:150
-#: venv/lib/python3.13/site-packages/django/forms/formsets.py:499
 msgid "Delete"
 msgstr "Eliminar"
 
 #: templates/equipment/machine/detail.html:50
 #: templates/equipment/machine/form.html:32
-#, fuzzy
-#| msgid "Account Information"
 msgid "Machine Information"
-msgstr "Información de la Cuenta"
+msgstr "Información de la Máquina"
 
 #: templates/equipment/machine/detail.html:87
+#: templates/reports/report/detail.html:129
 #: templates/users/organization/detail.html:82
-#, fuzzy
-#| msgid "Create"
 msgid "Created"
-msgstr "Crear"
+msgstr "Creado"
 
 #: templates/equipment/machine/detail.html:137
-#, fuzzy
-#| msgid "No permissions assigned"
 msgid "No organization assigned"
-msgstr "No se asignaron permisos"
+msgstr "No hay organización asignada"
 
 #: templates/equipment/machine/detail.html:153
 msgid "components installed"
-msgstr ""
+msgstr "componentes instalados"
 
 #: templates/equipment/machine/detail.html:163
 #: templates/equipment/machine/form.html:155
 #: templates/equipment/machine/form.html:201
 msgid "Installation Date"
-msgstr ""
+msgstr "Fecha de instalación"
 
 #: templates/equipment/machine/detail.html:174
 msgid "Unknown Type"
-msgstr ""
+msgstr "Tipo desconocido"
 
 #: templates/equipment/machine/detail.html:203
 msgid "No components installed"
-msgstr ""
+msgstr "No hay componentes instalados"
 
 #: templates/equipment/machine/detail.html:223
 #: templates/equipment/machine/list.html:172
@@ -984,7 +1343,7 @@ msgstr "¿Estás seguro?"
 #: templates/users/organization/detail.html:218
 #: templates/users/organization/list.html:175
 msgid "You are about to delete"
-msgstr ""
+msgstr "Estás a punto de eliminar"
 
 #: templates/equipment/machine/detail.html:229
 #: templates/equipment/machine/list.html:178
@@ -996,8 +1355,9 @@ msgstr "¡Sí, elimínalo!"
 
 #: templates/equipment/machine/detail.html:230
 #: templates/equipment/machine/list.html:179
-#: templates/users/account/list.html:254 templates/users/account/list.html:298
-#: templates/users/account/list.html:342
+#: templates/reports/report/form.html:257
+#: templates/reports/report/list.html:224 templates/users/account/list.html:254
+#: templates/users/account/list.html:298 templates/users/account/list.html:342
 #: templates/users/organization/detail.html:224
 #: templates/users/organization/list.html:181 templates/users/settings.html:128
 msgid "Cancel"
@@ -1029,27 +1389,25 @@ msgstr "¡Error!"
 #: templates/users/organization/detail.html:253
 #: templates/users/organization/list.html:210
 msgid "Something went wrong. Please try again."
-msgstr ""
+msgstr "Algo salió mal. Por favor, inténtalo de nuevo."
 
 #: templates/equipment/machine/form.html:8
 msgid "Edit Machine"
-msgstr ""
+msgstr "Editar Máquina"
 
 #: templates/equipment/machine/form.html:10
 #: templates/equipment/machine/form.html:18
 #: templates/equipment/machine/form.html:231
-#, fuzzy
-#| msgid "Create"
 msgid "Create Machine"
-msgstr "Crear"
+msgstr "Crear Máquina"
 
 #: templates/equipment/machine/form.html:94
 msgid "Is this machine active?"
-msgstr ""
+msgstr "¿Está activa esta máquina?"
 
 #: templates/equipment/machine/form.html:112
 msgid "Add Component"
-msgstr ""
+msgstr "Agregar Componente"
 
 #: templates/equipment/machine/form.html:225
 #: templates/users/account/form.html:177
@@ -1065,33 +1423,25 @@ msgstr "Guardar Cambios"
 
 #: templates/equipment/machine/form.html:301
 #: templates/users/organization/form.html:240
-#: venv/lib/python3.13/site-packages/dal/views.py:205
-#, fuzzy
-#| msgid "Error!"
 msgid "Error"
 msgstr "¡Error!"
 
 #: templates/equipment/machine/form.html:302
 msgid "Please fill all required fields"
-msgstr ""
+msgstr "Por favor, complete todos los campos obligatorios"
 
 #: templates/equipment/machine/form.html:304
 #: templates/users/organization/form.html:243
 msgid "OK"
-msgstr ""
+msgstr "Aceptar"
 
 #: templates/equipment/machine/list.html:19
 msgid "Add Machine"
-msgstr ""
-
-#: templates/equipment/machine/list.html:52
-#: templates/users/account/list.html:49
-#: templates/users/organization/list.html:46
-msgid "Filter"
-msgstr "Filtrar"
+msgstr "Agregar Máquina"
 
 #: templates/equipment/machine/list.html:66
 #: templates/equipment/machine/list.html:112
+#: templates/reports/report/list.html:76 templates/reports/report/list.html:156
 #: templates/users/account/list.html:122 templates/users/account/list.html:187
 #: templates/users/organization/list.html:59
 #: templates/users/organization/list.html:113
@@ -1099,19 +1449,16 @@ msgid "Actions"
 msgstr "Acciones"
 
 #: templates/equipment/machine/list.html:118
-#: templates/users/account/form.html:136
+#: templates/reports/report/list.html:163 templates/users/account/form.html:136
 #: templates/users/organization/list.html:119 templates/users/profile.html:147
 msgid "View"
 msgstr "Ver"
 
 #: templates/equipment/machine/list.html:147
-#, fuzzy
-#| msgid "No panels found"
 msgid "No machines found"
-msgstr "No se encontraron paneles"
+msgstr "No se encontraron máquinas"
 
 #: templates/errors/403.html:7
-#: venv/lib/python3.13/site-packages/django/views/csrf.py:29
 msgid "Forbidden"
 msgstr "Prohibido"
 
@@ -1122,6 +1469,10 @@ msgstr "Página no encontrada"
 #: templates/errors/500.html:7
 msgid "System Error"
 msgstr "Error del sistema"
+
+#: templates/includes/aside.html:95
+msgid "Data Export"
+msgstr "Exportación de Datos"
 
 #: templates/includes/footer.html:14
 msgid "Collection Instructions"
@@ -1146,6 +1497,179 @@ msgstr "Configuración de la Cuenta"
 #: templates/includes/navbar.html:136
 msgid "Sign Out"
 msgstr "Cerrar Sesión"
+
+#: templates/reports/report/bulk_upload.html:35
+msgid "Fill in the report data according to the column headers"
+msgstr "Complete los datos del informe según los encabezados de columna"
+
+#: templates/reports/report/bulk_upload.html:36
+msgid "Column A: Lab Number (required, unique)"
+msgstr "Columna A: Número de laboratorio (requerido, único)"
+
+#: templates/reports/report/bulk_upload.html:38
+msgid "Column C: Machine Name (must exist in system)"
+msgstr "Columna C: Nombre de la máquina (debe existir en el sistema)"
+
+#: templates/reports/report/bulk_upload.html:39
+msgid "Column D: Component Name (must exist in system)"
+msgstr "Columna D: Nombre del componente (debe existir en el sistema)"
+
+#: templates/reports/report/bulk_upload.html:40
+msgid "Column E: Lubricant (optional)"
+msgstr "Columna E: Lubricante (opcional)"
+
+#: templates/reports/report/bulk_upload.html:41
+msgid "Column F: Lubricant Hours/Kms (optional)"
+msgstr "Columna F: Horas/Kms de lubricante (opcional)"
+
+#: templates/reports/report/bulk_upload.html:42
+msgid "Column G: Serial Number Code (optional)"
+msgstr "Columna G: Código de número de serie (opcional)"
+
+#: templates/reports/report/bulk_upload.html:43
+msgid "Column H: Sample Date (YYYY-MM-DD format)"
+msgstr "Columna H: Fecha de muestra (formato AAAA-MM-DD)"
+
+#: templates/reports/report/bulk_upload.html:44
+msgid "Column I: PER Number (optional)"
+msgstr "Columna I: Número PER (opcional)"
+
+#: templates/reports/report/bulk_upload.html:45
+msgid "Column J: Reception Date (YYYY-MM-DD format, optional)"
+msgstr "Columna J: Fecha de recepción (formato AAAA-MM-DD, opcional)"
+
+#: templates/reports/report/bulk_upload.html:46
+msgid "Column K: Status (PENDING, REVIEWED, APPROVED, REJECTED)"
+msgstr "Columna K: Estado (PENDIENTE, REVISADO, APROBADO, RECHAZADO)"
+
+#: templates/reports/report/bulk_upload.html:47
+msgid "Column L: Condition (NORMAL, CAUTION, CRITICAL, SEVERE)"
+msgstr "Columna L: Condición (NORMAL, PRECAUCIÓN, CRÍTICO, SEVERO)"
+
+#: templates/reports/report/bulk_upload.html:48
+msgid "Column M: Notes (optional)"
+msgstr "Columna M: Notas (opcional)"
+
+#: templates/reports/report/bulk_upload.html:50
+msgid "If a report with the same lab number exists, it will be updated"
+msgstr "Si existe un informe con el mismo número de laboratorio, se actualizará"
+
+#: templates/reports/report/bulk_upload.html:112
+msgid "LAB NUMBER"
+msgstr "NÚMERO DE LABORATORIO"
+
+#: templates/reports/report/bulk_upload.html:114
+msgid "MACHINE"
+msgstr "MÁQUINA"
+
+#: templates/reports/report/bulk_upload.html:115
+msgid "COMPONENT"
+msgstr "COMPONENTE"
+
+#: templates/reports/report/bulk_upload.html:116
+msgid "LUBRICANT"
+msgstr "LUBRICANTE"
+
+#: templates/reports/report/bulk_upload.html:117
+msgid "LUBRICANT HOURS/KMS"
+msgstr "HORAS/KMS DE LUBRICANTE"
+
+#: templates/reports/report/bulk_upload.html:118
+msgid "SERIAL NUMBER CODE"
+msgstr "CÓDIGO DE NÚMERO DE SERIE"
+
+#: templates/reports/report/bulk_upload.html:119
+msgid "SAMPLE DATE"
+msgstr "FECHA DE MUESTRA"
+
+#: templates/reports/report/bulk_upload.html:120
+msgid "PER NUMBER"
+msgstr "NÚMERO PER"
+
+#: templates/reports/report/bulk_upload.html:121
+msgid "RECEPTION DATE"
+msgstr "FECHA DE RECEPCIÓN"
+
+#: templates/reports/report/bulk_upload.html:122
+msgid "STATUS"
+msgstr "ESTADO"
+
+#: templates/reports/report/bulk_upload.html:123
+msgid "CONDITION"
+msgstr "CONDICIÓN"
+
+#: templates/reports/report/bulk_upload.html:124
+msgid "NOTES"
+msgstr "NOTAS"
+
+#: templates/reports/report/detail.html:50
+#: templates/reports/report/form.html:24
+msgid "Report Information"
+msgstr "Información del Informe"
+
+#: templates/reports/report/detail.html:143
+#: templates/reports/report/form.html:97
+msgid "Related Information"
+msgstr "Información Relacionada"
+
+#: templates/reports/report/detail.html:210
+msgid "Important Dates"
+msgstr "Fechas Importantes"
+
+#: templates/reports/report/detail.html:237
+msgid "Last Updated"
+msgstr "Última Actualización"
+
+#: templates/reports/report/detail.html:245
+msgid "Created By"
+msgstr "Creado Por"
+
+#: templates/reports/report/detail.html:270
+msgid "No notes available"
+msgstr "No hay notas disponibles"
+
+#: templates/reports/report/detail.html:287
+msgid "Are you sure you want to delete report"
+msgstr "¿Está seguro de que desea eliminar el informe?"
+
+#: templates/reports/report/form.html:146
+msgid "Lubricant Information"
+msgstr "Información del Lubricante"
+
+#: templates/reports/report/form.html:183
+msgid "Status and Condition"
+msgstr "Estado y Condición"
+
+#: templates/reports/report/form.html:221
+msgid "Is this report active?"
+msgstr "¿Está este informe activo?"
+
+#: templates/reports/report/form.html:261
+msgid "Update Report"
+msgstr "Actualizar Informe"
+
+#: templates/reports/report/form.html:267 templates/users/settings.html:133
+msgid "Please wait..."
+msgstr "Por favor espera..."
+
+#: templates/reports/report/list.html:19 templates/reports/report/list.html:196
+msgid "Add Report"
+msgstr "Agregar Informe"
+
+#: templates/reports/report/list.html:194
+msgid "Start by creating your first report"
+msgstr "Comience creando su primer informe"
+
+#: templates/reports/report/list.html:217
+msgid "Confirm Delete"
+msgstr "Confirmar Eliminación"
+
+#: templates/reports/report/list.html:221
+msgid ""
+"Are you sure you want to delete this report? This action cannot be undone."
+msgstr ""
+"¿Está seguro de que desea eliminar este informe? Esta acción no se puede "
+"deshacer."
 
 #: templates/users/account/form.html:17 templates/users/settings.html:24
 msgid "Avatar"
@@ -1192,12 +1716,10 @@ msgid "Verified"
 msgstr "Verificado"
 
 #: templates/users/account/list.html:168
-#: venv/lib/python3.13/site-packages/django/forms/widgets.py:867
 msgid "Yes"
 msgstr "Sí"
 
 #: templates/users/account/list.html:172
-#: venv/lib/python3.13/site-packages/django/forms/widgets.py:868
 msgid "No"
 msgstr "No"
 
@@ -1250,75 +1772,59 @@ msgid "There was a problem activating/deactivating the user."
 msgstr "Hubo un problema al activar/desactivar el usuario."
 
 #: templates/users/organization/detail.html:50
-#, fuzzy
-#| msgid "Personal Information"
 msgid "General Information"
-msgstr "Información Personal"
+msgstr "Información General"
 
 #: templates/users/organization/detail.html:126
 msgid "No contact information available"
-msgstr ""
+msgstr "No hay información de contacto disponible"
 
 #: templates/users/organization/detail.html:141
 #: templates/users/organization/form.html:86
-#, fuzzy
-#| msgid "Personal Information"
 msgid "Address Information"
-msgstr "Información Personal"
+msgstr "Información de Dirección"
 
 #: templates/users/organization/detail.html:163
 msgid "District"
-msgstr ""
+msgstr "Distrito"
 
 #: templates/users/organization/detail.html:170
 msgid "Region"
-msgstr ""
+msgstr "Departmento"
 
 #: templates/users/organization/detail.html:196
 msgid "No address information available"
-msgstr ""
+msgstr "No hay información de dirección disponible"
 
 #: templates/users/organization/form.html:8
-#, fuzzy
-#| msgid "Organization"
 msgid "Edit Organization"
-msgstr "Organización"
+msgstr "Editar Organización"
 
 #: templates/users/organization/form.html:10
 #: templates/users/organization/form.html:18
 #: templates/users/organization/form.html:221
-#, fuzzy
-#| msgid "Organization"
 msgid "Create Organization"
-msgstr "Organización"
+msgstr "Crear Organización"
 
 #: templates/users/organization/form.html:70
-#, fuzzy
-#| msgid "Is Organization"
 msgid "Is this organization active?"
-msgstr "Es Organización"
+msgstr "¿Está activa esta organización?"
 
 #: templates/users/organization/form.html:241
 msgid "Organization name is required"
-msgstr ""
+msgstr "El nombre de la organización es obligatorio"
 
 #: templates/users/organization/list.html:19
-#, fuzzy
-#| msgid "Organization"
 msgid "Add Organization"
-msgstr "Organización"
+msgstr "Agregar Organización"
 
 #: templates/users/organization/list.html:57
-#, fuzzy
-#| msgid "Actions"
 msgid "Location"
-msgstr "Acciones"
+msgstr "Ubicación"
 
 #: templates/users/organization/list.html:148
-#, fuzzy
-#| msgid "Is Organization"
 msgid "No organizations found"
-msgstr "Es Organización"
+msgstr "No se encontraron organizaciones"
 
 #: templates/users/profile.html:71 templates/users/profile.html:105
 #: templates/users/settings.html:110
@@ -1382,10 +1888,6 @@ msgstr "El correo electrónico no se puede cambiar"
 msgid "User Type"
 msgstr "Tipo de Usuario"
 
-#: templates/users/settings.html:133
-msgid "Please wait..."
-msgstr "Por favor espera..."
-
 #: templates/users/settings.html:146
 msgid "Security"
 msgstr "Seguridad"
@@ -1398,1613 +1900,233 @@ msgstr ""
 "Para cambiar su contraseña, comuníquese con su administrador o use la opción "
 "de restablecimiento de contraseña."
 
-#: venv/lib/python3.13/site-packages/cities_light/abstract_models.py:21
-msgid "Oceania"
-msgstr ""
+#~ msgid "PREDICTIVE LUBRICANT ANALYST"
+#~ msgstr "ANALISTA PREDICTIVO DE LUBRICANTES"
 
-#: venv/lib/python3.13/site-packages/cities_light/abstract_models.py:22
-msgid "Europe"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/cities_light/abstract_models.py:23
-msgid "Africa"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/cities_light/abstract_models.py:24
-msgid "North America"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/cities_light/abstract_models.py:25
-msgid "Antarctica"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/cities_light/abstract_models.py:26
-msgid "South America"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/cities_light/abstract_models.py:27
-msgid "Asia"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/cities_light/abstract_models.py:118
 #, fuzzy
-#| msgid "Accounts"
-msgid "countries"
-msgstr "Cuentas"
+#~| msgid "Accounts"
+#~ msgid "countries"
+#~ msgstr "Cuentas"
 
-#: venv/lib/python3.13/site-packages/cities_light/abstract_models.py:136
-msgid "region/state"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/cities_light/abstract_models.py:137
-msgid "regions/states"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/cities_light/abstract_models.py:160
-msgid "SubRegion"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/cities_light/abstract_models.py:161
-msgid "SubRegions"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/cities_light/abstract_models.py:209
-msgid "cities"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/cities_light/validators.py:12
-#, python-format
-msgid "Timezone validation error: %(value)s"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/_termui_impl.py:613
-#, python-brace-format
-msgid "{editor}: Editing failed"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/_termui_impl.py:617
-#, python-brace-format
-msgid "{editor}: Editing failed: {e}"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/core.py:1114
-#: venv/lib/python3.13/site-packages/click/core.py:1151
-#, python-brace-format
-msgid "{text} {deprecated_message}"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/core.py:1170
 #, fuzzy
-#| msgid "Actions"
-msgid "Options"
-msgstr "Acciones"
+#~| msgid "Actions"
+#~ msgid "Options"
+#~ msgstr "Acciones"
 
-#: venv/lib/python3.13/site-packages/click/core.py:1245
-#, python-brace-format
-msgid "Got unexpected extra argument ({args})"
-msgid_plural "Got unexpected extra arguments ({args})"
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/click/core.py:1264
-msgid "DeprecationWarning: The command {name!r} is deprecated.{extra_message}"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/core.py:1448
-msgid "Aborted!"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/core.py:1822
-msgid "Commands"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/core.py:1853
-msgid "Missing command."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/core.py:1931
-msgid "No such command {name!r}."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/core.py:2355
-msgid "Value must be an iterable."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/core.py:2378
-#, python-brace-format
-msgid "Takes {nargs} values but 1 was given."
-msgid_plural "Takes {nargs} values but {len} were given."
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/click/core.py:2567
-msgid ""
-"DeprecationWarning: The {param_type} {name!r} is deprecated.{extra_message}"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/core.py:3015
-#, python-brace-format
-msgid "env var: {var}"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/core.py:3018
-#, python-brace-format
-msgid "default: {default}"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/core.py:3082
-msgid "(dynamic)"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/decorators.py:465
-#, python-format
-msgid "%(prog)s, version %(version)s"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/decorators.py:522
-msgid "Show the version and exit."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/decorators.py:548
-msgid "Show this message and exit."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/exceptions.py:50
-#: venv/lib/python3.13/site-packages/click/exceptions.py:89
-#, python-brace-format
-msgid "Error: {message}"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/exceptions.py:81
-#, python-brace-format
-msgid "Try '{command} {option}' for help."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/exceptions.py:130
-#, python-brace-format
-msgid "Invalid value: {message}"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/exceptions.py:132
-#, python-brace-format
-msgid "Invalid value for {param_hint}: {message}"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/exceptions.py:190
 #, fuzzy
-#| msgid "Permissions Management"
-msgid "Missing argument"
-msgstr "Gestión de Permisos"
+#~| msgid "Permissions Management"
+#~ msgid "Missing argument"
+#~ msgstr "Gestión de Permisos"
 
-#: venv/lib/python3.13/site-packages/click/exceptions.py:192
-msgid "Missing option"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/exceptions.py:194
-msgid "Missing parameter"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/exceptions.py:196
-#, python-brace-format
-msgid "Missing {param_type}"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/exceptions.py:203
-#, python-brace-format
-msgid "Missing parameter: {param_name}"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/exceptions.py:223
-#, python-brace-format
-msgid "No such option: {name}"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/exceptions.py:235
-#, python-brace-format
-msgid "Did you mean {possibility}?"
-msgid_plural "(Possible options: {possibilities})"
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/click/exceptions.py:282
-msgid "unknown error"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/exceptions.py:289
-msgid "Could not open file {filename!r}: {message}"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/formatting.py:156
-msgid "Usage:"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/parser.py:199
-msgid "Argument {name!r} takes {nargs} values."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/parser.py:381
-msgid "Option {name!r} does not take a value."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/parser.py:444
-msgid "Option {name!r} requires an argument."
-msgid_plural "Option {name!r} requires {nargs} arguments."
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/click/shell_completion.py:332
-msgid "Shell completion is not supported for Bash versions older than 4.4."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/shell_completion.py:339
-msgid "Couldn't detect Bash version, shell completion is not supported."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/termui.py:165
-msgid "Repeat for confirmation"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/termui.py:181
-msgid "Error: The value you entered was invalid."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/termui.py:183
-#, python-brace-format
-msgid "Error: {e.message}"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/termui.py:194
-msgid "Error: The two entered values do not match."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/termui.py:253
-msgid "Error: invalid input"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/termui.py:872
-msgid "Press any key to continue..."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/types.py:332
-#, python-brace-format
-msgid ""
-"Choose from:\n"
-"\t{choices}"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/types.py:369
-msgid "{value!r} is not {choice}."
-msgid_plural "{value!r} is not one of {choices}."
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/click/types.py:460
-msgid "{value!r} does not match the format {format}."
-msgid_plural "{value!r} does not match the formats {formats}."
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/click/types.py:482
-msgid "{value!r} is not a valid {number_type}."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/types.py:538
-#, python-brace-format
-msgid "{value} is not in the range {range}."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/types.py:719
-msgid "{value!r} is not a valid boolean. Recognized values: {states}"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/types.py:747
-msgid "{value!r} is not a valid UUID."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/types.py:937
 #, fuzzy
-#| msgid "Profile"
-msgid "file"
-msgstr "Perfil"
+#~| msgid "Profile"
+#~ msgid "file"
+#~ msgstr "Perfil"
 
-#: venv/lib/python3.13/site-packages/click/types.py:939
-msgid "directory"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/types.py:941
-msgid "path"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/types.py:988
-msgid "{name} {filename!r} does not exist."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/types.py:997
-msgid "{name} {filename!r} is a file."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/types.py:1005
-msgid "{name} {filename!r} is a directory."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/types.py:1014
-msgid "{name} {filename!r} is not readable."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/types.py:1023
-msgid "{name} {filename!r} is not writable."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/types.py:1032
-msgid "{name} {filename!r} is not executable."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/click/types.py:1099
-#, python-brace-format
-msgid "{len_type} values are required, but {len_value} was given."
-msgid_plural "{len_type} values are required, but {len_value} were given."
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/django/contrib/messages/apps.py:16
-msgid "Messages"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/contrib/sitemaps/apps.py:8
-msgid "Site Maps"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/contrib/staticfiles/apps.py:9
-msgid "Static Files"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/contrib/syndication/apps.py:7
 #, fuzzy
-#| msgid "Organization"
-msgid "Syndication"
-msgstr "Organización"
+#~| msgid "Enter your email address"
+#~ msgid "Enter a valid email address."
+#~ msgstr "Ingrese su dirección de correo electrónico"
 
-#. Translators: String used to replace omitted page numbers in elided page
-#. range generated by paginators, e.g. [1, 2, '…', 5, 6, 7, '…', 9, 10].
-#: venv/lib/python3.13/site-packages/django/core/paginator.py:30
-msgid "…"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/core/paginator.py:32
-msgid "That page number is not an integer"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/core/paginator.py:33
-msgid "That page number is less than 1"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/core/paginator.py:34
-msgid "That page contains no results"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:22
-msgid "Enter a valid value."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:70
-msgid "Enter a valid domain name."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:153
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:775
-msgid "Enter a valid URL."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:200
-msgid "Enter a valid integer."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:211
-#, fuzzy
-#| msgid "Enter your email address"
-msgid "Enter a valid email address."
-msgstr "Ingrese su dirección de correo electrónico"
-
-#. Translators: "letters" means latin letters: a-z and A-Z.
-#: venv/lib/python3.13/site-packages/django/core/validators.py:289
-msgid ""
-"Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:297
-msgid ""
-"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
-"hyphens."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:309
-#: venv/lib/python3.13/site-packages/django/core/validators.py:318
-#: venv/lib/python3.13/site-packages/django/core/validators.py:332
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2220
 #, fuzzy, python-format
-#| msgid "Enter your email address"
-msgid "Enter a valid %(protocol)s address."
-msgstr "Ingrese su dirección de correo electrónico"
+#~| msgid "Enter your email address"
+#~ msgid "Enter a valid %(protocol)s address."
+#~ msgstr "Ingrese su dirección de correo electrónico"
 
-#: venv/lib/python3.13/site-packages/django/core/validators.py:311
-msgid "IPv4"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:320
-#: venv/lib/python3.13/site-packages/django/utils/ipv6.py:43
-msgid "IPv6"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:334
-msgid "IPv4 or IPv6"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:375
-msgid "Enter only digits separated by commas."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:381
-#, python-format
-msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:416
-#, python-format
-msgid "Ensure this value is less than or equal to %(limit_value)s."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:425
-#, python-format
-msgid "Ensure this value is greater than or equal to %(limit_value)s."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:434
-#, python-format
-msgid "Ensure this value is a multiple of step size %(limit_value)s."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:441
-#, python-format
-msgid ""
-"Ensure this value is a multiple of step size %(limit_value)s, starting from "
-"%(offset)s, e.g. %(offset)s, %(valid_value1)s, %(valid_value2)s, and so on."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:473
-#, python-format
-msgid ""
-"Ensure this value has at least %(limit_value)d character (it has "
-"%(show_value)d)."
-msgid_plural ""
-"Ensure this value has at least %(limit_value)d characters (it has "
-"%(show_value)d)."
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:491
-#, python-format
-msgid ""
-"Ensure this value has at most %(limit_value)d character (it has "
-"%(show_value)d)."
-msgid_plural ""
-"Ensure this value has at most %(limit_value)d characters (it has "
-"%(show_value)d)."
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:514
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:366
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:405
 #, fuzzy
-#| msgid "Document number"
-msgid "Enter a number."
-msgstr "Número de documento"
+#~| msgid "Document number"
+#~ msgid "Enter a number."
+#~ msgstr "Número de documento"
 
-#: venv/lib/python3.13/site-packages/django/core/validators.py:516
-#, python-format
-msgid "Ensure that there are no more than %(max)s digit in total."
-msgid_plural "Ensure that there are no more than %(max)s digits in total."
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:521
-#, python-format
-msgid "Ensure that there are no more than %(max)s decimal place."
-msgid_plural "Ensure that there are no more than %(max)s decimal places."
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:526
-#, python-format
-msgid ""
-"Ensure that there are no more than %(max)s digit before the decimal point."
-msgid_plural ""
-"Ensure that there are no more than %(max)s digits before the decimal point."
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:597
-#, python-format
-msgid ""
-"File extension “%(extension)s” is not allowed. Allowed extensions are: "
-"%(allowed_extensions)s."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/core/validators.py:659
-msgid "Null characters are not allowed."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/base.py:1600
-#: venv/lib/python3.13/site-packages/django/forms/models.py:908
-msgid "and"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/base.py:1602
 #, fuzzy, python-format
-#| msgid "An account with this email already exists"
-msgid "%(model_name)s with this %(field_labels)s already exists."
-msgstr "Ya existe una cuenta con este correo electrónico."
+#~| msgid "An account with this email already exists"
+#~ msgid "%(model_name)s with this %(field_labels)s already exists."
+#~ msgstr "Ya existe una cuenta con este correo electrónico."
 
-#: venv/lib/python3.13/site-packages/django/db/models/constraints.py:22
-#, python-format
-msgid "Constraint “%(name)s” is violated."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:134
-#, python-format
-msgid "Value %(value)r is not a valid choice."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:135
-msgid "This field cannot be null."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:136
 #, fuzzy
-#| msgid "Email cannot be changed"
-msgid "This field cannot be blank."
-msgstr "El correo electrónico no se puede cambiar"
+#~| msgid "Email cannot be changed"
+#~ msgid "This field cannot be blank."
+#~ msgstr "El correo electrónico no se puede cambiar"
 
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:137
 #, fuzzy, python-format
-#| msgid "An account with this email already exists"
-msgid "%(model_name)s with this %(field_label)s already exists."
-msgstr "Ya existe una cuenta con este correo electrónico."
+#~| msgid "An account with this email already exists"
+#~ msgid "%(model_name)s with this %(field_label)s already exists."
+#~ msgstr "Ya existe una cuenta con este correo electrónico."
 
-#. Translators: The 'lookup_type' is one of 'date', 'year' or
-#. 'month'. Eg: "Title must be unique for pub_date year"
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:141
-#, python-format
-msgid ""
-"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:180
-#, python-format
-msgid "Field of type: %(field_type)s"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1162
-#, python-format
-msgid "“%(value)s” value must be either True or False."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1163
-#, python-format
-msgid "“%(value)s” value must be either True, False, or None."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1165
-msgid "Boolean (Either True or False)"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1215
-#, python-format
-msgid "String (up to %(max_length)s)"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1217
-msgid "String (unlimited)"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1326
-msgid "Comma-separated integers"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1427
-#, python-format
-msgid ""
-"“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
-"format."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1431
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1566
-#, python-format
-msgid ""
-"“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
-"date."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1435
-msgid "Date (without time)"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1562
-#, python-format
-msgid ""
-"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD "
-"HH:MM[:ss[.uuuuuu]][TZ] format."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1570
-#, python-format
-msgid ""
-"“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
-"[TZ]) but it is an invalid date/time."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1575
-msgid "Date (with time)"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1702
-#, python-format
-msgid "“%(value)s” value must be a decimal number."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1704
 #, fuzzy
-#| msgid "Document number"
-msgid "Decimal number"
-msgstr "Número de documento"
+#~| msgid "Document number"
+#~ msgid "Decimal number"
+#~ msgstr "Número de documento"
 
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1864
-#, python-format
-msgid ""
-"“%(value)s” value has an invalid format. It must be in [DD] "
-"[[HH:]MM:]ss[.uuuuuu] format."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1868
 #, fuzzy
-#| msgid "Description"
-msgid "Duration"
-msgstr "Descripción"
+#~| msgid "Description"
+#~ msgid "Duration"
+#~ msgstr "Descripción"
 
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1920
 #, fuzzy
-#| msgid "email address"
-msgid "Email address"
-msgstr "dirección de correo electrónico"
+#~| msgid "email address"
+#~ msgid "Email address"
+#~ msgstr "dirección de correo electrónico"
 
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1945
-msgid "File path"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2023
-#, python-format
-msgid "“%(value)s” value must be a float."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2025
-msgid "Floating point number"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2065
-#, python-format
-msgid "“%(value)s” value must be an integer."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2067
-msgid "Integer"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2163
-msgid "Big (8 byte) integer"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2180
-msgid "Small integer"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2188
 #, fuzzy
-#| msgid "email address"
-msgid "IPv4 address"
-msgstr "dirección de correo electrónico"
+#~| msgid "email address"
+#~ msgid "IPv4 address"
+#~ msgstr "dirección de correo electrónico"
 
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2219
 #, fuzzy
-#| msgid "Address"
-msgid "IP address"
-msgstr "Dirección"
+#~| msgid "Address"
+#~ msgid "IP address"
+#~ msgstr "Dirección"
 
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2310
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2311
-#, python-format
-msgid "“%(value)s” value must be either None, True or False."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2313
-msgid "Boolean (Either True, False or None)"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2364
-msgid "Positive big integer"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2379
-msgid "Positive integer"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2394
-msgid "Positive small integer"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2410
-#, python-format
-msgid "Slug (up to %(max_length)s)"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2446
-msgid "Text"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2526
-#, python-format
-msgid ""
-"“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
-"format."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2530
-#, python-format
-msgid ""
-"“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
-"invalid time."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2534
-msgid "Time"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2642
-msgid "URL"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2666
-msgid "Raw binary data"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2731
-#, python-format
-msgid "“%(value)s” is not a valid UUID."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2733
-msgid "Universally unique identifier"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/files.py:244
-msgid "File"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/files.py:420
-msgid "Image"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/json.py:24
-msgid "A JSON object"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/json.py:26
-msgid "Value must be valid JSON."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/related.py:978
-#, python-format
-msgid "%(model)s instance with %(field)s %(value)r is not a valid choice."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/related.py:981
-msgid "Foreign Key (type determined by related field)"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/related.py:1275
-msgid "One-to-one relationship"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/related.py:1332
-#, python-format
-msgid "%(from)s-%(to)s relationship"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/related.py:1334
-#, python-format
-msgid "%(from)s-%(to)s relationships"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/db/models/fields/related.py:1382
 #, fuzzy
-#| msgid "Many-to-Many Clear"
-msgid "Many-to-many relationship"
-msgstr "Muchos a muchos claro"
+#~| msgid "Many-to-Many Clear"
+#~ msgid "Many-to-many relationship"
+#~ msgstr "Muchos a muchos claro"
 
-#. Translators: If found as last label character, these punctuation
-#. characters will prevent the default label_suffix to be appended to the label
-#: venv/lib/python3.13/site-packages/django/forms/boundfield.py:185
-msgid ":?.!"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:95
 #, fuzzy
-#| msgid "User ID is required"
-msgid "This field is required."
-msgstr "Se requiere ID de usuario"
+#~| msgid "Invalid action"
+#~ msgid "Enter a valid duration."
+#~ msgstr "Acción no válida"
 
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:315
-msgid "Enter a whole number."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:486
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:1267
-msgid "Enter a valid date."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:509
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:1268
-msgid "Enter a valid time."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:536
-msgid "Enter a valid date/time."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:570
 #, fuzzy
-#| msgid "Invalid action"
-msgid "Enter a valid duration."
-msgstr "Acción no válida"
+#~| msgid "Orders"
+#~ msgid "Order"
+#~ msgstr "Órdenes"
 
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:571
-#, python-brace-format
-msgid "The number of days must be between {min_days} and {max_days}."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:640
-msgid "No file was submitted. Check the encoding type on the form."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:641
-msgid "No file was submitted."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:642
-msgid "The submitted file is empty."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:644
-#, python-format
-msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
-msgid_plural ""
-"Ensure this filename has at most %(max)d characters (it has %(length)d)."
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:649
-msgid "Please either submit a file or check the clear checkbox, not both."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:717
-msgid ""
-"Upload a valid image. The file you uploaded was either not an image or a "
-"corrupted image."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:889
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:975
-#: venv/lib/python3.13/site-packages/django/forms/models.py:1592
-#, python-format
-msgid "Select a valid choice. %(value)s is not one of the available choices."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:977
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:1096
-#: venv/lib/python3.13/site-packages/django/forms/models.py:1590
-msgid "Enter a list of values."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:1097
-msgid "Enter a complete value."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:1339
-msgid "Enter a valid UUID."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/fields.py:1369
-msgid "Enter a valid JSON."
-msgstr ""
-
-#. Translators: This is the default suffix added to form field labels
-#: venv/lib/python3.13/site-packages/django/forms/forms.py:97
-msgid ":"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/forms.py:239
-#, python-format
-msgid "(Hidden field %(name)s) %(error)s"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/formsets.py:61
-#, python-format
-msgid ""
-"ManagementForm data is missing or has been tampered with. Missing fields: "
-"%(field_names)s. You may need to file a bug report if the issue persists."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/formsets.py:65
-#, python-format
-msgid "Please submit at most %(num)d form."
-msgid_plural "Please submit at most %(num)d forms."
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/django/forms/formsets.py:70
-#, python-format
-msgid "Please submit at least %(num)d form."
-msgid_plural "Please submit at least %(num)d forms."
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/django/forms/formsets.py:484
-#: venv/lib/python3.13/site-packages/django/forms/formsets.py:491
 #, fuzzy
-#| msgid "Orders"
-msgid "Order"
-msgstr "Órdenes"
+#~| msgid "Save Changes"
+#~ msgid "Change"
+#~ msgstr "Guardar Cambios"
 
-#: venv/lib/python3.13/site-packages/django/forms/models.py:901
-#, python-format
-msgid "Please correct the duplicate data for %(field)s."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/models.py:906
-#, python-format
-msgid "Please correct the duplicate data for %(field)s, which must be unique."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/models.py:913
-#, python-format
-msgid ""
-"Please correct the duplicate data for %(field_name)s which must be unique "
-"for the %(lookup)s in %(date_field)s."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/models.py:922
-msgid "Please correct the duplicate values below."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/models.py:1359
-msgid "The inline value did not match the parent instance."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/models.py:1450
-msgid "Select a valid choice. That choice is not one of the available choices."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/models.py:1594
-#, python-format
-msgid "“%(pk)s” is not a valid value."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/utils.py:229
-#, python-format
-msgid ""
-"%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
-"may be ambiguous or it may not exist."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/widgets.py:527
-msgid "Clear"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/widgets.py:528
-msgid "Currently"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/widgets.py:529
 #, fuzzy
-#| msgid "Save Changes"
-msgid "Change"
-msgstr "Guardar Cambios"
+#~| msgid "Night"
+#~ msgid "midnight"
+#~ msgstr "Noche"
 
-#: venv/lib/python3.13/site-packages/django/forms/widgets.py:866
-msgid "Unknown"
-msgstr ""
-
-#. Translators: Please do not add spaces around commas.
-#: venv/lib/python3.13/site-packages/django/template/defaultfilters.py:873
-msgid "yes,no,maybe"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/template/defaultfilters.py:903
-#: venv/lib/python3.13/site-packages/django/template/defaultfilters.py:920
-#, python-format
-msgid "%(size)d byte"
-msgid_plural "%(size)d bytes"
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/django/template/defaultfilters.py:922
-#, python-format
-msgid "%s KB"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/template/defaultfilters.py:924
-#, python-format
-msgid "%s MB"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/template/defaultfilters.py:926
-#, python-format
-msgid "%s GB"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/template/defaultfilters.py:928
-#, python-format
-msgid "%s TB"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/template/defaultfilters.py:930
-#, python-format
-msgid "%s PB"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dateformat.py:74
-msgid "p.m."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dateformat.py:75
-msgid "a.m."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dateformat.py:80
-msgid "PM"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dateformat.py:81
-msgid "AM"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dateformat.py:153
 #, fuzzy
-#| msgid "Night"
-msgid "midnight"
-msgstr "Noche"
+#~| msgid "Afternoon"
+#~ msgid "noon"
+#~ msgstr "Tarde"
 
-#: venv/lib/python3.13/site-packages/django/utils/dateformat.py:155
 #, fuzzy
-#| msgid "Afternoon"
-msgid "noon"
-msgstr "Tarde"
+#~| msgid "Morning"
+#~ msgid "Mon"
+#~ msgstr "Mañana"
 
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:7
-msgid "Monday"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:8
-msgid "Tuesday"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:9
-msgid "Wednesday"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:10
-msgid "Thursday"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:11
-msgid "Friday"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:12
-msgid "Saturday"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:13
-msgid "Sunday"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:16
 #, fuzzy
-#| msgid "Morning"
-msgid "Mon"
-msgstr "Mañana"
+#~| msgid "Status"
+#~ msgid "Sat"
+#~ msgstr "Estado"
 
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:17
-msgid "Tue"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:18
-msgid "Wed"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:19
-msgid "Thu"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:20
-msgid "Fri"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:21
 #, fuzzy
-#| msgid "Status"
-msgid "Sat"
-msgstr "Estado"
+#~| msgid "May"
+#~ msgid "may"
+#~ msgstr "Mayo"
 
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:22
-msgid "Sun"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:39
-msgid "jan"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:40
-msgid "feb"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:41
-msgid "mar"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:42
-msgid "apr"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:43
 #, fuzzy
-#| msgid "May"
-msgid "may"
-msgstr "Mayo"
+#~| msgid "March"
+#~ msgctxt "abbrev. month"
+#~ msgid "March"
+#~ msgstr "Marzo"
 
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:44
-msgid "jun"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:45
-msgid "jul"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:46
-msgid "aug"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:47
-msgid "sep"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:48
-msgid "oct"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:49
-msgid "nov"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:50
-msgid "dec"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:53
-msgctxt "abbrev. month"
-msgid "Jan."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:54
-msgctxt "abbrev. month"
-msgid "Feb."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:55
 #, fuzzy
-#| msgid "March"
-msgctxt "abbrev. month"
-msgid "March"
-msgstr "Marzo"
+#~| msgid "April"
+#~ msgctxt "abbrev. month"
+#~ msgid "April"
+#~ msgstr "Abril"
 
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:56
 #, fuzzy
-#| msgid "April"
-msgctxt "abbrev. month"
-msgid "April"
-msgstr "Abril"
+#~| msgid "May"
+#~ msgctxt "abbrev. month"
+#~ msgid "May"
+#~ msgstr "Mayo"
 
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:57
 #, fuzzy
-#| msgid "May"
-msgctxt "abbrev. month"
-msgid "May"
-msgstr "Mayo"
+#~| msgid "June"
+#~ msgctxt "abbrev. month"
+#~ msgid "June"
+#~ msgstr "Junio"
 
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:58
 #, fuzzy
-#| msgid "June"
-msgctxt "abbrev. month"
-msgid "June"
-msgstr "Junio"
+#~| msgid "July"
+#~ msgctxt "abbrev. month"
+#~ msgid "July"
+#~ msgstr "Julio"
 
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:59
 #, fuzzy
-#| msgid "July"
-msgctxt "abbrev. month"
-msgid "July"
-msgstr "Julio"
+#~| msgid "January"
+#~ msgctxt "alt. month"
+#~ msgid "January"
+#~ msgstr "Enero"
 
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:60
-msgctxt "abbrev. month"
-msgid "Aug."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:61
-msgctxt "abbrev. month"
-msgid "Sept."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:62
-msgctxt "abbrev. month"
-msgid "Oct."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:63
-msgctxt "abbrev. month"
-msgid "Nov."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:64
-msgctxt "abbrev. month"
-msgid "Dec."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:67
 #, fuzzy
-#| msgid "January"
-msgctxt "alt. month"
-msgid "January"
-msgstr "Enero"
+#~| msgid "February"
+#~ msgctxt "alt. month"
+#~ msgid "February"
+#~ msgstr "Febrero"
 
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:68
 #, fuzzy
-#| msgid "February"
-msgctxt "alt. month"
-msgid "February"
-msgstr "Febrero"
+#~| msgid "March"
+#~ msgctxt "alt. month"
+#~ msgid "March"
+#~ msgstr "Marzo"
 
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:69
 #, fuzzy
-#| msgid "March"
-msgctxt "alt. month"
-msgid "March"
-msgstr "Marzo"
+#~| msgid "April"
+#~ msgctxt "alt. month"
+#~ msgid "April"
+#~ msgstr "Abril"
 
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:70
 #, fuzzy
-#| msgid "April"
-msgctxt "alt. month"
-msgid "April"
-msgstr "Abril"
+#~| msgid "May"
+#~ msgctxt "alt. month"
+#~ msgid "May"
+#~ msgstr "Mayo"
 
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:71
 #, fuzzy
-#| msgid "May"
-msgctxt "alt. month"
-msgid "May"
-msgstr "Mayo"
+#~| msgid "June"
+#~ msgctxt "alt. month"
+#~ msgid "June"
+#~ msgstr "Junio"
 
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:72
 #, fuzzy
-#| msgid "June"
-msgctxt "alt. month"
-msgid "June"
-msgstr "Junio"
+#~| msgid "July"
+#~ msgctxt "alt. month"
+#~ msgid "July"
+#~ msgstr "Julio"
 
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:73
 #, fuzzy
-#| msgid "July"
-msgctxt "alt. month"
-msgid "July"
-msgstr "Julio"
+#~| msgid "August"
+#~ msgctxt "alt. month"
+#~ msgid "August"
+#~ msgstr "Agosto"
 
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:74
 #, fuzzy
-#| msgid "August"
-msgctxt "alt. month"
-msgid "August"
-msgstr "Agosto"
+#~| msgid "September"
+#~ msgctxt "alt. month"
+#~ msgid "September"
+#~ msgstr "Septiembre"
 
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:75
 #, fuzzy
-#| msgid "September"
-msgctxt "alt. month"
-msgid "September"
-msgstr "Septiembre"
+#~| msgid "October"
+#~ msgctxt "alt. month"
+#~ msgid "October"
+#~ msgstr "Octubre"
 
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:76
 #, fuzzy
-#| msgid "October"
-msgctxt "alt. month"
-msgid "October"
-msgstr "Octubre"
+#~| msgid "November"
+#~ msgctxt "alt. month"
+#~ msgid "November"
+#~ msgstr "Noviembre"
 
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:77
 #, fuzzy
-#| msgid "November"
-msgctxt "alt. month"
-msgid "November"
-msgstr "Noviembre"
-
-#: venv/lib/python3.13/site-packages/django/utils/dates.py:78
-#, fuzzy
-#| msgid "December"
-msgctxt "alt. month"
-msgid "December"
-msgstr "Diciembre"
-
-#: venv/lib/python3.13/site-packages/django/utils/ipv6.py:20
-msgid "This is not a valid IPv6 address."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/text.py:76
-#, python-format
-msgctxt "String to return when truncating text"
-msgid "%(truncated_text)s…"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/text.py:287
-msgid "or"
-msgstr ""
-
-#. Translators: This string is used as a separator between list elements
-#: venv/lib/python3.13/site-packages/django/utils/text.py:306
-#: venv/lib/python3.13/site-packages/django/utils/timesince.py:135
-msgid ", "
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/utils/timesince.py:8
-#, python-format
-msgid "%(num)d year"
-msgid_plural "%(num)d years"
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/django/utils/timesince.py:9
-#, python-format
-msgid "%(num)d month"
-msgid_plural "%(num)d months"
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/django/utils/timesince.py:10
-#, python-format
-msgid "%(num)d week"
-msgid_plural "%(num)d weeks"
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/django/utils/timesince.py:11
-#, python-format
-msgid "%(num)d day"
-msgid_plural "%(num)d days"
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/django/utils/timesince.py:12
-#, python-format
-msgid "%(num)d hour"
-msgid_plural "%(num)d hours"
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/django/utils/timesince.py:13
-#, python-format
-msgid "%(num)d minute"
-msgid_plural "%(num)d minutes"
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.13/site-packages/django/views/csrf.py:30
-msgid "CSRF verification failed. Request aborted."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/csrf.py:34
-msgid ""
-"You are seeing this message because this HTTPS site requires a “Referer "
-"header” to be sent by your web browser, but none was sent. This header is "
-"required for security reasons, to ensure that your browser is not being "
-"hijacked by third parties."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/csrf.py:40
-msgid ""
-"If you have configured your browser to disable “Referer” headers, please re-"
-"enable them, at least for this site, or for HTTPS connections, or for “same-"
-"origin” requests."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/csrf.py:45
-msgid ""
-"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
-"including the “Referrer-Policy: no-referrer” header, please remove them. The "
-"CSRF protection requires the “Referer” header to do strict referer checking. "
-"If you’re concerned about privacy, use alternatives like <a "
-"rel=\"noreferrer\" …> for links to third-party sites."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/csrf.py:54
-msgid ""
-"You are seeing this message because this site requires a CSRF cookie when "
-"submitting forms. This cookie is required for security reasons, to ensure "
-"that your browser is not being hijacked by third parties."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/csrf.py:60
-msgid ""
-"If you have configured your browser to disable cookies, please re-enable "
-"them, at least for this site, or for “same-origin” requests."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/csrf.py:66
-msgid "More information is available with DEBUG=True."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/generic/dates.py:44
-msgid "No year specified"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/generic/dates.py:64
-#: venv/lib/python3.13/site-packages/django/views/generic/dates.py:115
-#: venv/lib/python3.13/site-packages/django/views/generic/dates.py:214
-msgid "Date out of range"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/generic/dates.py:94
-msgid "No month specified"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/generic/dates.py:147
-msgid "No day specified"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/generic/dates.py:194
-msgid "No week specified"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/generic/dates.py:353
-#: venv/lib/python3.13/site-packages/django/views/generic/dates.py:384
-#, python-format
-msgid "No %(verbose_name_plural)s available"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/generic/dates.py:680
-#, python-format
-msgid ""
-"Future %(verbose_name_plural)s not available because "
-"%(class_name)s.allow_future is False."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/generic/dates.py:720
-#, python-format
-msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/generic/detail.py:56
-#, python-format
-msgid "No %(verbose_name)s found matching the query"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/generic/list.py:70
-msgid "Page is not “last”, nor can it be converted to an int."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/generic/list.py:77
-#, python-format
-msgid "Invalid page (%(page_number)s): %(message)s"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/generic/list.py:173
-#, python-format
-msgid "Empty list and “%(class_name)s.allow_empty” is False."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/static.py:49
-msgid "Directory indexes are not allowed here."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/static.py:51
-#, python-format
-msgid "“%(path)s” does not exist"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/static.py:68
-#: venv/lib/python3.13/site-packages/django/views/templates/directory_index.html:8
-#: venv/lib/python3.13/site-packages/django/views/templates/directory_index.html:11
-#, python-format
-msgid "Index of %(directory)s"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/templates/default_urlconf.html:7
-#: venv/lib/python3.13/site-packages/django/views/templates/default_urlconf.html:204
-msgid "The install worked successfully! Congratulations!"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/templates/default_urlconf.html:206
-#, python-format
-msgid ""
-"View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
-"target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/templates/default_urlconf.html:208
-#, python-format
-msgid ""
-"You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
-"%(version)s/ref/settings/#debug\" target=\"_blank\" "
-"rel=\"noopener\">DEBUG=True</a> is in your settings file and you have not "
-"configured any URLs."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/templates/default_urlconf.html:217
-msgid "Django Documentation"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/templates/default_urlconf.html:218
-msgid "Topics, references, &amp; how-to’s"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/templates/default_urlconf.html:226
-msgid "Tutorial: A Polling App"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/templates/default_urlconf.html:227
-msgid "Get started with Django"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/templates/default_urlconf.html:235
-msgid "Django Community"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/views/templates/default_urlconf.html:236
-msgid "Connect, get help, or contribute"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/kombu/transport/qpid.py:1311
-#, python-format
-msgid "Attempting to connect to qpid with SASL mechanism %s"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/kombu/transport/qpid.py:1316
-#, python-format
-msgid "Connected to qpid with SASL mechanism %s"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/kombu/transport/qpid.py:1334
-#, python-format
-msgid "Unable to connect to qpid with SASL mechanism %s"
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/timezone_field/rest_framework.py:10
-msgid "A valid timezone is required."
-msgstr ""
+#~| msgid "December"
+#~ msgctxt "alt. month"
+#~ msgid "December"
+#~ msgstr "Diciembre"
 
 #~ msgid "Agency"
 #~ msgstr "Agencia"
-
-#~ msgid "Agency associated with this person"
-#~ msgstr "Agencia asociada con esta persona"
 
 #~ msgid "Is Child Account"
 #~ msgstr "Es Cuenta Infantil"
@@ -3038,12 +2160,6 @@ msgstr ""
 
 #~ msgid "Most Used Panels"
 #~ msgstr "Paneles Más Usados"
-
-#~ msgid "Rejected"
-#~ msgstr "Rechazado"
-
-#~ msgid "Delivered"
-#~ msgstr "Entregado"
 
 #~ msgid "Not delivered"
 #~ msgstr "No entregado"

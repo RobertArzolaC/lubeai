@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel
 
@@ -124,3 +125,8 @@ class Report(TimeStampedModel, BaseUserTracked, IsActive):
     def __str__(self) -> str:
         """Return string representation of report."""
         return f"Report {self.lab_number} - {self.get_condition_display()}"
+
+    @cached_property
+    def component_name(self) -> str:
+        """Return the name of the associated component, or 'N/A' if none."""
+        return self.component.type.name if self.component else "N/A"
