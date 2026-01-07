@@ -120,4 +120,4 @@ class Component(TimeStampedModel, BaseUserTracked, IsActive):
     def __str__(self) -> str:
         """Return string representation of component."""
         type_name = self.type.name if self.type else "Unknown Type"
-        return f"{type_name} - {self.serial_number} ({self.machine.name})"
+        return f"{type_name} - {self.serial_number}"

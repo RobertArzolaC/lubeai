@@ -37,14 +37,15 @@
                         <li>{% trans "Column C: Machine Name (must exist in system)" %}</li>
                         <li>{% trans "Column D: Component Name (must exist in system)" %}</li>
                         <li>{% trans "Column E: Lubricant (optional)" %}</li>
-                        <li>{% trans "Column F: Lubricant Hours/Kms (optional)" %}</li>
-                        <li>{% trans "Column G: Serial Number Code (optional)" %}</li>
-                        <li>{% trans "Column H: Sample Date (YYYY-MM-DD format)" %}</li>
-                        <li>{% trans "Column I: PER Number (optional)" %}</li>
-                        <li>{% trans "Column J: Reception Date (YYYY-MM-DD format, optional)" %}</li>
-                        <li>{% trans "Column K: Status (PENDING, REVIEWED, APPROVED, REJECTED)" %}</li>
-                        <li>{% trans "Column L: Condition (NORMAL, CAUTION, CRITICAL, SEVERE)" %}</li>
-                        <li>{% trans "Column M: Notes (optional)" %}</li>
+                        <li>{% trans "Column F: Lubricant Hours (optional)" %}</li>
+                        <li>{% trans "Column G: Lubricant Kilometers (optional)" %}</li>
+                        <li>{% trans "Column H: Serial Number Code (optional)" %}</li>
+                        <li>{% trans "Column I: Sample Date (YYYY-MM-DD format)" %}</li>
+                        <li>{% trans "Column J: PER Number (optional)" %}</li>
+                        <li>{% trans "Column K: Reception Date (YYYY-MM-DD format, optional)" %}</li>
+                        <li>{% trans "Column L: Status (PENDING, REVIEWED, APPROVED, REJECTED)" %}</li>
+                        <li>{% trans "Column M: Condition (NORMAL, CAUTION, CRITICAL, SEVERE)" %}</li>
+                        <li>{% trans "Column N: Notes (optional)" %}</li>
                         <li>{% trans "Upload only .xlsx files (maximum 5MB)" %}</li>
                         <li>{% trans "If a report with the same lab number exists, it will be updated" %}</li>
                     </ul>
@@ -104,6 +105,7 @@
                                     <th>K</th>
                                     <th>L</th>
                                     <th>M</th>
+                                    <th>N</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -113,7 +115,8 @@
                                     <td><strong>{% trans "MACHINE" %}</strong></td>
                                     <td><strong>{% trans "COMPONENT" %}</strong></td>
                                     <td><strong>{% trans "LUBRICANT" %}</strong></td>
-                                    <td><strong>{% trans "LUBRICANT HOURS/KMS" %}</strong></td>
+                                    <td><strong>{% trans "LUBRICANT HOURS" %}</strong></td>
+                                    <td><strong>{% trans "LUBRICANT KMS" %}</strong></td>
                                     <td><strong>{% trans "SERIAL NUMBER CODE" %}</strong></td>
                                     <td><strong>{% trans "SAMPLE DATE" %}</strong></td>
                                     <td><strong>{% trans "PER NUMBER" %}</strong></td>
@@ -129,6 +132,7 @@
                                     <td>Motor</td>
                                     <td>Shell Oil</td>
                                     <td>1000</td>
+                                    <td>5000</td>
                                     <td>SN123456</td>
                                     <td>2024-01-01</td>
                                     <td>PER001</td>

@@ -163,12 +163,24 @@
 
                     <div class="row mb-6">
                         <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                            {{ form.lubricant_hours_kms.label }}
+                            {{ form.lubricant_hours.label }}
                         </label>
                         <div class="col-lg-8 fv-row fv-plugins-icon-container">
-                            {% render_field form.lubricant_hours_kms class="form-control form-control-lg" placeholder="Hours or kilometers" %}
+                            {% render_field form.lubricant_hours class="form-control form-control-lg" placeholder="Hours" %}
                             <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                                {{ form.lubricant_hours_kms.errors }}
+                                {{ form.lubricant_hours.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                            {{ form.lubricant_kms.label }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                            {% render_field form.lubricant_kms class="form-control form-control-lg" placeholder="Kilometers" %}
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                {{ form.lubricant_kms.errors }}
                             </div>
                         </div>
                     </div>

@@ -18,7 +18,8 @@ class ReportForm(forms.ModelForm):
             "component",
             "lab_number",
             "lubricant",
-            "lubricant_hours_kms",
+            "lubricant_hours",
+            "lubricant_kms",
             "serial_number_code",
             "sample_date",
             "per_number",
@@ -34,9 +35,10 @@ class ReportForm(forms.ModelForm):
             "component": forms.Select(attrs={"class": "form-select"}),
             "lab_number": forms.TextInput(attrs={"class": "form-control"}),
             "lubricant": forms.TextInput(attrs={"class": "form-control"}),
-            "lubricant_hours_kms": forms.NumberInput(
+            "lubricant_hours": forms.NumberInput(
                 attrs={"class": "form-control"}
             ),
+            "lubricant_kms": forms.NumberInput(attrs={"class": "form-control"}),
             "serial_number_code": forms.TextInput(
                 attrs={"class": "form-control"}
             ),

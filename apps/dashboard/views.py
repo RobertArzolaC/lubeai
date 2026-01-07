@@ -42,9 +42,12 @@ class DashboardView(OrganizationRequiredMixin, TemplateView):
 
             # Ensure all condition choices are represented with default 0 values
             condition_stats = {}
+            condition_stats_parts = {}
             for choice, _ in ReportCondition.choices:
-                condition_stats[choice] = condition_stats_raw.get(
-                    choice.title(), 0
+                translated_label = str(dict(ReportCondition.choices)[choice])
+                condition_stats[choice] = condition_stats_raw.get(choice, 0)
+                condition_stats_parts[translated_label] = (
+                    condition_stats_raw.get(choice, 0)
                 )
 
             # Count by status
@@ -55,7 +58,8 @@ class DashboardView(OrganizationRequiredMixin, TemplateView):
             # Ensure all status choices are represented with default 0 values
             status_stats = {}
             for choice, _ in ReportStatus.choices:
-                status_stats[choice] = status_stats_raw.get(choice, 0)
+                translated_label = str(dict(ReportStatus.choices)[choice])
+                status_stats[translated_label] = status_stats_raw.get(choice, 0)
 
             # Historical data by month (all time)
             monthly_data = (
@@ -91,6 +95,7 @@ class DashboardView(OrganizationRequiredMixin, TemplateView):
                     "organization": organization,
                     "total_reports": total_reports,
                     "condition_stats": condition_stats,
+                    "condition_stats_parts": condition_stats_parts,
                     "status_stats": status_stats,
                     "monthly_data": list(monthly_data),
                     "machines": machines,
@@ -414,7 +419,8 @@ class DashboardExportView(LoginRequiredMixin, OrganizationRequiredMixin, View):
             "Machine",
             "Component",
             "Lubricant",
-            "Lubricant Hours/Kms",
+            "Lubricant Hours",
+            "Lubricant Kms",
             "Serial Number Code",
             "Sample Date",
             "Reception Date",
@@ -450,21 +456,22 @@ class DashboardExportView(LoginRequiredMixin, OrganizationRequiredMixin, View):
             )
             worksheet.cell(row=row, column=4).value = report.lubricant
             worksheet.cell(row=row, column=5).value = (
-                float(report.lubricant_hours_kms)
-                if report.lubricant_hours_kms
-                else ""
+                report.lubricant_hours if report.lubricant_hours else ""
             )
-            worksheet.cell(row=row, column=6).value = report.serial_number_code
-            worksheet.cell(row=row, column=7).value = report.sample_date
-            worksheet.cell(row=row, column=8).value = report.reception_date
-            worksheet.cell(
-                row=row, column=9
-            ).value = report.get_status_display()
+            worksheet.cell(row=row, column=6).value = (
+                report.lubricant_kms if report.lubricant_kms else ""
+            )
+            worksheet.cell(row=row, column=7).value = report.serial_number_code
+            worksheet.cell(row=row, column=8).value = report.sample_date
+            worksheet.cell(row=row, column=9).value = report.reception_date
             worksheet.cell(
                 row=row, column=10
+            ).value = report.get_status_display()
+            worksheet.cell(
+                row=row, column=11
             ).value = report.get_condition_display()
-            worksheet.cell(row=row, column=11).value = report.per_number
-            worksheet.cell(row=row, column=12).value = report.notes
+            worksheet.cell(row=row, column=12).value = report.per_number
+            worksheet.cell(row=row, column=13).value = report.notes
 
         # Auto-adjust column widths
         for column in worksheet.columns:

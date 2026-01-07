@@ -56,13 +56,17 @@ class Report(TimeStampedModel, BaseUserTracked, IsActive):
         blank=True,
         help_text=_("Lubricant type/brand used"),
     )
-    lubricant_hours_kms = models.DecimalField(
-        _("Lubricant Hours/Kms"),
-        max_digits=12,
-        decimal_places=2,
+    lubricant_hours = models.IntegerField(
+        _("Lubricant Hours"),
         null=True,
         blank=True,
-        help_text=_("Hours or kilometers of lubricant usage"),
+        help_text=_("Hours of lubricant usage"),
+    )
+    lubricant_kms = models.IntegerField(
+        _("Lubricant Kilometers"),
+        null=True,
+        blank=True,
+        help_text=_("Kilometers of lubricant usage"),
     )
     serial_number_code = models.CharField(
         _("Serial Number Code"),

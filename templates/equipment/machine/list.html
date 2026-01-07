@@ -158,6 +158,10 @@
         {% include "includes/pagination.html" %}
     {% endif %}
 </main>
+
+<!-- CSRF Token for AJAX requests -->
+{% csrf_token %}
+
 {% endblock %}
 
 {% block extra_js %}

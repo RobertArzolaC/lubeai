@@ -170,7 +170,7 @@
                         <label class="col-lg-4 fw-semibold text-muted">{% trans "Component" %}</label>
                         <div class="col-lg-8">
                             {% if report.component %}
-                                <span class="fw-bold fs-6 text-gray-800">{{ report.component.name }}</span>
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.component_name }}</span>
                             {% else %}
                                 <span class="text-muted">-</span>
                             {% endif %}
@@ -189,10 +189,21 @@
                     </div>
 
                     <div class="row mb-7">
-                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Lubricant Hours/Kms" %}</label>
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Lubricant Hours" %}</label>
                         <div class="col-lg-8">
-                            {% if report.lubricant_hours_kms %}
-                                <span class="fw-bold fs-6 text-gray-800">{{ report.lubricant_hours_kms }}</span>
+                            {% if report.lubricant_hours %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.lubricant_hours }}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Lubricant Kilometers" %}</label>
+                        <div class="col-lg-8">
+                            {% if report.lubricant_kms %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.lubricant_kms }}</span>
                             {% else %}
                                 <span class="text-muted">-</span>
                             {% endif %}

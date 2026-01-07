@@ -17,4 +17,3 @@ class ReportCondition(models.TextChoices):
     NORMAL = "NORMAL", _("Normal")
     CAUTION = "CAUTION", _("Caution")
     CRITICAL = "CRITICAL", _("Critical")
-    SEVERE = "SEVERE", _("Severe")

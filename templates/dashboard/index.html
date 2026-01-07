@@ -134,8 +134,8 @@
                   </span>
                 </div>
                 <div class="text-end flex-grow-1">
-                  <span class="text-muted fw-bolder d-block fs-7">{% trans "Critical/Severe" %}</span>
-                  <span class="text-dark fw-bolder fs-3x" id="criticalConditionKPI">{{ condition_stats.CRITICAL|default:0|add:condition_stats.SEVERE|default:0 }}</span>
+                  <span class="text-muted fw-bolder d-block fs-7">{% trans "Critical" %}</span>
+                  <span class="text-dark fw-bolder fs-3x" id="criticalConditionKPI">{{ condition_stats.CRITICAL|default:0 }}</span>
                 </div>
               </div>
             </div>
@@ -283,7 +283,7 @@
 
           // Initial data from context
           const initialData = {
-              condition_data: {{ condition_stats|safe }},
+              condition_data: {{ condition_stats_parts|safe }},
               status_data: {{ status_stats|safe }},
               monthly_data: {{ monthly_data|safe }},
               total_reports: {{ total_reports }}
@@ -305,7 +305,7 @@
                       height: 350
                   },
                   labels: Object.keys(data.condition_data || {}),
-                  colors: ['#50CD89', '#FFC700', '#F1416C', '#7239EA'],
+                  colors: ['#50CD89', '#FFC700', '#F1416C'],
                   legend: {
                       position: 'bottom'
                   },

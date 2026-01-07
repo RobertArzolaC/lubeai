@@ -26,7 +26,7 @@ from openpyxl.styles import Font
 
 from apps.core import mixins as core_mixins
 from apps.equipment import models as equipment_models
-from apps.reports import filtersets, forms, models
+from apps.reports import choices, filtersets, forms, models
 from apps.users import models as users_models
 
 logger = logging.getLogger(__name__)
@@ -282,7 +282,7 @@ class ReportBulkUploadView(
             status,
             condition,
             notes,
-        ) = row[:13]
+        ) = row[:14]
 
         # Validate required fields
         if not lab_number:
@@ -307,12 +307,13 @@ class ReportBulkUploadView(
                 machine = equipment_models.Machine.objects.get(
                     organization=organization,
                     name__iexact=machine_name,
+                    serial_number__iexact=lab_number,
                     is_active=True,
                 )
             except equipment_models.Machine.DoesNotExist:
                 logger.debug(
                     f"Machine lookup failed - Row {row_num}, "
-                    f"Machine: {machine_name}, Organization: {organization_name}"
+                    f"Machine: {machine_name}, Serial Number: {serial_number_code}, Organization: {organization_name}"
                 )
                 raise ValidationError(
                     _("Machine '%(name)s' not found") % {"name": machine_name}
@@ -348,6 +349,9 @@ class ReportBulkUploadView(
                 )
 
         # Create or update report
+        lubricant_hours_kms = self._parse_integer(lubricant_hours_kms)
+        lub_hours = lubricant_hours_kms if lubricant_hours_kms < 1000 else 0
+        lub_kms = lubricant_hours_kms if lubricant_hours_kms >= 1000 else 0
         report, created = models.Report.objects.update_or_create(
             lab_number=lab_number,
             defaults={
@@ -355,13 +359,15 @@ class ReportBulkUploadView(
                 "machine": machine,
                 "component": component,
                 "lubricant": lubricant or "",
-                "lubricant_hours_kms": self._parse_number(lubricant_hours_kms),
+                "lubricant_hours": self._parse_integer(lub_hours),
+                "lubricant_kms": self._parse_integer(lub_kms),
                 "serial_number_code": serial_number_code or "",
                 "sample_date": self._parse_date(sample_date),
                 "per_number": per_number or "",
                 "reception_date": self._parse_date(reception_date),
                 "status": self._parse_status(status),
-                "condition": condition or models.choices.ReportCondition.NORMAL,
+                "condition": self._parse_condition(condition)
+                or choices.ReportCondition.NORMAL,
                 "notes": notes or "",
                 "is_active": True,
                 "created_by": self.request.user,
@@ -374,7 +380,7 @@ class ReportBulkUploadView(
     def _parse_status(self, status_value):
         """Parse status value to valid ReportStatus choice."""
         if not status_value:
-            return models.choices.ReportStatus.PENDING
+            return choices.ReportStatus.PENDING
 
         options = dict(
             pendiente="PENDING",
@@ -386,22 +392,22 @@ class ReportBulkUploadView(
         if status_key in options:
             return options[status_key]
 
-        return models.choices.ReportStatus.PENDING
+        return choices.ReportStatus.PENDING
 
-    def _parse_number(self, number_value):
-        """Parse number value to integer or float."""
-        if "-" in str(number_value):
+    def _parse_integer(self, number_value):
+        """Parse number value to integer."""
+        if not number_value or number_value == "-":
             return 0
 
-        if "horas" in str(number_value).lower():
-            number_value = str(number_value).lower()
-            return number_value.replace("horas", "").strip()
+        try:
+            # Clean the value from any text (like 'horas', 'km')
+            value_str = str(number_value).strip().lower()
+            value_str = value_str.replace("horas", "").replace("km", "").strip()
 
-        if "km" in str(number_value).lower():
-            number_value = str(number_value).lower()
-            return number_value.replace("km", "").strip()
-
-        return number_value
+            # Convert to integer
+            return int(float(value_str))
+        except (ValueError, TypeError):
+            return 0
 
     def _parse_date(self, date_string):
         """Parse date string to Django date object."""
@@ -433,6 +439,22 @@ class ReportBulkUploadView(
             return parsed_date
 
         return None
+
+    def _parse_condition(self, condition_value):
+        """Parse condition value to valid ReportCondition choice."""
+        if not condition_value:
+            return choices.ReportCondition.NORMAL
+
+        options = dict(
+            normal=choices.ReportCondition.NORMAL,
+            caution=choices.ReportCondition.CAUTION,
+            critical=choices.ReportCondition.CRITICAL,
+        )
+        condition_key = str(condition_value).strip().lower()
+        if condition_key in options:
+            return options[condition_key]
+
+        return choices.ReportCondition.NORMAL
 
     def _show_results_messages(self, results):
         """Show result messages to user."""
