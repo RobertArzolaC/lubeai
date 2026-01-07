@@ -241,7 +241,12 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Error fetching preview:', error);
-                alert('{% trans "Error loading preview. Please try again." %}');
+                Swal.fire({
+                    icon: 'error',
+                    title: '{% trans "Error" %}',
+                    text: '{% trans "Error loading preview. Please try again." %}',
+                    confirmButtonText: '{% trans "OK" %}'
+                });
 
                 // Hide loading, show initial state
                 loadingSection.classList.add('d-none');
@@ -274,7 +279,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Show success message
             setTimeout(() => {
-                alert('{% trans "Export started! The file will download shortly." %}');
+                Swal.fire({
+                    icon: 'success',
+                    title: '{% trans "Success" %}',
+                    text: '{% trans "Export started! The file will download shortly." %}',
+                    confirmButtonText: '{% trans "OK" %}',
+                    timer: 3000,
+                    timerProgressBar: true
+                });
             }, 100);
         }
     });

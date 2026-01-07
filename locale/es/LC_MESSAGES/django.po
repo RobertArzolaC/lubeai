@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-07 11:16-0500\n"
+"POT-Creation-Date: 2026-01-07 11:45-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -228,11 +228,11 @@ msgstr "Tipo de contenido del objeto relacionado."
 msgid "Primary key of the related object."
 msgstr "Clave primaria del objeto relacionado."
 
-#: apps/core/models.py:174 apps/equipment/filtersets.py:21
-#: apps/reports/filtersets.py:31 apps/reports/models.py:96
-#: apps/users/filtersets.py:15 apps/users/filtersets.py:46
-#: templates/dashboard/export.html:71 templates/dashboard/index.html:58
-#: templates/dashboard/index.html:222
+#: apps/core/models.py:174 apps/dashboard/views.py:449
+#: apps/equipment/filtersets.py:21 apps/reports/filtersets.py:31
+#: apps/reports/models.py:96 apps/users/filtersets.py:15
+#: apps/users/filtersets.py:46 templates/dashboard/export.html:71
+#: templates/dashboard/index.html:58 templates/dashboard/index.html:222
 #: templates/equipment/machine/detail.html:76
 #: templates/equipment/machine/detail.html:164
 #: templates/equipment/machine/list.html:66
@@ -314,13 +314,14 @@ msgstr "Fecha de Fin"
 msgid "All Machines"
 msgstr "Todas las máquinas"
 
-#: apps/dashboard/filtersets.py:32 apps/equipment/models.py:45
-#: apps/equipment/models.py:86 apps/equipment/views.py:40
-#: apps/equipment/views.py:59 apps/equipment/views.py:80
-#: apps/equipment/views.py:114 apps/equipment/views.py:153
-#: apps/reports/filtersets.py:26 apps/reports/models.py:31
-#: templates/dashboard/export.html:50 templates/dashboard/index.html:40
-#: templates/dashboard/index.html:220 templates/reports/report/detail.html:159
+#: apps/dashboard/filtersets.py:32 apps/dashboard/views.py:441
+#: apps/equipment/models.py:45 apps/equipment/models.py:86
+#: apps/equipment/views.py:40 apps/equipment/views.py:59
+#: apps/equipment/views.py:80 apps/equipment/views.py:114
+#: apps/equipment/views.py:153 apps/reports/filtersets.py:26
+#: apps/reports/models.py:31 templates/dashboard/export.html:50
+#: templates/dashboard/index.html:40 templates/dashboard/index.html:220
+#: templates/reports/report/detail.html:159
 #: templates/reports/report/list.html:69
 msgid "Machine"
 msgstr "Máquina"
@@ -334,6 +335,69 @@ msgstr "Todas las condiciones"
 #: templates/dashboard/export.html:73 templates/dashboard/index.html:60
 msgid "All Statuses"
 msgstr "Todos los estados"
+
+#: apps/dashboard/views.py:440 apps/reports/models.py:48
+#: templates/dashboard/index.html:219 templates/reports/report/detail.html:55
+#: templates/reports/report/list.html:67
+msgid "Lab Number"
+msgstr "Número de laboratorio"
+
+#: apps/dashboard/views.py:442 apps/equipment/models.py:111
+#: apps/reports/models.py:40 templates/equipment/machine/form.html:126
+#: templates/equipment/machine/form.html:178
+#: templates/reports/report/detail.html:170
+#: templates/reports/report/list.html:70
+msgid "Component"
+msgstr "Componente"
+
+#: apps/dashboard/views.py:443 apps/reports/models.py:54
+#: templates/reports/report/detail.html:181
+msgid "Lubricant"
+msgstr "Lubricante"
+
+#: apps/dashboard/views.py:444 apps/reports/models.py:60
+#: templates/reports/report/detail.html:192
+msgid "Lubricant Hours"
+msgstr "Horas de Lubricante"
+
+#: apps/dashboard/views.py:445
+msgid "Lubricant Kms"
+msgstr "Kilómetros de Lubricante"
+
+#: apps/dashboard/views.py:446 apps/reports/models.py:72
+#: templates/reports/report/detail.html:73
+msgid "Serial Number Code"
+msgstr "Código de número de serie"
+
+#: apps/dashboard/views.py:447 apps/reports/models.py:78
+#: templates/dashboard/index.html:223 templates/reports/report/detail.html:226
+#: templates/reports/report/list.html:71
+msgid "Sample Date"
+msgstr "Fecha de muestra"
+
+#: apps/dashboard/views.py:448 apps/reports/models.py:90
+#: templates/reports/report/detail.html:237
+msgid "Reception Date"
+msgstr "Fecha de recepción"
+
+#: apps/dashboard/views.py:450 apps/reports/filtersets.py:37
+#: apps/reports/models.py:103 templates/dashboard/export.html:62
+#: templates/dashboard/index.html:49 templates/dashboard/index.html:221
+#: templates/reports/report/detail.html:101
+#: templates/reports/report/list.html:73
+msgid "Condition"
+msgstr "Condición"
+
+#: apps/dashboard/views.py:451 apps/reports/models.py:84
+#: templates/reports/report/detail.html:62
+msgid "PER Number"
+msgstr "Número de PER"
+
+#: apps/dashboard/views.py:452 apps/reports/models.py:110
+#: templates/reports/report/detail.html:271
+#: templates/reports/report/form.html:246
+msgid "Notes"
+msgstr "Notas"
 
 #: apps/equipment/admin.py:43 apps/equipment/admin.py:104
 #: apps/equipment/admin.py:169 apps/users/admin.py:132
@@ -470,14 +534,6 @@ msgstr "Fecha y hora de instalación"
 msgid "When this component was installed"
 msgstr "Cuándo se instaló este componente"
 
-#: apps/equipment/models.py:111 apps/reports/models.py:40
-#: templates/equipment/machine/form.html:126
-#: templates/equipment/machine/form.html:178
-#: templates/reports/report/detail.html:170
-#: templates/reports/report/list.html:70
-msgid "Component"
-msgstr "Componente"
-
 #: apps/equipment/models.py:112 templates/equipment/machine/detail.html:152
 #: templates/equipment/machine/form.html:107
 #: templates/equipment/machine/list.html:65
@@ -524,13 +580,6 @@ msgstr "Precaución"
 msgid "Critical"
 msgstr "Crítico"
 
-#: apps/reports/filtersets.py:37 apps/reports/models.py:103
-#: templates/dashboard/export.html:62 templates/dashboard/index.html:49
-#: templates/dashboard/index.html:221 templates/reports/report/detail.html:101
-#: templates/reports/report/list.html:73
-msgid "Condition"
-msgstr "Condición"
-
 #: apps/reports/forms.py:93
 msgid "A report with this lab number already exists."
 msgstr "Ya existe un informe con este número de laboratorio."
@@ -560,77 +609,37 @@ msgstr "Máquina/Equipo asociado con este informe"
 msgid "Component associated with this report"
 msgstr "Componente asociado con este informe"
 
-#: apps/reports/models.py:48 templates/dashboard/index.html:219
-#: templates/reports/report/detail.html:55
-#: templates/reports/report/list.html:67
-msgid "Lab Number"
-msgstr "Número de laboratorio"
-
 #: apps/reports/models.py:51
 msgid "Laboratory identification number (No. Lab)"
 msgstr "Ñúmero de identificación del laboratorio (No. Lab)"
-
-#: apps/reports/models.py:54 templates/reports/report/detail.html:181
-msgid "Lubricant"
-msgstr "Lubricante"
 
 #: apps/reports/models.py:57
 msgid "Lubricant type/brand used"
 msgstr "Tipo/marca de lubricante utilizado"
 
-#: apps/reports/models.py:60 templates/reports/report/detail.html:192
-#, fuzzy
-#| msgid "Lubricant Hours/Kms"
-msgid "Lubricant Hours"
-msgstr "Horas/Kms de Lubricante"
-
 #: apps/reports/models.py:63
-#, fuzzy
-#| msgid "Hours or kilometers of lubricant usage"
 msgid "Hours of lubricant usage"
-msgstr "Horas o kilómetros de uso del lubricante"
+msgstr "Horas de uso del lubricante"
 
 #: apps/reports/models.py:66 templates/reports/report/detail.html:203
-#, fuzzy
-#| msgid "Lubricant Hours/Kms"
 msgid "Lubricant Kilometers"
-msgstr "Horas/Kms de Lubricante"
+msgstr "Kilómetros de Lubricante"
 
 #: apps/reports/models.py:69
-#, fuzzy
-#| msgid "Hours or kilometers of lubricant usage"
 msgid "Kilometers of lubricant usage"
-msgstr "Horas o kilómetros de uso del lubricante"
-
-#: apps/reports/models.py:72 templates/reports/report/detail.html:73
-msgid "Serial Number Code"
-msgstr "Código de número de serie"
+msgstr "Kilómetros de uso del lubricante"
 
 #: apps/reports/models.py:75
 msgid "Serial number code from the report (Cod./Num. De Serie)"
 msgstr "Código de número de serie del informe (Cod./Num. De Serie)"
 
-#: apps/reports/models.py:78 templates/dashboard/index.html:223
-#: templates/reports/report/detail.html:226
-#: templates/reports/report/list.html:71
-msgid "Sample Date"
-msgstr "Fecha de muestra"
-
 #: apps/reports/models.py:81
 msgid "Date when the sample was taken (Fecha Muestra)"
 msgstr "Fecha en que se tomó la muestra (Fecha Muestra)"
 
-#: apps/reports/models.py:84 templates/reports/report/detail.html:62
-msgid "PER Number"
-msgstr "Número de PER"
-
 #: apps/reports/models.py:87
 msgid "PER identification number (No. PER)"
 msgstr "Número de identificación PER (No. PER)"
-
-#: apps/reports/models.py:90 templates/reports/report/detail.html:237
-msgid "Reception Date"
-msgstr "Fecha de recepción"
 
 #: apps/reports/models.py:93
 msgid "Date when the sample was received (Fecha de Recepción)"
@@ -643,11 +652,6 @@ msgstr "Estado actual del informe"
 #: apps/reports/models.py:107
 msgid "Equipment condition assessment"
 msgstr "Evaluación de la condición del equipo"
-
-#: apps/reports/models.py:110 templates/reports/report/detail.html:271
-#: templates/reports/report/form.html:246
-msgid "Notes"
-msgstr "Notas"
 
 #: apps/reports/models.py:112
 msgid "Additional notes or observations"

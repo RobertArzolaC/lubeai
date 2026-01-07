@@ -1,16 +1,15 @@
-from datetime import datetime
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
 from django.db.models.functions import TruncMonth
 from django.http import HttpResponse, JsonResponse
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import TemplateView, View
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
-from apps.dashboard.filtersets import DashboardReportFilter
+from apps.dashboard.filtersets import ReportFilter
 from apps.equipment.models import Machine
 from apps.reports.choices import ReportCondition, ReportStatus
 from apps.reports.models import Report
@@ -164,7 +163,7 @@ class DashboardDataAPIView(LoginRequiredMixin, View):
         filter_data = {k: v for k, v in filter_data.items() if v}
 
         # Apply filter
-        filterset = DashboardReportFilter(filter_data, queryset=reports_qs)
+        filterset = ReportFilter(filter_data, queryset=reports_qs)
         reports_qs = filterset.qs
 
         # Get updated statistics
@@ -319,47 +318,26 @@ class ExportPreviewAPIView(LoginRequiredMixin, OrganizationRequiredMixin, View):
 
         organization = self.get_user_organization()
 
-        # Get filter parameters
-        start_date = request.GET.get("start_date")
-        end_date = request.GET.get("end_date")
-        machine_id = request.GET.get("machine_id")
-        condition = request.GET.get("condition")
-        status = request.GET.get("status")
-
         # Base queryset
         reports_qs = Report.objects.filter(
             organization=organization, is_active=True
         )
 
-        # Apply filters
-        if start_date:
-            try:
-                start_date_obj = datetime.strptime(
-                    start_date, "%Y-%m-%d"
-                ).date()
-                reports_qs = reports_qs.filter(sample_date__gte=start_date_obj)
-            except ValueError:
-                pass
+        # Prepare filter data
+        filter_data = {
+            "start_date": request.GET.get("start_date"),
+            "end_date": request.GET.get("end_date"),
+            "machine": request.GET.get("machine_id"),
+            "condition": request.GET.get("condition"),
+            "status": request.GET.get("status"),
+        }
 
-        if end_date:
-            try:
-                end_date_obj = datetime.strptime(end_date, "%Y-%m-%d").date()
-                reports_qs = reports_qs.filter(sample_date__lte=end_date_obj)
-            except ValueError:
-                pass
+        # Remove None values
+        filter_data = {k: v for k, v in filter_data.items() if v}
 
-        if machine_id:
-            try:
-                machine_id = int(machine_id)
-                reports_qs = reports_qs.filter(machine_id=machine_id)
-            except (ValueError, TypeError):
-                pass
-
-        if condition and condition in dict(ReportCondition.choices):
-            reports_qs = reports_qs.filter(condition=condition)
-
-        if status and status in dict(ReportStatus.choices):
-            reports_qs = reports_qs.filter(status=status)
+        # Apply filters using ReportFilter
+        filterset = ReportFilter(filter_data, queryset=reports_qs)
+        reports_qs = filterset.qs
 
         # Count records
         total_records = reports_qs.count()
@@ -387,47 +365,29 @@ class DashboardExportView(LoginRequiredMixin, OrganizationRequiredMixin, View):
 
         organization = self.get_user_organization()
 
-        # Get filter parameters (same as DashboardDataAPIView)
-        start_date = request.GET.get("start_date")
-        end_date = request.GET.get("end_date")
-        machine_id = request.GET.get("machine_id")
-        condition = request.GET.get("condition")
-        status = request.GET.get("status")
-
-        # Base queryset with limit for performance
+        # Base queryset
         reports_qs = Report.objects.filter(
             organization=organization, is_active=True
-        ).order_by("-sample_date", "-created")[:10000]
+        )
 
-        # Apply filters
-        if start_date:
-            try:
-                start_date_obj = datetime.strptime(
-                    start_date, "%Y-%m-%d"
-                ).date()
-                reports_qs = reports_qs.filter(sample_date__gte=start_date_obj)
-            except ValueError:
-                pass
+        # Prepare filter data
+        filter_data = {
+            "start_date": request.GET.get("start_date"),
+            "end_date": request.GET.get("end_date"),
+            "machine": request.GET.get("machine_id"),
+            "condition": request.GET.get("condition"),
+            "status": request.GET.get("status"),
+        }
 
-        if end_date:
-            try:
-                end_date_obj = datetime.strptime(end_date, "%Y-%m-%d").date()
-                reports_qs = reports_qs.filter(sample_date__lte=end_date_obj)
-            except ValueError:
-                pass
+        # Remove None values
+        filter_data = {k: v for k, v in filter_data.items() if v}
 
-        if machine_id:
-            try:
-                machine_id = int(machine_id)
-                reports_qs = reports_qs.filter(machine_id=machine_id)
-            except (ValueError, TypeError):
-                pass
+        # Apply filters using ReportFilter
+        filterset = ReportFilter(filter_data, queryset=reports_qs)
+        reports_qs = filterset.qs
 
-        if condition and condition in dict(ReportCondition.choices):
-            reports_qs = reports_qs.filter(condition=condition)
-
-        if status and status in dict(ReportStatus.choices):
-            reports_qs = reports_qs.filter(status=status)
+        # Apply limit for performance and ordering
+        reports_qs = reports_qs.order_by("-sample_date", "-created")[:10000]
 
         # Create Excel workbook
         workbook = Workbook()
@@ -436,19 +396,19 @@ class DashboardExportView(LoginRequiredMixin, OrganizationRequiredMixin, View):
 
         # Define headers
         headers = [
-            "Lab Number",
-            "Machine",
-            "Component",
-            "Lubricant",
-            "Lubricant Hours",
-            "Lubricant Kms",
-            "Serial Number Code",
-            "Sample Date",
-            "Reception Date",
-            "Status",
-            "Condition",
-            "PER Number",
-            "Notes",
+            _("Lab Number"),
+            _("Machine"),
+            _("Component"),
+            _("Lubricant"),
+            _("Lubricant Hours"),
+            _("Lubricant Kms"),
+            _("Serial Number Code"),
+            _("Sample Date"),
+            _("Reception Date"),
+            _("Status"),
+            _("Condition"),
+            _("PER Number"),
+            _("Notes"),
         ]
 
         # Style for headers
@@ -461,7 +421,7 @@ class DashboardExportView(LoginRequiredMixin, OrganizationRequiredMixin, View):
         # Write headers
         for col, header in enumerate(headers, 1):
             cell = worksheet.cell(row=1, column=col)
-            cell.value = header
+            cell.value = str(header)  # Convert translated text to string
             cell.font = header_font
             cell.fill = header_fill
             cell.alignment = header_alignment
@@ -473,7 +433,7 @@ class DashboardExportView(LoginRequiredMixin, OrganizationRequiredMixin, View):
                 report.machine.name if report.machine else ""
             )
             worksheet.cell(row=row, column=3).value = (
-                report.component.name if report.component else ""
+                report.component.type.name if report.component else ""
             )
             worksheet.cell(row=row, column=4).value = report.lubricant
             worksheet.cell(row=row, column=5).value = (
@@ -483,8 +443,16 @@ class DashboardExportView(LoginRequiredMixin, OrganizationRequiredMixin, View):
                 report.lubricant_kms if report.lubricant_kms else ""
             )
             worksheet.cell(row=row, column=7).value = report.serial_number_code
-            worksheet.cell(row=row, column=8).value = report.sample_date
-            worksheet.cell(row=row, column=9).value = report.reception_date
+            worksheet.cell(row=row, column=8).value = (
+                report.sample_date.strftime("%Y-%m-%d")
+                if report.sample_date
+                else ""
+            )
+            worksheet.cell(row=row, column=9).value = (
+                report.reception_date.strftime("%Y-%m-%d")
+                if report.reception_date
+                else ""
+            )
             worksheet.cell(
                 row=row, column=10
             ).value = report.get_status_display()

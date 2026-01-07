@@ -6,7 +6,7 @@ from apps.reports import choices, models
 from apps.users import models as users_models
 
 
-class DashboardReportFilter(django_filters.FilterSet):
+class ReportFilter(django_filters.FilterSet):
     """Filter for dashboard reports."""
 
     organization = django_filters.ModelChoiceFilter(
