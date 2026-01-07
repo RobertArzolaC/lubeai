@@ -6,7 +6,7 @@
 {% block toolbar_title %}Dashboard{% endblock %}
 
 {% block content %}
-  {% if has_organization %}
+  {% if is_admin %}
     <main class="container-xxl">
       <!-- Filters Section -->
       <div class="row mb-6">
@@ -19,6 +19,15 @@
             </div>
             <div class="card-body">
               <form id="dashboardFilters" class="row g-3">
+                <div class="col-md-2">
+                  <label for="organization_id" class="form-label">{% trans "Organization" %}</label>
+                  <select class="form-select" id="organization_id" name="organization_id">
+                    <option value="">{% trans "All Organizations" %}</option>
+                    {% for org in organizations %}
+                    <option value="{{ org.id }}">{{ org.name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
                 <div class="col-md-2">
                   <label for="start_date" class="form-label">{% trans "Start Date" %}</label>
                   <input type="date" class="form-control" id="start_date" name="start_date">
@@ -54,7 +63,7 @@
                     {% endfor %}
                   </select>
                 </div>
-                <div class="col-md-2 d-flex align-items-end justify-content-center gap-2">
+                <div class="col-md-12 d-flex align-items-end justify-content-end gap-4 mt-4">
                   <button type="button" class="btn btn-primary p-3" id="applyFilters">
                     <i class="fas fa-filter"></i> {% trans "Filter" %}
                   </button>
@@ -252,20 +261,42 @@
         </div>
       </div>
     </main>
-  {% else %}
-    <!-- General Dashboard for Staff/Superuser without organization -->
+  {% elif has_organization %}
+    <!-- Coming Soon Dashboard for regular users -->
     <main class="container-xxl">
       <div class="row">
         <div class="col-12">
           <div class="card">
             <div class="card-body text-center py-20">
-              <h2 class="fw-bolder">{% trans "General Dashboard" %}</h2>
-              <p class="fs-6 text-muted">{% trans "Welcome to the administrative dashboard" %}</p>
-              <div class="text-end mb-4">
-                <small class="text-muted">
-                    {% trans "Last updated" %}: {{ last_updated|date:"Y-m-d H:i" }}
-                </small>
+              <div class="symbol symbol-100px mx-auto mb-5">
+                <span class="symbol-label bg-light-primary">
+                  <i class="fas fa-chart-line fs-3x text-primary"></i>
+                </span>
               </div>
+              <h2 class="fw-bolder mb-5">{% trans "Dashboard Coming Soon" %}</h2>
+              <p class="fs-6 text-muted mb-8">
+                {% trans "We're working on an amazing dashboard experience for you. In the meantime, you can use our export features to analyze your data." %}
+              </p>
+              <div class="d-flex flex-center">
+                <a href="{% url 'apps.dashboard:export' %}" class="btn btn-primary btn-lg me-3">
+                  <i class="fas fa-file-export me-2"></i>
+                  {% trans "Export Data" %}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  {% else %}
+    <!-- No access message -->
+    <main class="container-xxl">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body text-center py-20">
+              <h2 class="fw-bolder">{% trans "Dashboard Access" %}</h2>
+              <p class="fs-6 text-muted">{% trans "Contact your administrator to gain access to the dashboard." %}</p>
             </div>
           </div>
         </div>
@@ -275,7 +306,7 @@
 {% endblock content %}
 
 {% block extra_js %}
-  {% if has_organization %}
+  {% if is_admin %}
     <script>
       document.addEventListener('DOMContentLoaded', function() {
           // Global variables for charts
@@ -295,6 +326,48 @@
           // Filter functionality
           document.getElementById('applyFilters').addEventListener('click', applyFilters);
           document.getElementById('clearFilters').addEventListener('click', clearFilters);
+
+          // Dynamic machine filtering based on organization
+          document.getElementById('organization_id').addEventListener('change', function() {
+              const organizationId = this.value;
+              updateMachineOptions(organizationId);
+          });
+
+          // Initial machines data for fallback
+          const allMachinesData = [
+              {% for machine in machines %}
+              {id: {{ machine.id }}, name: "{{ machine.name|escapejs }}"},
+              {% endfor %}
+          ];
+
+          function updateMachineOptions(organizationId) {
+              const machineSelect = document.getElementById('machine_id');
+
+              // Clear current options except "All Machines"
+              machineSelect.innerHTML = '<option value="">{% trans "All Machines" %}</option>';
+
+              if (organizationId) {
+                  fetch(`{% url 'apps.dashboard:machines_api' %}?organization_id=${organizationId}`)
+                      .then(response => response.json())
+                      .then(data => {
+                          data.machines.forEach(machine => {
+                              const option = document.createElement('option');
+                              option.value = machine.id;
+                              option.textContent = machine.name;
+                              machineSelect.appendChild(option);
+                          });
+                      })
+                      .catch(error => console.error('Error loading machines:', error));
+              } else {
+                  // Load all machines when no organization is selected
+                  allMachinesData.forEach(machine => {
+                      const option = document.createElement('option');
+                      option.value = machine.id;
+                      option.textContent = machine.name;
+                      machineSelect.appendChild(option);
+                  });
+              }
+          }
 
           function initializeCharts(data) {
               // Condition Donut Chart
@@ -403,7 +476,7 @@
                   },
                   yaxis: {
                       title: {
-                          text: 'Number of Reports'
+                          text: "{% trans 'Number of Reports' %}"
                       }
                   },
                   fill: {
@@ -439,10 +512,8 @@
                   }
               }
 
-              // Show loading state
               showLoading(true);
 
-              // Fetch filtered data
               fetch(`{% url 'apps.dashboard:data_api' %}?${params.toString()}`)
                   .then(response => response.json())
                   .then(data => {
@@ -457,10 +528,8 @@
           }
 
           function updateDashboard(data) {
-              // Update KPIs
               document.getElementById('totalReportsKPI').textContent = data.total_reports;
 
-              // Find condition counts
               const conditionCounts = {};
               data.condition_data.forEach(item => {
                   conditionCounts[item.condition] = item.count;
@@ -468,9 +537,8 @@
 
               document.getElementById('normalConditionKPI').textContent = conditionCounts['NORMAL'] || 0;
               document.getElementById('cautionConditionKPI').textContent = conditionCounts['CAUTION'] || 0;
-              document.getElementById('criticalConditionKPI').textContent = (conditionCounts['CRITICAL'] || 0) + (conditionCounts['SEVERE'] || 0);
+              document.getElementById('criticalConditionKPI').textContent = (conditionCounts['CRITICAL'] || 0);
 
-              // Update charts
               const conditionLabels = data.condition_data.map(item => item.condition);
               const conditionValues = data.condition_data.map(item => item.count);
 
@@ -497,11 +565,10 @@
               }));
 
               historicalChart.updateSeries([{
-                  name: 'Reports',
+                  name: "{% trans 'Reports' %}",
                   data: historicalSeries
               }]);
 
-              // Update table
               updateLatestReportsTable(data.latest_reports);
           }
 
@@ -537,6 +604,7 @@
 
           function clearFilters() {
               document.getElementById('dashboardFilters').reset();
+              updateMachineOptions('');
               applyFilters();
           }
 

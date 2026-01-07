@@ -10,27 +10,29 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
+from apps.dashboard.filtersets import DashboardReportFilter
 from apps.equipment.models import Machine
 from apps.reports.choices import ReportCondition, ReportStatus
 from apps.reports.models import Report
 from apps.users.mixins import OrganizationRequiredMixin
+from apps.users.models import Organization
 
 
-class DashboardView(OrganizationRequiredMixin, TemplateView):
+class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "dashboard/index.html"
+
+    def is_admin_user(self):
+        """Check if user is staff or superuser."""
+        return self.request.user.is_staff or self.request.user.is_superuser
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         today = timezone.now()
 
-        # Check if user has organization for personalized dashboard
-        if self.has_organization_access():
-            organization = self.get_user_organization()
-
-            # Get reports for the user's organization
-            reports_qs = Report.objects.filter(
-                organization=organization, is_active=True
-            )
+        # Check if user is admin (staff/superuser)
+        if self.is_admin_user():
+            # Administrative dashboard - show all reports
+            reports_qs = Report.objects.filter(is_active=True)
 
             # Basic statistics
             total_reports = reports_qs.count()
@@ -79,10 +81,13 @@ class DashboardView(OrganizationRequiredMixin, TemplateView):
                 for item in monthly_data
             ]
 
-            # Get machines for the organization
-            machines = Machine.objects.filter(
-                organization=organization, is_active=True
+            # Get all organizations for filter
+            organizations = Organization.objects.filter(
+                is_active=True, is_removed=False
             )
+
+            # Get all machines (will be filtered dynamically)
+            machines = Machine.objects.filter(is_active=True)
 
             # Latest reports
             latest_reports = reports_qs.order_by("-sample_date", "-created")[
@@ -91,13 +96,13 @@ class DashboardView(OrganizationRequiredMixin, TemplateView):
 
             context.update(
                 {
-                    "has_organization": True,
-                    "organization": organization,
+                    "is_admin": True,
                     "total_reports": total_reports,
                     "condition_stats": condition_stats,
                     "condition_stats_parts": condition_stats_parts,
                     "status_stats": status_stats,
                     "monthly_data": list(monthly_data),
+                    "organizations": organizations,
                     "machines": machines,
                     "latest_reports": latest_reports,
                     "condition_choices": ReportCondition.choices,
@@ -105,10 +110,20 @@ class DashboardView(OrganizationRequiredMixin, TemplateView):
                 }
             )
         else:
-            # General dashboard for staff/superusers without organization
+            # Check if user has organization access for export functionality
+            user_profile = getattr(self.request.user, "account", None)
+            has_organization = bool(
+                user_profile
+                and user_profile.organization
+                and user_profile.organization.is_active
+                and not user_profile.organization.is_removed
+            )
+
             context.update(
                 {
-                    "has_organization": False,
+                    "is_admin": False,
+                    "has_organization": has_organization,
+                    "show_coming_soon": True,
                 }
             )
 
@@ -121,58 +136,36 @@ class DashboardView(OrganizationRequiredMixin, TemplateView):
         return context
 
 
-class DashboardDataAPIView(LoginRequiredMixin, OrganizationRequiredMixin, View):
+class DashboardDataAPIView(LoginRequiredMixin, View):
     """
     AJAX endpoint to get filtered dashboard data for charts and tables.
+    Only accessible by staff/superuser.
     """
 
     def get(self, request, *args, **kwargs):
-        if not self.has_organization_access():
-            return JsonResponse({"error": "Organization required"}, status=403)
+        # Only allow staff/superuser access
+        if not (request.user.is_staff or request.user.is_superuser):
+            return JsonResponse({"error": "Admin access required"}, status=403)
 
-        organization = self.get_user_organization()
+        # Base queryset - all reports for admin
+        reports_qs = Report.objects.filter(is_active=True)
 
-        # Get filter parameters
-        start_date = request.GET.get("start_date")
-        end_date = request.GET.get("end_date")
-        machine_id = request.GET.get("machine_id")
-        condition = request.GET.get("condition")
-        status = request.GET.get("status")
+        # Apply filters using DashboardReportFilter
+        filter_data = {
+            "organization": request.GET.get("organization_id"),
+            "start_date": request.GET.get("start_date"),
+            "end_date": request.GET.get("end_date"),
+            "machine": request.GET.get("machine_id"),
+            "condition": request.GET.get("condition"),
+            "status": request.GET.get("status"),
+        }
 
-        # Base queryset
-        reports_qs = Report.objects.filter(
-            organization=organization, is_active=True
-        )
+        # Remove None values
+        filter_data = {k: v for k, v in filter_data.items() if v}
 
-        # Apply filters
-        if start_date:
-            try:
-                start_date_obj = datetime.strptime(
-                    start_date, "%Y-%m-%d"
-                ).date()
-                reports_qs = reports_qs.filter(sample_date__gte=start_date_obj)
-            except ValueError:
-                pass
-
-        if end_date:
-            try:
-                end_date_obj = datetime.strptime(end_date, "%Y-%m-%d").date()
-                reports_qs = reports_qs.filter(sample_date__lte=end_date_obj)
-            except ValueError:
-                pass
-
-        if machine_id:
-            try:
-                machine_id = int(machine_id)
-                reports_qs = reports_qs.filter(machine_id=machine_id)
-            except (ValueError, TypeError):
-                pass
-
-        if condition and condition in dict(ReportCondition.choices):
-            reports_qs = reports_qs.filter(condition=condition)
-
-        if status and status in dict(ReportStatus.choices):
-            reports_qs = reports_qs.filter(status=status)
+        # Apply filter
+        filterset = DashboardReportFilter(filter_data, queryset=reports_qs)
+        reports_qs = filterset.qs
 
         # Get updated statistics
         total_reports = reports_qs.count()
@@ -240,7 +233,6 @@ class DashboardDataAPIView(LoginRequiredMixin, OrganizationRequiredMixin, View):
             ReportCondition.NORMAL: "success",
             ReportCondition.CAUTION: "warning",
             ReportCondition.CRITICAL: "danger",
-            ReportCondition.SEVERE: "dark",
         }
         return condition_classes.get(condition, "secondary")
 
@@ -253,6 +245,35 @@ class DashboardDataAPIView(LoginRequiredMixin, OrganizationRequiredMixin, View):
             ReportStatus.REJECTED: "danger",
         }
         return status_classes.get(status, "secondary")
+
+
+class MachinesByOrganizationAPIView(LoginRequiredMixin, View):
+    """
+    AJAX endpoint to get machines by organization for dynamic filtering.
+    Only accessible by staff/superuser.
+    """
+
+    def get(self, request, *args, **kwargs):
+        # Only allow staff/superuser access
+        if not (request.user.is_staff or request.user.is_superuser):
+            return JsonResponse({"error": "Admin access required"}, status=403)
+
+        organization_id = request.GET.get("organization_id")
+
+        if organization_id:
+            try:
+                organization_id = int(organization_id)
+                machines = Machine.objects.filter(
+                    organization_id=organization_id, is_active=True
+                ).values("id", "name")
+            except (ValueError, TypeError):
+                machines = []
+        else:
+            machines = Machine.objects.filter(is_active=True).values(
+                "id", "name"
+            )
+
+        return JsonResponse({"machines": list(machines)})
 
 
 class ExportPageView(
