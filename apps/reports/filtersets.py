@@ -37,15 +37,6 @@ class ReportFilter(django_filters.FilterSet):
         label=_("Condition"),
         choices=choices.ReportCondition.choices,
     )
-    is_active = django_filters.ChoiceFilter(
-        field_name="is_active",
-        empty_label=_("Is Active?"),
-        label=_("Status"),
-        choices=(
-            (True, _("Active")),
-            (False, _("Inactive")),
-        ),
-    )
 
     class Meta:
         model = models.Report
@@ -55,7 +46,6 @@ class ReportFilter(django_filters.FilterSet):
             "machine",
             "status",
             "condition",
-            "is_active",
         ]
 
     def filter_by_lab_number(self, queryset, name, value):

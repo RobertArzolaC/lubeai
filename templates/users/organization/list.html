@@ -32,7 +32,8 @@
                         <span class="path1"></span>
                         <span class="path2"></span>
                     </i>
-                    {% render_field filter.form.name_search class="form-control w-250px ps-12" placeholder="Search Name, Email or Phone" %}
+                    {% trans "Search Name, Email or Phone" as search_placeholder %}
+                    {% render_field filter.form.name_search class="form-control w-250px ps-12" placeholder=search_placeholder %}
                 </div>
                 <div class="w-100 ms-4">
                     {% render_field filter.form.is_active class="form-select"%}

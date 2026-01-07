@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-07 11:01-0500\n"
+"POT-Creation-Date: 2026-01-07 11:16-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,9 +28,9 @@ msgstr "Apellido"
 
 #: apps/authentication/forms.py:29 apps/core/models.py:37
 #: apps/users/forms.py:112 templates/equipment/machine/detail.html:115
-#: templates/users/account/list.html:80
+#: templates/users/account/list.html:81
 #: templates/users/organization/detail.html:102
-#: templates/users/organization/list.html:55 templates/users/settings.html:74
+#: templates/users/organization/list.html:56 templates/users/settings.html:74
 msgid "Email"
 msgstr "Correo electrónico"
 
@@ -157,7 +157,7 @@ msgstr "Código postal"
 
 #: apps/core/models.py:36 templates/equipment/machine/detail.html:124
 #: templates/users/organization/detail.html:111
-#: templates/users/organization/list.html:56
+#: templates/users/organization/list.html:57
 msgid "Phone"
 msgstr "Teléfono"
 
@@ -201,9 +201,9 @@ msgstr "Cuenta de usuario asociada con esta persona"
 #: apps/core/models.py:139 apps/equipment/models.py:28
 #: templates/equipment/machine/detail.html:55
 #: templates/equipment/machine/detail.html:107
-#: templates/equipment/machine/list.html:60
+#: templates/equipment/machine/list.html:61
 #: templates/users/organization/detail.html:55
-#: templates/users/organization/list.html:54
+#: templates/users/organization/list.html:55
 msgid "Name"
 msgstr "Nombre"
 
@@ -229,17 +229,17 @@ msgid "Primary key of the related object."
 msgstr "Clave primaria del objeto relacionado."
 
 #: apps/core/models.py:174 apps/equipment/filtersets.py:21
-#: apps/reports/filtersets.py:31 apps/reports/filtersets.py:43
-#: apps/reports/models.py:96 apps/users/filtersets.py:15
-#: apps/users/filtersets.py:46 templates/dashboard/export.html:71
-#: templates/dashboard/index.html:58 templates/dashboard/index.html:222
+#: apps/reports/filtersets.py:31 apps/reports/models.py:96
+#: apps/users/filtersets.py:15 apps/users/filtersets.py:46
+#: templates/dashboard/export.html:71 templates/dashboard/index.html:58
+#: templates/dashboard/index.html:222
 #: templates/equipment/machine/detail.html:76
 #: templates/equipment/machine/detail.html:164
-#: templates/equipment/machine/list.html:65
+#: templates/equipment/machine/list.html:66
 #: templates/reports/report/detail.html:84
-#: templates/reports/report/list.html:74 templates/users/account/list.html:91
+#: templates/reports/report/list.html:72 templates/users/account/list.html:92
 #: templates/users/organization/detail.html:71
-#: templates/users/organization/list.html:58
+#: templates/users/organization/list.html:59
 msgid "Status"
 msgstr "Estado"
 
@@ -290,9 +290,9 @@ msgstr "Todas las Organizaciones"
 #: apps/users/views.py:220 apps/users/views.py:238
 #: templates/dashboard/index.html:23
 #: templates/equipment/machine/detail.html:101
-#: templates/equipment/machine/list.html:63
+#: templates/equipment/machine/list.html:64
 #: templates/reports/report/detail.html:148
-#: templates/reports/report/list.html:70 templates/users/account/list.html:113
+#: templates/reports/report/list.html:68 templates/users/account/list.html:114
 #: templates/users/profile.html:69 templates/users/profile.html:103
 #: templates/users/settings.html:103
 msgid "Organization"
@@ -321,7 +321,7 @@ msgstr "Todas las máquinas"
 #: apps/reports/filtersets.py:26 apps/reports/models.py:31
 #: templates/dashboard/export.html:50 templates/dashboard/index.html:40
 #: templates/dashboard/index.html:220 templates/reports/report/detail.html:159
-#: templates/reports/report/list.html:71
+#: templates/reports/report/list.html:69
 msgid "Machine"
 msgstr "Máquina"
 
@@ -351,35 +351,33 @@ msgstr "Información de auditoría"
 msgid "Search"
 msgstr "Buscar"
 
-#: apps/equipment/filtersets.py:20 apps/reports/filtersets.py:42
-#: apps/users/filtersets.py:14 apps/users/filtersets.py:45
+#: apps/equipment/filtersets.py:20 apps/users/filtersets.py:14
+#: apps/users/filtersets.py:45
 msgid "Is Active?"
 msgstr "¿Está activa?"
 
-#: apps/equipment/filtersets.py:23 apps/reports/filtersets.py:45
-#: apps/users/filtersets.py:17 apps/users/filtersets.py:48
-#: templates/equipment/machine/detail.html:79
+#: apps/equipment/filtersets.py:23 apps/users/filtersets.py:17
+#: apps/users/filtersets.py:48 templates/equipment/machine/detail.html:79
 #: templates/equipment/machine/detail.html:185
 #: templates/equipment/machine/form.html:160
 #: templates/equipment/machine/form.html:205
-#: templates/equipment/machine/list.html:105
+#: templates/equipment/machine/list.html:106
 #: templates/reports/report/detail.html:118
 #: templates/reports/report/detail.html:121
-#: templates/users/account/list.html:157
+#: templates/users/account/list.html:158
 #: templates/users/organization/detail.html:74
-#: templates/users/organization/list.html:106
+#: templates/users/organization/list.html:107
 msgid "Active"
 msgstr "Activo"
 
-#: apps/equipment/filtersets.py:24 apps/reports/filtersets.py:46
-#: apps/users/filtersets.py:18 apps/users/filtersets.py:49
-#: templates/equipment/machine/detail.html:81
+#: apps/equipment/filtersets.py:24 apps/users/filtersets.py:18
+#: apps/users/filtersets.py:49 templates/equipment/machine/detail.html:81
 #: templates/equipment/machine/detail.html:187
-#: templates/equipment/machine/list.html:107
+#: templates/equipment/machine/list.html:108
 #: templates/reports/report/detail.html:123
-#: templates/users/account/list.html:161
+#: templates/users/account/list.html:162
 #: templates/users/organization/detail.html:76
-#: templates/users/organization/list.html:108
+#: templates/users/organization/list.html:109
 msgid "Inactive"
 msgstr "Inactivo"
 
@@ -416,7 +414,7 @@ msgstr "Nombre o identificador de la máquina"
 #: templates/equipment/machine/detail.html:162
 #: templates/equipment/machine/form.html:150
 #: templates/equipment/machine/form.html:197
-#: templates/equipment/machine/list.html:61
+#: templates/equipment/machine/list.html:62
 msgid "Serial Number"
 msgstr "Número de serie"
 
@@ -425,7 +423,7 @@ msgid "Unique serial number of the machine"
 msgstr "Número de serie único de la máquina"
 
 #: apps/equipment/models.py:39 templates/equipment/machine/detail.html:69
-#: templates/equipment/machine/list.html:62
+#: templates/equipment/machine/list.html:63
 msgid "Model"
 msgstr "Modelo"
 
@@ -476,13 +474,13 @@ msgstr "Cuándo se instaló este componente"
 #: templates/equipment/machine/form.html:126
 #: templates/equipment/machine/form.html:178
 #: templates/reports/report/detail.html:170
-#: templates/reports/report/list.html:72
+#: templates/reports/report/list.html:70
 msgid "Component"
 msgstr "Componente"
 
 #: apps/equipment/models.py:112 templates/equipment/machine/detail.html:152
 #: templates/equipment/machine/form.html:107
-#: templates/equipment/machine/list.html:64
+#: templates/equipment/machine/list.html:65
 msgid "Components"
 msgstr "Componentes"
 
@@ -529,7 +527,7 @@ msgstr "Crítico"
 #: apps/reports/filtersets.py:37 apps/reports/models.py:103
 #: templates/dashboard/export.html:62 templates/dashboard/index.html:49
 #: templates/dashboard/index.html:221 templates/reports/report/detail.html:101
-#: templates/reports/report/list.html:75
+#: templates/reports/report/list.html:73
 msgid "Condition"
 msgstr "Condición"
 
@@ -564,7 +562,7 @@ msgstr "Componente asociado con este informe"
 
 #: apps/reports/models.py:48 templates/dashboard/index.html:219
 #: templates/reports/report/detail.html:55
-#: templates/reports/report/list.html:69
+#: templates/reports/report/list.html:67
 msgid "Lab Number"
 msgstr "Número de laboratorio"
 
@@ -614,7 +612,7 @@ msgstr "Código de número de serie del informe (Cod./Num. De Serie)"
 
 #: apps/reports/models.py:78 templates/dashboard/index.html:223
 #: templates/reports/report/detail.html:226
-#: templates/reports/report/list.html:73
+#: templates/reports/report/list.html:71
 msgid "Sample Date"
 msgstr "Fecha de muestra"
 
@@ -1117,9 +1115,9 @@ msgstr "¡Exportación iniciada! El archivo se descargará en breve."
 msgid "Dashboard Filters"
 msgstr "Filtros del Tablero"
 
-#: templates/dashboard/index.html:68 templates/equipment/machine/list.html:52
-#: templates/reports/report/list.html:61 templates/users/account/list.html:49
-#: templates/users/organization/list.html:46
+#: templates/dashboard/index.html:68 templates/equipment/machine/list.html:53
+#: templates/reports/report/list.html:59 templates/users/account/list.html:50
+#: templates/users/organization/list.html:47
 msgid "Filter"
 msgstr "Filtrar"
 
@@ -1159,7 +1157,7 @@ msgstr "Reportes a lo largo del tiempo"
 msgid "Latest Reports"
 msgstr "Últimos Reportes"
 
-#: templates/dashboard/index.html:245 templates/reports/report/list.html:192
+#: templates/dashboard/index.html:245 templates/reports/report/list.html:190
 msgid "No reports found"
 msgstr "No se encontraron reportes"
 
@@ -1311,23 +1309,23 @@ msgstr "En proceso..."
 
 #: templates/equipment/machine/detail.html:22
 #: templates/equipment/machine/form.html:16
-#: templates/equipment/machine/list.html:123
+#: templates/equipment/machine/list.html:124
 #: templates/reports/report/detail.html:22
-#: templates/reports/report/list.html:170 templates/users/account/list.html:212
+#: templates/reports/report/list.html:168 templates/users/account/list.html:213
 #: templates/users/organization/detail.html:22
 #: templates/users/organization/form.html:16
-#: templates/users/organization/list.html:124
+#: templates/users/organization/list.html:125
 msgid "Edit"
 msgstr "Editar"
 
 #: templates/equipment/machine/detail.html:36
-#: templates/equipment/machine/list.html:131
+#: templates/equipment/machine/list.html:132
 #: templates/reports/report/detail.html:36
-#: templates/reports/report/list.html:177
-#: templates/reports/report/list.html:225 templates/users/account/form.html:139
-#: templates/users/account/list.html:195
+#: templates/reports/report/list.html:175
+#: templates/reports/report/list.html:223 templates/users/account/form.html:139
+#: templates/users/account/list.html:196
 #: templates/users/organization/detail.html:36
-#: templates/users/organization/list.html:132 templates/users/profile.html:150
+#: templates/users/organization/list.html:133 templates/users/profile.html:150
 msgid "Delete"
 msgstr "Eliminar"
 
@@ -1365,64 +1363,64 @@ msgid "No components installed"
 msgstr "No hay componentes instalados"
 
 #: templates/equipment/machine/detail.html:227
-#: templates/equipment/machine/list.html:176
-#: templates/users/account/list.html:247 templates/users/account/list.html:291
-#: templates/users/account/list.html:335
+#: templates/equipment/machine/list.html:177
+#: templates/users/account/list.html:248 templates/users/account/list.html:292
+#: templates/users/account/list.html:336
 #: templates/users/organization/detail.html:221
-#: templates/users/organization/list.html:178
+#: templates/users/organization/list.html:179
 msgid "Are you sure?"
 msgstr "¿Estás seguro?"
 
 #: templates/equipment/machine/detail.html:228
-#: templates/equipment/machine/list.html:177
+#: templates/equipment/machine/list.html:178
 #: templates/users/organization/detail.html:222
-#: templates/users/organization/list.html:179
+#: templates/users/organization/list.html:180
 msgid "You are about to delete"
 msgstr "Estás a punto de eliminar"
 
 #: templates/equipment/machine/detail.html:233
-#: templates/equipment/machine/list.html:182
-#: templates/users/account/list.html:253 templates/users/account/list.html:297
+#: templates/equipment/machine/list.html:183
+#: templates/users/account/list.html:254 templates/users/account/list.html:298
 #: templates/users/organization/detail.html:227
-#: templates/users/organization/list.html:184
+#: templates/users/organization/list.html:185
 msgid "Yes, delete it!"
 msgstr "¡Sí, elimínalo!"
 
 #: templates/equipment/machine/detail.html:234
-#: templates/equipment/machine/list.html:183
+#: templates/equipment/machine/list.html:184
 #: templates/reports/report/form.html:269
-#: templates/reports/report/list.html:224 templates/users/account/list.html:254
-#: templates/users/account/list.html:298 templates/users/account/list.html:342
+#: templates/reports/report/list.html:222 templates/users/account/list.html:255
+#: templates/users/account/list.html:299 templates/users/account/list.html:343
 #: templates/users/organization/detail.html:228
-#: templates/users/organization/list.html:185 templates/users/settings.html:128
+#: templates/users/organization/list.html:186 templates/users/settings.html:128
 msgid "Cancel"
 msgstr "Cancelar"
 
 #: templates/equipment/machine/detail.html:246
-#: templates/equipment/machine/list.html:195
-#: templates/users/account/list.html:310
+#: templates/equipment/machine/list.html:196
+#: templates/users/account/list.html:311
 #: templates/users/organization/detail.html:240
-#: templates/users/organization/list.html:197
+#: templates/users/organization/list.html:198
 msgid "Deleted!"
 msgstr "¡Eliminado!"
 
 #: templates/equipment/machine/detail.html:254
 #: templates/equipment/machine/detail.html:262
-#: templates/equipment/machine/list.html:203
-#: templates/equipment/machine/list.html:211
-#: templates/users/account/list.html:275 templates/users/account/list.html:318
-#: templates/users/account/list.html:366
+#: templates/equipment/machine/list.html:204
+#: templates/equipment/machine/list.html:212
+#: templates/users/account/list.html:276 templates/users/account/list.html:319
+#: templates/users/account/list.html:367
 #: templates/users/organization/detail.html:248
 #: templates/users/organization/detail.html:256
-#: templates/users/organization/list.html:205
-#: templates/users/organization/list.html:213
+#: templates/users/organization/list.html:206
+#: templates/users/organization/list.html:214
 msgid "Error!"
 msgstr "¡Error!"
 
 #: templates/equipment/machine/detail.html:263
-#: templates/equipment/machine/list.html:212
+#: templates/equipment/machine/list.html:213
 #: templates/users/organization/detail.html:257
-#: templates/users/organization/list.html:214
+#: templates/users/organization/list.html:215
 msgid "Something went wrong. Please try again."
 msgstr "Algo salió mal. Por favor, inténtalo de nuevo."
 
@@ -1474,22 +1472,26 @@ msgstr "Aceptar"
 msgid "Add Machine"
 msgstr "Agregar Máquina"
 
-#: templates/equipment/machine/list.html:66
-#: templates/equipment/machine/list.html:112
-#: templates/reports/report/list.html:76 templates/reports/report/list.html:156
-#: templates/users/account/list.html:122 templates/users/account/list.html:187
-#: templates/users/organization/list.html:59
-#: templates/users/organization/list.html:113
+#: templates/equipment/machine/list.html:38
+msgid "Search Name, Serial or Model"
+msgstr "Buscar Nombre, Serie o Modelo"
+
+#: templates/equipment/machine/list.html:67
+#: templates/equipment/machine/list.html:113
+#: templates/reports/report/list.html:74 templates/reports/report/list.html:154
+#: templates/users/account/list.html:123 templates/users/account/list.html:188
+#: templates/users/organization/list.html:60
+#: templates/users/organization/list.html:114
 msgid "Actions"
 msgstr "Acciones"
 
-#: templates/equipment/machine/list.html:118
-#: templates/reports/report/list.html:163 templates/users/account/form.html:136
-#: templates/users/organization/list.html:119 templates/users/profile.html:147
+#: templates/equipment/machine/list.html:119
+#: templates/reports/report/list.html:161 templates/users/account/form.html:136
+#: templates/users/organization/list.html:120 templates/users/profile.html:147
 msgid "View"
 msgstr "Ver"
 
-#: templates/equipment/machine/list.html:147
+#: templates/equipment/machine/list.html:148
 msgid "No machines found"
 msgstr "No se encontraron máquinas"
 
@@ -1706,19 +1708,23 @@ msgstr "Actualizar Informe"
 msgid "Please wait..."
 msgstr "Por favor espera..."
 
-#: templates/reports/report/list.html:19 templates/reports/report/list.html:196
+#: templates/reports/report/list.html:19 templates/reports/report/list.html:194
 msgid "Add Report"
 msgstr "Agregar Informe"
 
-#: templates/reports/report/list.html:194
+#: templates/reports/report/list.html:38
+msgid "Search Lab Number, PER or Serial"
+msgstr "Buscar Número de Laboratorio, PER o Serie"
+
+#: templates/reports/report/list.html:192
 msgid "Start by creating your first report"
 msgstr "Comience creando su primer informe"
 
-#: templates/reports/report/list.html:217
+#: templates/reports/report/list.html:215
 msgid "Confirm Delete"
 msgstr "Confirmar Eliminación"
 
-#: templates/reports/report/list.html:221
+#: templates/reports/report/list.html:219
 msgid ""
 "Are you sure you want to delete this report? This action cannot be undone."
 msgstr ""
@@ -1741,7 +1747,7 @@ msgstr ""
 msgid "Details"
 msgstr "Detalles"
 
-#: templates/users/account/form.html:72 templates/users/account/list.html:69
+#: templates/users/account/form.html:72 templates/users/account/list.html:70
 msgid "Full Name"
 msgstr "Nombre Completo"
 
@@ -1765,63 +1771,67 @@ msgstr "Actualizar"
 msgid "Add Account"
 msgstr "Agregar Cuenta"
 
-#: templates/users/account/list.html:102
+#: templates/users/account/list.html:35
+msgid "Search Name or Email"
+msgstr "Buscar Nombre o Correo Electrónico"
+
+#: templates/users/account/list.html:103
 msgid "Verified"
 msgstr "Verificado"
 
-#: templates/users/account/list.html:168
+#: templates/users/account/list.html:169
 msgid "Yes"
 msgstr "Sí"
 
-#: templates/users/account/list.html:172
+#: templates/users/account/list.html:173
 msgid "No"
 msgstr "No"
 
-#: templates/users/account/list.html:203
+#: templates/users/account/list.html:204
 msgid "Desactivate"
 msgstr "Desactivar"
 
-#: templates/users/account/list.html:205
+#: templates/users/account/list.html:206
 msgid "Activate"
 msgstr "Activar"
 
-#: templates/users/account/list.html:219
+#: templates/users/account/list.html:220
 msgid "Verify"
 msgstr "Verificar"
 
-#: templates/users/account/list.html:266
+#: templates/users/account/list.html:267
 msgid "Successfully verified account."
 msgstr "Cuenta verificada con éxito."
 
-#: templates/users/account/list.html:267
+#: templates/users/account/list.html:268
 msgid "The user has been verified."
 msgstr "El usuario ha sido verificado."
 
-#: templates/users/account/list.html:276
+#: templates/users/account/list.html:277
 msgid "There was a problem verifying the account."
 msgstr "Hubo un problema al verificar la cuenta."
 
-#: templates/users/account/list.html:311
+#: templates/users/account/list.html:312
 msgid "The account has been deleted."
 msgstr "La cuenta ha sido eliminada."
 
-#: templates/users/account/list.html:319
+#: templates/users/account/list.html:320
 msgid "There was a problem deleting the account."
 msgstr "Hubo un problema al eliminar la cuenta."
 
-#: templates/users/account/list.html:341
+#: templates/users/account/list.html:342
 msgid "Yes, activate it!"
 msgstr "¡Sí, actívalo!"
 
-#: templates/users/account/list.html:357
+#: templates/users/account/list.html:358
 msgid "Successfully activated/deactivated user."
 msgstr "Usuario activado/desactivado con éxito."
 
-#: templates/users/account/list.html:358
+#: templates/users/account/list.html:359
 msgid "The user has been activated/deactivated."
 msgstr "El usuario ha sido activado/desactivado."
 
-#: templates/users/account/list.html:367
+#: templates/users/account/list.html:368
 msgid "There was a problem activating/deactivating the user."
 msgstr "Hubo un problema al activar/desactivar el usuario."
 
@@ -1872,11 +1882,15 @@ msgstr "El nombre de la organización es obligatorio"
 msgid "Add Organization"
 msgstr "Agregar Organización"
 
-#: templates/users/organization/list.html:57
+#: templates/users/organization/list.html:35
+msgid "Search Name, Email or Phone"
+msgstr "Buscar Nombre, Correo o Teléfono"
+
+#: templates/users/organization/list.html:58
 msgid "Location"
 msgstr "Ubicación"
 
-#: templates/users/organization/list.html:148
+#: templates/users/organization/list.html:149
 msgid "No organizations found"
 msgstr "No se encontraron organizaciones"
 

@@ -35,7 +35,8 @@
                         <span class="path1"></span>
                         <span class="path2"></span>
                     </i>
-                    {% render_field filter.form.lab_number_search class="form-control w-250px ps-12" placeholder="Search Lab Number, PER or Serial" %}
+                    {% trans "Search Lab Number, PER or Serial" as search_placeholder %}
+                    {% render_field filter.form.lab_number_search class="form-control w-250px ps-12" placeholder=search_placeholder %}
                 </div>
                 <div class="w-100 ms-4">
                     {% render_field filter.form.organization class="form-select"%}
@@ -48,9 +49,6 @@
                 </div>
                 <div class="w-100 ms-4">
                     {% render_field filter.form.condition class="form-select"%}
-                </div>
-                <div class="w-100 ms-4">
-                    {% render_field filter.form.is_active class="form-select"%}
                 </div>
                 <button type="submit" class="btn btn-light-primary ms-4 d-flex">
                     <span class="svg-icon svg-icon-2 me-1">
