@@ -52,3 +52,50 @@ class ReportFilter(django_filters.FilterSet):
             "condition",
             "status",
         ]
+
+
+class ComponentAnalysisFilter(django_filters.FilterSet):
+    """Filter for component analysis."""
+
+    machine = django_filters.ModelChoiceFilter(
+        queryset=equipment_models.Machine.objects.filter(is_active=True),
+        empty_label=_("Select Machine"),
+        label=_("Machine"),
+        required=True,
+    )
+    component = django_filters.ModelChoiceFilter(
+        queryset=equipment_models.Component.objects.filter(is_active=True),
+        empty_label=_("Select Component"),
+        label=_("Component"),
+        required=True,
+    )
+
+    class Meta:
+        model = models.Report
+        fields = ["machine", "component"]
+
+    def __init__(self, *args, organization=None, **kwargs):
+        """
+        Initialize filter with organization context.
+
+        Args:
+            organization: Organization to filter machines by
+        """
+        super().__init__(*args, **kwargs)
+
+        # Filter machines by organization if provided
+        if organization:
+            self.filters[
+                "machine"
+            ].queryset = equipment_models.Machine.objects.filter(
+                organization=organization, is_active=True
+            )
+
+        # Filter components based on selected machine
+        if self.data.get("machine"):
+            machine_id = self.data.get("machine")
+            self.filters[
+                "component"
+            ].queryset = equipment_models.Component.objects.filter(
+                machine_id=machine_id, is_active=True
+            ).select_related("type")

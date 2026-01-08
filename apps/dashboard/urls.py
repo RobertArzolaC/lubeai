@@ -19,6 +19,22 @@ urlpatterns = [
         views.OrganizationDashboardOverviewAPIView.as_view(),
         name="org_overview_api",
     ),
+    # Component Analysis
+    path(
+        "analysis/",
+        views.ComponentAnalysisView.as_view(),
+        name="component_analysis",
+    ),
+    path(
+        "api/analysis/data/",
+        views.ComponentAnalysisDataAPIView.as_view(),
+        name="analysis_data_api",
+    ),
+    path(
+        "api/components/",
+        views.ComponentsByMachineAPIView.as_view(),
+        name="components_api",
+    ),
     # Export endpoints
     path("export/", views.ExportPageView.as_view(), name="export"),
     path(

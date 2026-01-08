@@ -1,10 +1,14 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+)
 from django.db.models import (
     Count,
     Q,
 )
 from django.db.models.functions import TruncMonth
 from django.http import HttpResponse, JsonResponse
+from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import TemplateView, View
@@ -12,8 +16,9 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
-from apps.dashboard.filtersets import ReportFilter
-from apps.equipment.models import Machine
+from apps.dashboard.filtersets import ComponentAnalysisFilter, ReportFilter
+from apps.dashboard.services import ComponentAnalysisService
+from apps.equipment.models import Component, Machine
 from apps.reports.choices import ReportCondition, ReportStatus
 from apps.reports.models import Report
 from apps.users.mixins import OrganizationRequiredMixin
@@ -532,7 +537,10 @@ class OrganizationDashboardOverviewAPIView(
 
         organization = self.get_user_organization()
         filter_end_date = timezone.now()
-        filter_start_date = filter_end_date.replace(day=1)
+        # Set filter_start_date to 3 months ago from filter_end_date
+        filter_start_date = (
+            filter_end_date - timezone.timedelta(days=90)
+        ).replace(hour=0, minute=0, second=0, microsecond=0)
 
         if request.GET.get("start_date"):
             try:
@@ -663,3 +671,126 @@ class OrganizationDashboardOverviewAPIView(
             ReportCondition.CRITICAL: "danger",
         }
         return condition_classes.get(condition, "secondary")
+
+
+class ComponentAnalysisView(
+    PermissionRequiredMixin,
+    OrganizationRequiredMixin,
+    LoginRequiredMixin,
+    TemplateView,
+):
+    """View for component analysis page."""
+
+    permission_required = "dashboard.view_component_analysis"
+    template_name = "dashboard/component_analysis.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Get user's organization
+        organization = self.get_user_organization()
+
+        # Initialize filter with organization context
+        filterset = ComponentAnalysisFilter(
+            data=self.request.GET or None,
+            organization=organization,
+        )
+
+        context.update(
+            {
+                "filter": filterset,
+                "entity": _("Component Analysis"),
+                "back_url": reverse_lazy("apps.dashboard:index"),
+            }
+        )
+
+        return context
+
+
+class ComponentAnalysisDataAPIView(
+    PermissionRequiredMixin,
+    OrganizationRequiredMixin,
+    LoginRequiredMixin,
+    View,
+):
+    """API endpoint for component analysis data."""
+
+    permission_required = "dashboard.view_component_analysis"
+
+    def get(self, request, *args, **kwargs):
+        """Return component analysis data as JSON."""
+        component_id = request.GET.get("component")
+
+        if not component_id:
+            return JsonResponse(
+                {"error": "Component ID is required"}, status=400
+            )
+
+        # Verify component belongs to user's organization
+        organization = self.get_user_organization()
+        try:
+            component = Component.objects.select_related("machine").get(
+                id=component_id,
+                machine__organization=organization,
+                is_active=True,
+            )
+        except Component.DoesNotExist:
+            return JsonResponse(
+                {"error": "Component not found or access denied"}, status=404
+            )
+
+        # Use service to get analysis data
+        try:
+            service = ComponentAnalysisService(component_id=component_id)
+            data = service.get_all_analysis_data()
+            return JsonResponse(data, safe=False)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+
+class ComponentsByMachineAPIView(
+    PermissionRequiredMixin,
+    OrganizationRequiredMixin,
+    LoginRequiredMixin,
+    View,
+):
+    """API endpoint to get components for a specific machine."""
+
+    permission_required = "dashboard.view_component_analysis"
+
+    def get(self, request, *args, **kwargs):
+        """Return components for the specified machine as JSON."""
+        machine_id = request.GET.get("machine_id")
+
+        if not machine_id:
+            return JsonResponse({"error": "Machine ID is required"}, status=400)
+
+        # Verify machine belongs to user's organization
+        organization = self.get_user_organization()
+        try:
+            machine = Machine.objects.get(
+                id=machine_id,
+                organization=organization,
+                is_active=True,
+            )
+        except Machine.DoesNotExist:
+            return JsonResponse(
+                {"error": "Machine not found or access denied"}, status=404
+            )
+
+        # Get components for this machine
+        components = Component.objects.filter(
+            machine=machine, is_active=True
+        ).select_related("type")
+
+        components_data = [
+            {
+                "id": component.id,
+                "name": (
+                    component.type.name if component.type else "Unknown Type"
+                ),
+            }
+            for component in components
+        ]
+
+        return JsonResponse({"components": components_data}, safe=False)

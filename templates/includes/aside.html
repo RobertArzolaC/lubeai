@@ -89,6 +89,21 @@
           {% endif %}
         </div>
         <div class="menu-item">
+          {% if perms.dashboard.view_component_analysis %}
+            <a class="menu-link {% if request.resolver_match.url_name == "component_analysis" %}active{% endif %}" href="{% url 'apps.dashboard:component_analysis' %}">
+              <span class="menu-icon">
+                <i class="ki-duotone ki-chart-line-up fs-2 me-2">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+              </span>
+              <span class="menu-title">
+                {% trans 'Component Analysis' %}
+              </span>
+            </a>
+          {% endif %}
+        </div>
+        <div class="menu-item">
           {% if request.user.is_authenticated and request.user.account.organization %}
             <a class="menu-link {% if request.resolver_match.url_name == "export" %}active{% endif %}" href="{% url 'apps.dashboard:export' %}">
               <span class="menu-icon">

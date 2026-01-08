@@ -1,0 +1,615 @@
+{% extends 'layouts/dashboard.html' %}
+{% load i18n static %}
+{% load widget_tweaks %}
+
+{% block title_page %}{% trans "Component Analysis" %}{% endblock %}
+{% block toolbar_title %}{% trans "Component Analysis" %}{% endblock %}
+
+{% block content %}
+<main class="container-xxl">
+  <!-- Page Header -->
+  <div class="d-flex align-items-center justify-content-end mb-5">
+    <a href="{{ back_url }}" class="btn btn-sm btn-light-primary">
+      <i class="ki-duotone ki-arrow-left fs-2">
+        <span class="path1"></span>
+        <span class="path2"></span>
+      </i>
+      {% trans "Back to Dashboard" %}
+    </a>
+  </div>
+
+  <!-- Filters Card -->
+  <div class="card mb-5 shadow-sm">
+    <div class="card-header border-0 pt-6">
+      <h3 class="card-title">
+        <i class="ki-duotone ki-filter fs-2 text-primary me-2">
+          <span class="path1"></span>
+          <span class="path2"></span>
+        </i>
+        {% trans "Filters" %}
+      </h3>
+    </div>
+    <div class="card-body pt-0">
+      <form id="analysis-filters-form" method="get" class="row g-4 align-items-end">
+        <!-- Machine Filter -->
+        <div class="col-md-4 pb-8">
+            {% trans "Search machine" as machine_placeholder %}
+            {% render_field filter.form.machine class="form-select" data-control="select2" data-placeholder=machine_placeholder data-allow-clear="true" %}
+        </div>
+
+        <!-- Component Filter -->
+        <div class="col-md-4 d-flex pb-8">
+            {% trans "Select component" as component_placeholder %}
+            {% render_field filter.form.component class="form-select" data-control="select2" data-placeholder=component_placeholder data-allow-clear="true" %}
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="col-md-4">
+          <button type="button" id="apply-filters-btn" class="btn btn-primary w-100 mb-2">
+            <i class="ki-duotone ki-magnifier fs-2">
+              <span class="path1"></span>
+              <span class="path2"></span>
+            </i>
+            {% trans "Apply Filters" %}
+          </button>
+          <button type="button" id="clear-filters-btn" class="btn btn-light-secondary w-100">
+            <i class="ki-duotone ki-cross-circle fs-2">
+              <span class="path1"></span>
+              <span class="path2"></span>
+            </i>
+            {% trans "Clear" %}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Loading Indicator -->
+  <div id="loading-indicator" class="card mb-5 shadow-sm d-none">
+    <div class="card-body text-center py-10">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">{% trans "Loading..." %}</span>
+      </div>
+      <p class="text-muted mt-3 mb-0">{% trans "Loading analysis data..." %}</p>
+    </div>
+  </div>
+
+  <!-- No Data Message -->
+  <div id="no-data-message" class="alert alert-info d-flex align-items-center">
+    <i class="ki-duotone ki-information-5 fs-2x text-primary me-4">
+      <span class="path1"></span>
+      <span class="path2"></span>
+      <span class="path3"></span>
+    </i>
+    <div class="d-flex flex-column">
+      <h4 class="mb-1 text-dark">{% trans "Select a component" %}</h4>
+      <span>{% trans "Use the filters above to select a machine and component, then click 'Apply Filters' to view the analysis." %}</span>
+    </div>
+  </div>
+
+  <!-- Results Container -->
+  <div id="results-container" class="d-none">
+    <!-- Component Summary Card -->
+    <div class="card mb-5 shadow-sm">
+      <div class="card-header border-0 pt-6">
+        <h3 class="card-title">
+          <i class="ki-duotone ki-information fs-2 text-primary me-2">
+            <span class="path1"></span>
+            <span class="path2"></span>
+            <span class="path3"></span>
+          </i>
+          {% trans "Component Summary" %}
+        </h3>
+      </div>
+      <div class="card-body">
+        <div class="row g-5">
+          <div class="col-md-3">
+            <div class="d-flex align-items-center">
+              <div class="symbol symbol-50px me-4">
+                <span class="symbol-label bg-light-info">
+                  <i class="ki-duotone ki-gear fs-2x text-info">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                  </i>
+                </span>
+              </div>
+              <div>
+                <div class="text-muted fs-7 fw-semibold">{% trans "Component Type" %}</div>
+                <div class="fs-5 fw-bold text-gray-900" id="summary-component-type">-</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="d-flex align-items-center">
+              <div class="symbol symbol-50px me-4">
+                <span class="symbol-label bg-light-primary">
+                  <i class="ki-duotone ki-wrench fs-2x text-primary">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                  </i>
+                </span>
+              </div>
+              <div>
+                <div class="text-muted fs-7 fw-semibold">{% trans "Machine" %}</div>
+                <div class="fs-5 fw-bold text-gray-900" id="summary-machine-name">-</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="d-flex align-items-center">
+              <div class="symbol symbol-50px me-4">
+                <span class="symbol-label bg-light-warning">
+                  <i class="ki-duotone ki-calendar fs-2x text-warning">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                  </i>
+                </span>
+              </div>
+              <div>
+                <div class="text-muted fs-7 fw-semibold">{% trans "Last Sample" %}</div>
+                <div class="fs-5 fw-bold text-gray-900" id="summary-last-sample">-</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="d-flex align-items-center">
+              <div class="symbol symbol-50px me-4">
+                <span class="symbol-label bg-light-success">
+                  <i class="ki-duotone ki-chart-line-up fs-2x text-success">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                  </i>
+                </span>
+              </div>
+              <div>
+                <div class="text-muted fs-7 fw-semibold">{% trans "Total Reports" %}</div>
+                <div class="fs-5 fw-bold text-gray-900" id="summary-total-reports">-</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row 1: Wear Trends & Contamination -->
+    <div class="row g-5 mb-5">
+      <!-- Wear Trends Chart -->
+      <div class="col-xl-6">
+        <div class="card card-flush h-100 shadow-sm">
+          <div class="card-header pt-7">
+            <h3 class="card-title align-items-start flex-column">
+              <span class="card-label fw-bold text-gray-900">{% trans "Wear Trends" %}</span>
+              <span class="text-muted mt-1 fw-semibold fs-7">{% trans "Fe, Cu, Al over time" %}</span>
+            </h3>
+          </div>
+          <div class="card-body pt-5">
+            <div id="wear-trends-chart" style="min-height: 350px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contamination Alerts Chart -->
+      <div class="col-xl-6">
+        <div class="card card-flush h-100 shadow-sm">
+          <div class="card-header pt-7">
+            <h3 class="card-title align-items-start flex-column">
+              <span class="card-label fw-bold text-gray-900">{% trans "Contamination Alerts" %}</span>
+              <span class="text-muted mt-1 fw-semibold fs-7">{% trans "Si, Na, Fuel dilution" %}</span>
+            </h3>
+          </div>
+          <div class="card-body pt-5">
+            <div id="contamination-chart" style="min-height: 350px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row 2: Oil Health & Additives -->
+    <div class="row g-5 mb-5">
+      <!-- Oil Health Chart -->
+      <div class="col-xl-6">
+        <div class="card card-flush h-100 shadow-sm">
+          <div class="card-header pt-7">
+            <h3 class="card-title align-items-start flex-column">
+              <span class="card-label fw-bold text-gray-900">{% trans "Oil Health" %}</span>
+              <span class="text-muted mt-1 fw-semibold fs-7">{% trans "TBN, TAN, Viscosity, Oxidation" %}</span>
+            </h3>
+          </div>
+          <div class="card-body pt-5">
+            <div id="oil-health-chart" style="min-height: 350px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additives Trend Chart -->
+      <div class="col-xl-6">
+        <div class="card card-flush h-100 shadow-sm">
+          <div class="card-header pt-7">
+            <h3 class="card-title align-items-start flex-column">
+              <span class="card-label fw-bold text-gray-900">{% trans "Additive Elements" %}</span>
+              <span class="text-muted mt-1 fw-semibold fs-7">{% trans "Zn, P, Mg, Ca levels" %}</span>
+            </h3>
+          </div>
+          <div class="card-body pt-5">
+            <div id="additives-chart" style="min-height: 350px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  "use strict";
+
+  // Global chart instances
+  let wearTrendsChart = null;
+  let contaminationChart = null;
+  let oilHealthChart = null;
+  let additivesChart = null;
+
+  // Initialize on document ready
+  document.addEventListener('DOMContentLoaded', function() {
+    initializeFilters();
+    initializeEventListeners();
+  });
+
+  function initializeFilters() {
+    // Initialize Select2 for machine select
+    const machineSelect = $('#{{ filter.form.machine.id_for_label }}');
+    if (machineSelect.length) {
+      machineSelect.select2({
+        placeholder: '{% trans "Select the machine to analyze" %}',
+        allowClear: true,
+        width: '100%'
+      });
+    }
+
+    // Initialize Select2 for component select (disabled initially)
+    const componentSelect = $('#{{ filter.form.component.id_for_label }}');
+    if (componentSelect.length) {
+      componentSelect.prop('disabled', true);
+      componentSelect.select2({
+        placeholder: '{% trans "Select Machine first" %}',
+        allowClear: true,
+        width: '100%'
+      });
+    }
+  }
+
+  function initializeEventListeners() {
+    const machineSelect = $('#{{ filter.form.machine.id_for_label }}');
+    const applyBtn = document.getElementById('apply-filters-btn');
+    const clearBtn = document.getElementById('clear-filters-btn');
+
+    // Load components when machine changes (using select2 event)
+    if (machineSelect.length) {
+      machineSelect.on('select2:select', function(e) {
+        const machineId = e.params.data.id;
+        loadComponentsForMachine(machineId);
+      });
+
+      // Clear components when machine is cleared
+      machineSelect.on('select2:clear', function() {
+        const componentSelect = $('#{{ filter.form.component.id_for_label }}');
+        componentSelect.prop('disabled', true);
+        componentSelect.empty().trigger('change');
+        componentSelect.select2({
+          placeholder: '{% trans "Select Machine first" %}',
+          allowClear: true,
+          width: '100%'
+        });
+      });
+    }
+
+    // Apply filters
+    if (applyBtn) {
+      applyBtn.addEventListener('click', function() {
+        applyFilters();
+      });
+    }
+
+    // Clear filters
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function() {
+        clearFilters();
+      });
+    }
+  }
+
+  async function loadComponentsForMachine(machineId) {
+    const componentSelect = $('#{{ filter.form.component.id_for_label }}');
+
+    if (!machineId || !componentSelect.length) {
+      if (componentSelect.length) {
+        componentSelect.prop('disabled', true);
+        componentSelect.empty().append('<option value="">{% trans "Select Machine first" %}</option>');
+        componentSelect.trigger('change');
+      }
+      return;
+    }
+
+    try {
+      const response = await fetch(`{% url 'apps.dashboard:components_api' %}?machine_id=${machineId}`);
+      const data = await response.json();
+
+      if (response.ok && data.components) {
+        // Clear and enable select
+        componentSelect.empty();
+        componentSelect.prop('disabled', false);
+
+        // Add placeholder option
+        componentSelect.append('<option value="">{% trans "Select Component" %}</option>');
+
+        // Add component options
+        data.components.forEach(component => {
+          const option = new Option(component.name, component.id, false, false);
+          componentSelect.append(option);
+        });
+
+        // Trigger change and reinitialize select2
+        componentSelect.trigger('change');
+        componentSelect.select2({
+          placeholder: '{% trans "Select the component to analyze" %}',
+          allowClear: true,
+          width: '100%'
+        });
+
+      } else {
+        throw new Error(data.error || 'Failed to load components');
+      }
+    } catch (error) {
+      console.error('Error loading components:', error);
+      toastr.error('{% trans "Error loading components" %}');
+      componentSelect.prop('disabled', true);
+      componentSelect.empty().append('<option value="">{% trans "Error loading components" %}</option>');
+      componentSelect.trigger('change');
+    }
+  }
+
+  async function applyFilters() {
+    const componentId = $('#{{ filter.form.component.id_for_label }}').val();
+
+    if (!componentId) {
+      toastr.warning('{% trans "Please select a machine and component" %}');
+      return;
+    }
+
+    // Show loading, hide other sections
+    document.getElementById('loading-indicator').classList.remove('d-none');
+    document.getElementById('no-data-message').classList.add('d-none');
+    document.getElementById('results-container').classList.add('d-none');
+
+    try {
+      // Build query string
+      const queryParams = `component=${componentId}`;
+
+      const response = await fetch(`{% url 'apps.dashboard:analysis_data_api' %}?${queryParams}`);
+      const data = await response.json();
+
+      if (response.ok) {
+        displayAnalysisData(data);
+      } else {
+        throw new Error(data.error || 'Failed to load analysis data');
+      }
+    } catch (error) {
+      console.error('Error loading analysis data:', error);
+      toastr.error('{% trans "Error loading analysis data" %}');
+      document.getElementById('no-data-message').classList.remove('d-none');
+    } finally {
+      document.getElementById('loading-indicator').classList.add('d-none');
+    }
+  }
+
+  function displayAnalysisData(data) {
+    // Update summary
+    document.getElementById('summary-component-type').textContent = data.summary.component_type || '-';
+    document.getElementById('summary-machine-name').textContent = data.summary.machine_name || '-';
+    document.getElementById('summary-last-sample').textContent = data.summary.latest_sample_date || '-';
+    document.getElementById('summary-total-reports').textContent = data.summary.total_reports || '0';
+
+    // Render charts
+    renderWearTrendsChart(data.wear_trends);
+    renderContaminationChart(data.contamination);
+    renderOilHealthChart(data.oil_health);
+    renderAdditivesChart(data.additives);
+
+    // Show results
+    document.getElementById('results-container').classList.remove('d-none');
+  }
+
+  function renderWearTrendsChart(data) {
+    if (wearTrendsChart) {
+      wearTrendsChart.destroy();
+    }
+
+    const options = {
+      series: data.series,
+      chart: {
+        type: 'line',
+        height: 350,
+        toolbar: { show: true },
+        zoom: { enabled: true }
+      },
+      dataLabels: { enabled: false },
+      stroke: { curve: 'smooth', width: 3 },
+      xaxis: {
+        categories: data.dates,
+        title: { text: '{% trans "Sample Date" %}' }
+      },
+      yaxis: {
+        title: { text: '{% trans "Concentration (ppm)" %}' }
+      },
+      legend: { position: 'top' },
+      annotations: {
+        yaxis: [
+          {
+            y: data.thresholds.iron_fe.critical,
+            borderColor: '#F1416C',
+            label: {
+              borderColor: '#F1416C',
+              style: { color: '#fff', background: '#F1416C' },
+              text: 'Fe Critical: ' + data.thresholds.iron_fe.critical + ' ppm'
+            }
+          }
+        ]
+      }
+    };
+
+    wearTrendsChart = new ApexCharts(document.querySelector("#wear-trends-chart"), options);
+    wearTrendsChart.render();
+  }
+
+  function renderContaminationChart(data) {
+    if (contaminationChart) {
+      contaminationChart.destroy();
+    }
+
+    const options = {
+      series: data.series,
+      chart: {
+        type: 'line',
+        height: 350,
+        toolbar: { show: true },
+        zoom: { enabled: true }
+      },
+      dataLabels: { enabled: false },
+      stroke: { curve: 'smooth', width: 3 },
+      xaxis: {
+        categories: data.dates,
+        title: { text: '{% trans "Sample Date" %}' }
+      },
+      yaxis: {
+        title: { text: '{% trans "Concentration (ppm / %)" %}' }
+      },
+      legend: { position: 'top' },
+      annotations: {
+        yaxis: [
+          {
+            y: data.thresholds.silicon_si.critical,
+            borderColor: '#FFC700',
+            label: {
+              borderColor: '#FFC700',
+              style: { color: '#fff', background: '#FFC700' },
+              text: 'Si Critical: ' + data.thresholds.silicon_si.critical + ' ppm'
+            }
+          }
+        ]
+      }
+    };
+
+    contaminationChart = new ApexCharts(document.querySelector("#contamination-chart"), options);
+    contaminationChart.render();
+  }
+
+  function renderOilHealthChart(data) {
+    if (oilHealthChart) {
+      oilHealthChart.destroy();
+    }
+
+    const options = {
+      series: data.series,
+      chart: {
+        type: 'line',
+        height: 350,
+        toolbar: { show: true },
+        zoom: { enabled: true }
+      },
+      dataLabels: { enabled: false },
+      stroke: { curve: 'smooth', width: 3 },
+      xaxis: {
+        categories: data.dates,
+        title: { text: '{% trans "Sample Date" %}' }
+      },
+      yaxis: {
+        title: { text: '{% trans "Value" %}' }
+      },
+      legend: { position: 'top' },
+      annotations: {
+        yaxis: [
+          {
+            y: data.thresholds.tbn.critical,
+            borderColor: '#F1416C',
+            label: {
+              borderColor: '#F1416C',
+              style: { color: '#fff', background: '#F1416C' },
+              text: 'TBN Critical: ' + data.thresholds.tbn.critical
+            }
+          }
+        ]
+      }
+    };
+
+    oilHealthChart = new ApexCharts(document.querySelector("#oil-health-chart"), options);
+    oilHealthChart.render();
+  }
+
+  function renderAdditivesChart(data) {
+    if (additivesChart) {
+      additivesChart.destroy();
+    }
+
+    const options = {
+      series: data.series,
+      chart: {
+        type: 'line',
+        height: 350,
+        toolbar: { show: true },
+        zoom: { enabled: true }
+      },
+      dataLabels: { enabled: false },
+      stroke: { curve: 'smooth', width: 3 },
+      xaxis: {
+        categories: data.dates,
+        title: { text: '{% trans "Sample Date" %}' }
+      },
+      yaxis: {
+        title: { text: '{% trans "Concentration (ppm)" %}' }
+      },
+      legend: { position: 'top' },
+      annotations: {
+        yaxis: [
+          {
+            y: data.thresholds.zinc_zn.critical,
+            borderColor: '#F1416C',
+            label: {
+              borderColor: '#F1416C',
+              style: { color: '#fff', background: '#F1416C' },
+              text: 'Zn Critical: ' + data.thresholds.zinc_zn.critical + ' ppm'
+            }
+          }
+        ]
+      }
+    };
+
+    additivesChart = new ApexCharts(document.querySelector("#additives-chart"), options);
+    additivesChart.render();
+  }
+
+  function clearFilters() {
+    // Clear select2 fields
+    $('#{{ filter.form.machine.id_for_label }}').val(null).trigger('change');
+
+    const componentSelect = $('#{{ filter.form.component.id_for_label }}');
+    componentSelect.empty().prop('disabled', true);
+    componentSelect.append('<option value="">{% trans "Select Machine first" %}</option>');
+    componentSelect.val(null).trigger('change');
+    componentSelect.select2({
+      placeholder: '{% trans "Select Machine first" %}',
+      allowClear: true,
+      width: '100%'
+    });
+
+    document.getElementById('results-container').classList.add('d-none');
+    document.getElementById('no-data-message').classList.remove('d-none');
+
+    // Destroy charts
+    if (wearTrendsChart) wearTrendsChart.destroy();
+    if (contaminationChart) contaminationChart.destroy();
+    if (oilHealthChart) oilHealthChart.destroy();
+    if (additivesChart) additivesChart.destroy();
+  }
+</script>
+{% endblock %}

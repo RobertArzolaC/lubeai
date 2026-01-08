@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-08 13:26-0500\n"
+"POT-Creation-Date: 2026-01-08 14:44-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -228,7 +228,7 @@ msgstr "Tipo de contenido del objeto relacionado."
 msgid "Primary key of the related object."
 msgstr "Clave primaria del objeto relacionado."
 
-#: apps/core/models.py:174 apps/dashboard/views.py:421
+#: apps/core/models.py:174 apps/dashboard/views.py:426
 #: apps/equipment/filtersets.py:21 apps/reports/filtersets.py:31
 #: apps/reports/models.py:108 apps/users/filtersets.py:15
 #: apps/users/filtersets.py:46 templates/dashboard/admin_dashboard.html:51
@@ -317,13 +317,15 @@ msgstr "Fecha de Fin"
 msgid "All Machines"
 msgstr "Todas las máquinas"
 
-#: apps/dashboard/filtersets.py:32 apps/dashboard/views.py:413
-#: apps/equipment/models.py:44 apps/equipment/models.py:85
-#: apps/equipment/views.py:43 apps/equipment/views.py:62
-#: apps/equipment/views.py:83 apps/equipment/views.py:117
-#: apps/equipment/views.py:156 apps/reports/filtersets.py:26
-#: apps/reports/models.py:31 templates/dashboard/admin_dashboard.html:33
+#: apps/dashboard/filtersets.py:32 apps/dashboard/filtersets.py:63
+#: apps/dashboard/views.py:418 apps/equipment/models.py:44
+#: apps/equipment/models.py:85 apps/equipment/views.py:43
+#: apps/equipment/views.py:62 apps/equipment/views.py:83
+#: apps/equipment/views.py:117 apps/equipment/views.py:156
+#: apps/reports/filtersets.py:26 apps/reports/models.py:31
+#: templates/dashboard/admin_dashboard.html:33
 #: templates/dashboard/admin_dashboard.html:213
+#: templates/dashboard/component_analysis.html:133
 #: templates/dashboard/export.html:50
 #: templates/dashboard/organization_dashboard.html:144
 #: templates/reports/report/detail.html:174
@@ -343,16 +345,19 @@ msgstr "Todas las condiciones"
 msgid "All Statuses"
 msgstr "Todos los estados"
 
-#: apps/dashboard/views.py:412 apps/reports/models.py:48
-#: templates/dashboard/admin_dashboard.html:212
-#: templates/dashboard/organization_dashboard.html:143
-#: templates/reports/report/detail.html:55
-#: templates/reports/report/list.html:67
-msgid "Lab Number"
-msgstr "Número de laboratorio"
+#: apps/dashboard/filtersets.py:62
+msgid "Select Machine"
+msgstr "Seleccionar Máquina"
 
-#: apps/dashboard/views.py:414 apps/equipment/models.py:101
-#: apps/reports/models.py:40
+#: apps/dashboard/filtersets.py:68
+#: templates/dashboard/component_analysis.html:344
+#, fuzzy
+#| msgid "Select Component Type"
+msgid "Select Component"
+msgstr "Seleccione el Tipo de Componente"
+
+#: apps/dashboard/filtersets.py:69 apps/dashboard/views.py:419
+#: apps/equipment/models.py:101 apps/reports/models.py:40
 #: templates/dashboard/organization_dashboard.html:145
 #: templates/equipment/machine/form.html:125
 #: templates/equipment/machine/form.html:167
@@ -361,38 +366,56 @@ msgstr "Número de laboratorio"
 msgid "Component"
 msgstr "Componente"
 
-#: apps/dashboard/views.py:415 apps/reports/models.py:54
+#: apps/dashboard/models.py:17
+#, fuzzy
+#| msgid "When this component was installed"
+msgid "Can view component analysis"
+msgstr "Cuándo se instaló este componente"
+
+#: apps/dashboard/views.py:417 apps/reports/models.py:48
+#: templates/dashboard/admin_dashboard.html:212
+#: templates/dashboard/organization_dashboard.html:143
+#: templates/reports/report/detail.html:55
+#: templates/reports/report/list.html:67
+msgid "Lab Number"
+msgstr "Número de laboratorio"
+
+#: apps/dashboard/views.py:420 apps/reports/models.py:54
 #: templates/reports/report/detail.html:230
 msgid "Lubricant"
 msgstr "Lubricante"
 
-#: apps/dashboard/views.py:416 apps/reports/models.py:60
+#: apps/dashboard/views.py:421 apps/reports/models.py:60
 #: templates/reports/report/detail.html:241
 msgid "Lubricant Hours"
 msgstr "Horas de Lubricante"
 
-#: apps/dashboard/views.py:417
+#: apps/dashboard/views.py:422
 msgid "Lubricant Kms"
 msgstr "Kilómetros de Lubricante"
 
-#: apps/dashboard/views.py:418 apps/reports/models.py:84
+#: apps/dashboard/views.py:423 apps/reports/models.py:84
 #: templates/reports/report/detail.html:73
 msgid "Serial Number Code"
 msgstr "Código de número de serie"
 
-#: apps/dashboard/views.py:419 apps/reports/models.py:90
+#: apps/dashboard/views.py:424 apps/reports/models.py:90
 #: templates/dashboard/admin_dashboard.html:216
+#: templates/dashboard/component_analysis.html:440
+#: templates/dashboard/component_analysis.html:482
+#: templates/dashboard/component_analysis.html:524
+#: templates/dashboard/component_analysis.html:566
 #: templates/reports/report/detail.html:275
 #: templates/reports/report/list.html:71
 msgid "Sample Date"
 msgstr "Fecha de muestra"
 
-#: apps/dashboard/views.py:420 apps/reports/models.py:102
+#: apps/dashboard/views.py:425 apps/reports/models.py:102
 #: templates/reports/report/detail.html:286
 msgid "Reception Date"
 msgstr "Fecha de recepción"
 
-#: apps/dashboard/views.py:422 apps/reports/filtersets.py:37
+#: apps/dashboard/views.py:427 apps/reports/filtersets.py:37
 #: apps/reports/models.py:115 templates/dashboard/admin_dashboard.html:42
 #: templates/dashboard/admin_dashboard.html:214
 #: templates/dashboard/export.html:62
@@ -402,16 +425,22 @@ msgstr "Fecha de recepción"
 msgid "Condition"
 msgstr "Condición"
 
-#: apps/dashboard/views.py:423 apps/reports/models.py:96
+#: apps/dashboard/views.py:428 apps/reports/models.py:96
 #: templates/reports/report/detail.html:62
 msgid "PER Number"
 msgstr "Número de PER"
 
-#: apps/dashboard/views.py:424 apps/reports/models.py:122
+#: apps/dashboard/views.py:429 apps/reports/models.py:122
 #: templates/reports/report/detail.html:343
 #: templates/reports/report/form.html:246
 msgid "Notes"
 msgstr "Notas"
+
+#: apps/dashboard/views.py:699 templates/dashboard/component_analysis.html:5
+#: templates/dashboard/component_analysis.html:6
+#: templates/includes/aside.html:116
+msgid "Component Analysis"
+msgstr "Análisis de Componentes"
 
 #: apps/equipment/admin.py:43 apps/equipment/admin.py:104
 #: apps/equipment/admin.py:164 apps/users/admin.py:132
@@ -514,7 +543,7 @@ msgstr "Designación del modelo o tipo de máquina"
 msgid "Machines"
 msgstr "Máquinas"
 
-#: apps/equipment/models.py:71
+#: apps/equipment/models.py:71 templates/dashboard/component_analysis.html:117
 msgid "Component Type"
 msgstr "Tipo de Componente"
 
@@ -1120,11 +1149,11 @@ msgstr "Organización creada con éxito"
 msgid "Organization updated successfully"
 msgstr "Organización actualizada con éxito"
 
-#: config/settings/base.py:153
+#: config/settings/base.py:154
 msgid "Spanish"
 msgstr "Español"
 
-#: config/settings/base.py:154
+#: config/settings/base.py:155
 msgid "English"
 msgstr "Inglés"
 
@@ -1275,11 +1304,13 @@ msgid "Filter"
 msgstr "Filtrar"
 
 #: templates/dashboard/admin_dashboard.html:64
+#: templates/dashboard/component_analysis.html:60
 #: templates/dashboard/export.html:94
 msgid "Clear"
 msgstr "Limpiar"
 
 #: templates/dashboard/admin_dashboard.html:85
+#: templates/dashboard/component_analysis.html:165
 msgid "Total Reports"
 msgstr "Total de Informes"
 
@@ -1325,6 +1356,130 @@ msgstr "No se encontraron reportes"
 #: templates/dashboard/organization_dashboard.html:7
 msgid "Last updated"
 msgstr "Última actualización"
+
+#: templates/dashboard/component_analysis.html:17
+msgid "Back to Dashboard"
+msgstr "Volver al Tablero"
+
+#: templates/dashboard/component_analysis.html:29
+msgid "Filters"
+msgstr "Filtros"
+
+#: templates/dashboard/component_analysis.html:36
+msgid "Search machine"
+msgstr "Seleccionar Máquina"
+
+#: templates/dashboard/component_analysis.html:42
+msgid "Select component"
+msgstr "Seleccione Componente"
+
+#: templates/dashboard/component_analysis.html:53
+msgid "Apply Filters"
+msgstr "Aplicar Filtros"
+
+#: templates/dashboard/component_analysis.html:71
+#: templates/dashboard/export.html:154
+#: templates/dashboard/organization_dashboard.html:152
+msgid "Loading..."
+msgstr "Cargando..."
+
+#: templates/dashboard/component_analysis.html:73
+msgid "Loading analysis data..."
+msgstr "Cargando datos de análisis..."
+
+#: templates/dashboard/component_analysis.html:85
+msgid "Select a component"
+msgstr "Seleccione un componente"
+
+#: templates/dashboard/component_analysis.html:86
+msgid ""
+"Use the filters above to select a machine and component, then click 'Apply "
+"Filters' to view the analysis."
+msgstr ""
+"Utilice los filtros de arriba para seleccionar una máquina y un componente, "
+"luego haga clic en 'Aplicar Filtros' para ver el análisis."
+
+#: templates/dashboard/component_analysis.html:101
+msgid "Component Summary"
+msgstr "Resumen del Componente"
+
+#: templates/dashboard/component_analysis.html:149
+msgid "Last Sample"
+msgstr "Última Muestra"
+
+#: templates/dashboard/component_analysis.html:181
+msgid "Wear Trends"
+msgstr "Tendencias de Desgaste"
+
+#: templates/dashboard/component_analysis.html:182
+msgid "Fe, Cu, Al over time"
+msgstr "Fe, Cu, Al a lo largo del tiempo"
+
+#: templates/dashboard/component_analysis.html:196
+msgid "Contamination Alerts"
+msgstr "Alertas de Contaminación"
+
+#: templates/dashboard/component_analysis.html:197
+msgid "Si, Na, Fuel dilution"
+msgstr "Si, Na, Dilución de Combustible"
+
+#: templates/dashboard/component_analysis.html:214
+msgid "Oil Health"
+msgstr "Salud del Aceite"
+
+#: templates/dashboard/component_analysis.html:215
+msgid "TBN, TAN, Viscosity, Oxidation"
+msgstr "TBN, TAN, Viscosidad, Oxidación"
+
+#: templates/dashboard/component_analysis.html:229
+msgid "Additive Elements"
+msgstr "Elementos Aditivos"
+
+#: templates/dashboard/component_analysis.html:230
+msgid "Zn, P, Mg, Ca levels"
+msgstr "Niveles de Zn, P, Mg, Ca"
+
+#: templates/dashboard/component_analysis.html:264
+msgid "Select the machine to analyze"
+msgstr "Seleccione la máquina para analizar"
+
+#: templates/dashboard/component_analysis.html:275
+#: templates/dashboard/component_analysis.html:300
+#: templates/dashboard/component_analysis.html:328
+#: templates/dashboard/component_analysis.html:597
+#: templates/dashboard/component_analysis.html:600
+msgid "Select Machine first"
+msgstr "Seleccione primero la Máquina"
+
+#: templates/dashboard/component_analysis.html:355
+msgid "Select the component to analyze"
+msgstr "Seleccione el componente para analizar"
+
+#: templates/dashboard/component_analysis.html:365
+#: templates/dashboard/component_analysis.html:367
+msgid "Error loading components"
+msgstr "Error al cargar los componentes"
+
+#: templates/dashboard/component_analysis.html:376
+msgid "Please select a machine and component"
+msgstr "Por favor seleccione una máquina y un componente"
+
+#: templates/dashboard/component_analysis.html:399
+msgid "Error loading analysis data"
+msgstr "Error al cargar los datos de análisis"
+
+#: templates/dashboard/component_analysis.html:443
+#: templates/dashboard/component_analysis.html:569
+msgid "Concentration (ppm)"
+msgstr "Concentración (ppm)"
+
+#: templates/dashboard/component_analysis.html:485
+msgid "Concentration (ppm / %%)"
+msgstr "Concentración (ppm / %%)"
+
+#: templates/dashboard/component_analysis.html:527
+msgid "Value"
+msgstr "Valor"
 
 #: templates/dashboard/export.html:5 templates/dashboard/export.html:13
 #: templates/dashboard/export.html:22
@@ -1373,11 +1528,6 @@ msgstr ""
 #: templates/dashboard/export.html:147
 msgid "Download Excel"
 msgstr "Descargar Excel"
-
-#: templates/dashboard/export.html:154
-#: templates/dashboard/organization_dashboard.html:152
-msgid "Loading..."
-msgstr "Cargando..."
 
 #: templates/dashboard/export.html:156
 msgid "Checking records..."
@@ -2343,20 +2493,16 @@ msgstr ""
 "Para cambiar su contraseña, comuníquese con su administrador o use la opción "
 "de restablecimiento de contraseña."
 
+#, fuzzy
+#~| msgid "Select Component Type"
+#~ msgid "Select a component to analyze"
+#~ msgstr "Seleccione el Tipo de Componente"
+
 #~ msgid "Reports This Month"
 #~ msgstr "Reportes de este Mes"
 
 #~ msgid "Overview"
 #~ msgstr "Resumen"
-
-#~ msgid "Wear Trends"
-#~ msgstr "Tendencias de Desgaste"
-
-#~ msgid "Contamination"
-#~ msgstr "Contaminación"
-
-#~ msgid "Oil Health"
-#~ msgstr "Salud del Aceite"
 
 #~ msgid "Fleet Comparison"
 #~ msgstr "Comparación de la Flota"
@@ -2395,9 +2541,6 @@ msgstr ""
 #~ msgid "Fleet Health Heatmap"
 #~ msgstr "Mapa de calor de salud de la flota"
 
-#~ msgid "Select Machine"
-#~ msgstr "Seleccionar Máquina"
-
 #~ msgid "Choose a machine..."
 #~ msgstr "Seleccionar Máquina"
 
@@ -2431,14 +2574,8 @@ msgstr ""
 #~ msgid "TAN"
 #~ msgstr "TAN"
 
-#~ msgid "Select a machine to view analysis history"
-#~ msgstr "Seleccione una máquina para ver el historial de análisis"
-
 #~ msgid "No data available"
 #~ msgstr "No hay datos disponibles"
-
-#~ msgid "No analysis data available"
-#~ msgstr "No hay datos de análisis disponibles"
 
 #~ msgid "Organization Dashboard"
 #~ msgstr "Tablero de la Organización"
@@ -2453,9 +2590,6 @@ msgstr ""
 
 #~ msgid "Installation Date & Time"
 #~ msgstr "Fecha y hora de instalación"
-
-#~ msgid "When this component was installed"
-#~ msgstr "Cuándo se instaló este componente"
 
 #~ msgid "Lab Number is required"
 #~ msgstr "Se requiere número de laboratorio"
