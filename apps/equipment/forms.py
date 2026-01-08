@@ -1,5 +1,3 @@
-"""Equipment forms."""
-
 from django import forms
 from django.forms import inlineformset_factory
 from django.utils.translation import gettext_lazy as _
@@ -32,16 +30,9 @@ class ComponentForm(forms.ModelForm):
         model = models.Component
         fields = [
             "type",
-            "serial_number",
-            "installation_datetime",
             "is_active",
         ]
         widgets = {
-            "serial_number": forms.TextInput(attrs={"class": "form-control"}),
-            "installation_datetime": forms.DateTimeInput(
-                attrs={"class": "form-control", "type": "datetime-local"},
-                format="%Y-%m-%dT%H:%M",
-            ),
             "is_active": forms.CheckboxInput(
                 attrs={"class": "form-check-input"}
             ),

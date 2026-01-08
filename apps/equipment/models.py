@@ -97,27 +97,16 @@ class Component(TimeStampedModel, BaseUserTracked, IsActive):
         related_name="components",
         help_text=_("Type/category of this component"),
     )
-    serial_number = models.CharField(
-        _("Serial Number"),
-        max_length=100,
-        help_text=_("Component serial number"),
-    )
-    installation_datetime = models.DateTimeField(
-        _("Installation Date & Time"),
-        help_text=_("When this component was installed"),
-    )
 
     class Meta:
         verbose_name = _("Component")
         verbose_name_plural = _("Components")
-        ordering = ("machine", "type", "installation_datetime")
+        ordering = ("machine", "type")
         indexes = [
-            models.Index(fields=["serial_number"]),
             models.Index(fields=["machine", "is_active"]),
-            models.Index(fields=["installation_datetime"]),
         ]
 
     def __str__(self) -> str:
         """Return string representation of component."""
         type_name = self.type.name if self.type else "Unknown Type"
-        return f"{type_name} - {self.serial_number}"
+        return f"{type_name}({self.machine.name})"

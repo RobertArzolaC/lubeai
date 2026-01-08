@@ -159,8 +159,6 @@
                         <thead>
                             <tr class="text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                 <th class="min-w-125px">{% trans "Type" %}</th>
-                                <th class="min-w-125px">{% trans "Serial Number" %}</th>
-                                <th class="min-w-150px">{% trans "Installation Date" %}</th>
                                 <th class="min-w-100px">{% trans "Status" %}</th>
                             </tr>
                         </thead>
@@ -173,12 +171,6 @@
                                     {% else %}
                                         <span class="text-muted">{% trans "Unknown Type" %}</span>
                                     {% endif %}
-                                </td>
-                                <td>
-                                    <span class="text-gray-800">{{ component.serial_number }}</span>
-                                </td>
-                                <td>
-                                    <span class="text-gray-800">{{ component.installation_datetime|date:"M d, Y H:i" }}</span>
                                 </td>
                                 <td>
                                     {% if component.is_active %}

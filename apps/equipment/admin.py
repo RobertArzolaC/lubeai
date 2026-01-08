@@ -137,21 +137,17 @@ class ComponentAdmin(admin.ModelAdmin):
     """Admin configuration for Component model."""
 
     list_display = (
-        "serial_number",
         "machine",
         "type",
-        "installation_datetime",
         "is_active",
         "created",
     )
     list_filter = (
         "is_active",
         "type",
-        "installation_datetime",
         "created",
     )
     search_fields = (
-        "serial_number",
         "machine__name",
         "machine__serial_number",
         "type__name",
@@ -162,7 +158,6 @@ class ComponentAdmin(admin.ModelAdmin):
         "created_by",
         "modified_by",
     )
-    date_hierarchy = "installation_datetime"
 
     fieldsets = (
         (
@@ -171,8 +166,6 @@ class ComponentAdmin(admin.ModelAdmin):
                 "fields": (
                     "machine",
                     "type",
-                    "serial_number",
-                    "installation_datetime",
                     "is_active",
                 )
             },

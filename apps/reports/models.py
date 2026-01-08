@@ -68,6 +68,18 @@ class Report(TimeStampedModel, BaseUserTracked, IsActive):
         blank=True,
         help_text=_("Kilometers of lubricant usage"),
     )
+    machine_hours = models.IntegerField(
+        _("Machine Hours"),
+        null=True,
+        blank=True,
+        help_text=_("Total operating hours of the machine"),
+    )
+    machine_kms = models.IntegerField(
+        _("Machine Kilometers"),
+        null=True,
+        blank=True,
+        help_text=_("Total kilometers traveled by the machine"),
+    )
     serial_number_code = models.CharField(
         _("Serial Number Code"),
         max_length=100,
@@ -134,3 +146,241 @@ class Report(TimeStampedModel, BaseUserTracked, IsActive):
     def component_name(self) -> str:
         """Return the name of the associated component, or 'N/A' if none."""
         return self.component.type.name if self.component else "N/A"
+
+
+class LabAnalysis(TimeStampedModel, BaseUserTracked):
+    """
+    Laboratory Analysis Results.
+
+    Stores all physicochemical measurements, wear metals,
+    contaminants, and additives from oil analysis.
+    One-to-one relationship with Report.
+    """
+
+    report = models.OneToOneField(
+        Report,
+        verbose_name=_("Report"),
+        on_delete=models.CASCADE,
+        related_name="analysis",
+        help_text=_("Associated inspection report"),
+    )
+
+    # ==========================================
+    # WATER TESTS
+    # ==========================================
+    water_crackle = models.CharField(
+        _("Water Crackle Test"),
+        max_length=50,
+        blank=True,
+        help_text=_("ITS 009/18 - Qualitative water test (NEGATIVO/POSITIVO)"),
+    )
+    water_distillation = models.DecimalField(
+        _("Water by Distillation (%)"),
+        max_digits=6,
+        decimal_places=3,
+        null=True,
+        blank=True,
+        help_text=_("ASTM D 95-13"),
+    )
+
+    # ==========================================
+    # VISCOSITY
+    # ==========================================
+    viscosity_40c = models.DecimalField(
+        _("Viscosity @ 40°C (cSt)"),
+        max_digits=8,
+        decimal_places=3,
+        null=True,
+        blank=True,
+        help_text=_("ASTM D 7279-20"),
+    )
+    viscosity_100c = models.DecimalField(
+        _("Viscosity @ 100°C (cSt)"),
+        max_digits=8,
+        decimal_places=3,
+        null=True,
+        blank=True,
+        help_text=_("ASTM D 7279-20"),
+    )
+
+    # ==========================================
+    # ACID/BASE NUMBERS
+    # ==========================================
+    compatibility = models.CharField(
+        _("Compatibility"),
+        max_length=50,
+        blank=True,
+        help_text=_("ILT-096 - Compatibility test result"),
+    )
+    tbn = models.DecimalField(
+        _("TBN (mgKOH/g)"),
+        max_digits=6,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text=_("ASTM D 2896-21 - Total Base Number"),
+    )
+    tan = models.DecimalField(
+        _("TAN (mgKOH/g)"),
+        max_digits=6,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text=_("ASTM D 664-24 - Total Acid Number"),
+    )
+
+    # ==========================================
+    # FTIR ANALYSIS (ASTM E 2412-23)
+    # ==========================================
+    oxidation = models.DecimalField(
+        _("Oxidation (Abs/cm)"),
+        max_digits=6,
+        decimal_places=3,
+        null=True,
+        blank=True,
+    )
+    soot = models.DecimalField(
+        _("Soot (%)"),
+        max_digits=6,
+        decimal_places=3,
+        null=True,
+        blank=True,
+    )
+    nitration = models.DecimalField(
+        _("Nitration (Abs/cm)"),
+        max_digits=6,
+        decimal_places=3,
+        null=True,
+        blank=True,
+    )
+    sulfation = models.DecimalField(
+        _("Sulfation (Abs/cm)"),
+        max_digits=6,
+        decimal_places=3,
+        null=True,
+        blank=True,
+    )
+    glycol = models.DecimalField(
+        _("Glycol (%)"),
+        max_digits=6,
+        decimal_places=3,
+        null=True,
+        blank=True,
+    )
+    fuel_dilution = models.DecimalField(
+        _("Fuel Dilution (%)"),
+        max_digits=6,
+        decimal_places=3,
+        null=True,
+        blank=True,
+    )
+    water_ftir = models.DecimalField(
+        _("Water FTIR (%)"),
+        max_digits=6,
+        decimal_places=3,
+        null=True,
+        blank=True,
+    )
+
+    # ==========================================
+    # PARTICLE ANALYSIS
+    # ==========================================
+    pq_index = models.IntegerField(
+        _("PQ Index"),
+        null=True,
+        blank=True,
+        help_text=_("ITS 044/15 - Ferrous particle index"),
+    )
+    particle_count_iso = models.CharField(
+        _("Particle Count ISO"),
+        max_length=50,
+        blank=True,
+        help_text=_("ISO 4406:2021 (e.g., 20/18/15)"),
+    )
+
+    # ==========================================
+    # WEAR METALS (ppm) - ASTM D 5185-18
+    # ==========================================
+    iron_fe = models.IntegerField(_("Iron (Fe)"), null=True, blank=True)
+    chromium_cr = models.IntegerField(_("Chromium (Cr)"), null=True, blank=True)
+    lead_pb = models.IntegerField(_("Lead (Pb)"), null=True, blank=True)
+    copper_cu = models.IntegerField(_("Copper (Cu)"), null=True, blank=True)
+    tin_sn = models.IntegerField(_("Tin (Sn)"), null=True, blank=True)
+    aluminum_al = models.IntegerField(_("Aluminum (Al)"), null=True, blank=True)
+    nickel_ni = models.IntegerField(_("Nickel (Ni)"), null=True, blank=True)
+    silver_ag = models.IntegerField(_("Silver (Ag)"), null=True, blank=True)
+
+    # ==========================================
+    # CONTAMINANTS (ppm)
+    # ==========================================
+    silicon_si = models.IntegerField(_("Silicon (Si)"), null=True, blank=True)
+    boron_b = models.IntegerField(_("Boron (B)"), null=True, blank=True)
+    sodium_na = models.IntegerField(_("Sodium (Na)"), null=True, blank=True)
+    magnesium_mg = models.IntegerField(
+        _("Magnesium (Mg)"), null=True, blank=True
+    )
+    potassium_k = models.IntegerField(_("Potassium (K)"), null=True, blank=True)
+
+    # ==========================================
+    # ADDITIVES (ppm)
+    # ==========================================
+    molybdenum_mo = models.IntegerField(
+        _("Molybdenum (Mo)"), null=True, blank=True
+    )
+    titanium_ti = models.IntegerField(_("Titanium (Ti)"), null=True, blank=True)
+    vanadium_v = models.IntegerField(_("Vanadium (V)"), null=True, blank=True)
+    manganese_mn = models.IntegerField(
+        _("Manganese (Mn)"), null=True, blank=True
+    )
+    phosphorus_p = models.IntegerField(
+        _("Phosphorus (P)"), null=True, blank=True
+    )
+    zinc_zn = models.IntegerField(_("Zinc (Zn)"), null=True, blank=True)
+    calcium_ca = models.IntegerField(_("Calcium (Ca)"), null=True, blank=True)
+    barium_ba = models.IntegerField(_("Barium (Ba)"), null=True, blank=True)
+    cadmium_cd = models.IntegerField(_("Cadmium (Cd)"), null=True, blank=True)
+
+    # ==========================================
+    # VISUAL
+    # ==========================================
+    visual_appearance = models.CharField(
+        _("Visual Appearance"),
+        max_length=200,
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = _("Lab Analysis")
+        verbose_name_plural = _("Lab Analyses")
+
+    def __str__(self) -> str:
+        return f"Analysis: {self.report.lab_number}"
+
+    # ==========================================
+    # COMPUTED PROPERTIES FOR DASHBOARDS
+    # ==========================================
+    @property
+    def total_wear_metals(self) -> int:
+        """Sum of primary wear metals (Fe, Cr, Pb, Cu, Sn, Al)."""
+        metals = [
+            self.iron_fe,
+            self.chromium_cr,
+            self.lead_pb,
+            self.copper_cu,
+            self.tin_sn,
+            self.aluminum_al,
+        ]
+        return sum(m or 0 for m in metals)
+
+    @property
+    def total_contaminants(self) -> int:
+        """Sum of contaminant elements (Si, Na, K)."""
+        contaminants = [self.silicon_si, self.sodium_na, self.potassium_k]
+        return sum(c or 0 for c in contaminants)
+
+    @property
+    def additive_depletion_pct(self) -> float | None:
+        """Estimate additive health based on Zn levels."""
+        if self.zinc_zn:
+            return min(100.0, (self.zinc_zn / 1100) * 100)
+        return None

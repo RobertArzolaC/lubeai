@@ -1,3 +1,5 @@
+import logging
+
 import openpyxl
 from django.contrib import messages
 from django.contrib.auth.mixins import (
@@ -8,7 +10,6 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.db import transaction
 from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import (
     CreateView,
@@ -23,6 +24,8 @@ from openpyxl.styles import Font
 from apps.core import mixins as core_mixins
 from apps.equipment import filtersets, forms, models
 from apps.users.models import Organization
+
+logger = logging.getLogger(__name__)
 
 
 class MachineListView(
@@ -212,6 +215,7 @@ class MachineBulkUploadView(
                     results["errors"].append(_(f"Row {row_num}: {str(e)}"))
 
         except Exception as e:
+            logger.error(f"Error processing Excel file: {str(e)}")
             results["errors"].append(_(f"Error reading Excel file: {str(e)}"))
 
         return results
@@ -265,7 +269,7 @@ class MachineBulkUploadView(
         organization_name = row[1].strip() if row[1] else ""
         serial_number = row[2].strip() if row[2] else ""
         model = row[3].strip() if row[3] else ""
-        components = row[4].strip() if len(row) > 4 and row[4] else ""
+        components = row[4].strip()
 
         # Validate required fields
         if not name:
@@ -338,8 +342,6 @@ class MachineBulkUploadView(
                 machine=machine,
                 type=component_type,
                 defaults={
-                    "serial_number": machine.serial_number,
-                    "installation_datetime": timezone.now(),
                     "is_active": True,
                     "created_by": self.request.user,
                     "modified_by": self.request.user,

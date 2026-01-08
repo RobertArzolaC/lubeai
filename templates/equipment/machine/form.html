@@ -21,8 +21,7 @@
 
 {% block content %}
 <main class="container-xxl">
-    <form class="form d-flex flex-column" method="post"
-          action="{% if form.instance.pk %}{% url 'apps.equipment:machine_update' form.instance.pk %}{% else %}{% url 'apps.equipment:machine_create' %}{% endif %}">
+    <form class="form d-flex flex-column" method="post" action="{% if form.instance.pk %}{% url 'apps.equipment:machine_update' form.instance.pk %}{% else %}{% url 'apps.equipment:machine_create' %}{% endif %}">
         {% csrf_token %}
 
         <!-- Machine Information Card -->
@@ -147,16 +146,6 @@
                                     {{ component_form.type.errors }}
                                 </div>
                                 <div class="col-lg-3 mb-4">
-                                    <label class="form-label required fw-semibold">{% trans "Serial Number" %}</label>
-                                    {% render_field component_form.serial_number class="form-control" placeholder="Serial number" %}
-                                    {{ component_form.serial_number.errors }}
-                                </div>
-                                <div class="col-lg-3 mb-4">
-                                    <label class="form-label required fw-semibold">{% trans "Installation Date" %}</label>
-                                    {% render_field component_form.installation_datetime class="form-control" %}
-                                    {{ component_form.installation_datetime.errors }}
-                                </div>
-                                <div class="col-lg-3 mb-4">
                                     <label class="form-label fw-semibold">{% trans "Active" %}</label>
                                     <div class="form-check form-switch mt-2">
                                         {% render_field component_form.is_active class="form-check-input" %}
@@ -192,14 +181,6 @@
                                 <div class="col-lg-3 mb-4">
                                     <label class="form-label fw-semibold">{% trans "Type" %}</label>
                                     {{ component_formset.empty_form.type }}
-                                </div>
-                                <div class="col-lg-3 mb-4">
-                                    <label class="form-label required fw-semibold">{% trans "Serial Number" %}</label>
-                                    {{ component_formset.empty_form.serial_number }}
-                                </div>
-                                <div class="col-lg-3 mb-4">
-                                    <label class="form-label required fw-semibold">{% trans "Installation Date" %}</label>
-                                    {{ component_formset.empty_form.installation_datetime }}
                                 </div>
                                 <div class="col-lg-3 mb-4">
                                     <label class="form-label fw-semibold">{% trans "Active" %}</label>

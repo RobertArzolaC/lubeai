@@ -729,7 +729,6 @@ msgid "Successfully updated %(count)d reports"
 msgstr "Reporte actualizado con éxito."
 
 #: apps/reports/views.py:478
-#, python-format
 msgid "Skipped %(count)d header/title rows"
 msgstr "Omitidas %(count)d filas de encabezado/título"
 

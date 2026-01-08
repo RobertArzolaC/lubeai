@@ -307,7 +307,7 @@ class ReportBulkUploadView(
                 machine = equipment_models.Machine.objects.get(
                     organization=organization,
                     name__iexact=machine_name,
-                    serial_number__iexact=lab_number,
+                    serial_number__iexact=serial_number_code,
                     is_active=True,
                 )
             except equipment_models.Machine.DoesNotExist:
