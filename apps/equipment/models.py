@@ -32,7 +32,6 @@ class Machine(TimeStampedModel, BaseUserTracked, IsActive):
     serial_number = models.CharField(
         _("Serial Number"),
         max_length=100,
-        unique=True,
         help_text=_("Unique serial number of the machine"),
     )
     model = models.CharField(

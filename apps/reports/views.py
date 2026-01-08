@@ -1,5 +1,4 @@
 import logging
-from datetime import datetime
 
 import openpyxl
 from django.contrib import messages
@@ -8,11 +7,8 @@ from django.contrib.auth.mixins import (
     PermissionRequiredMixin,
 )
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.exceptions import ValidationError
-from django.db import transaction
 from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.utils.dateparse import parse_date
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import (
     CreateView,
@@ -25,9 +21,8 @@ from django_filters.views import FilterView
 from openpyxl.styles import Font
 
 from apps.core import mixins as core_mixins
-from apps.equipment import models as equipment_models
-from apps.reports import choices, filtersets, forms, models
-from apps.users import models as users_models
+from apps.reports import filtersets, forms, models
+from apps.reports.services.bulk_upload import ReportBulkUploadService
 
 logger = logging.getLogger(__name__)
 
@@ -173,7 +168,8 @@ class ReportBulkUploadView(
         )
 
         try:
-            results = self._process_excel_file(excel_file)
+            service = ReportBulkUploadService(self.request.user)
+            results = service.process_file(excel_file)
             self._show_results_messages(results)
         except Exception as e:
             error_msg = str(e)
@@ -186,275 +182,6 @@ class ReportBulkUploadView(
                 _("Error processing file: %(error)s") % {"error": error_msg},
             )
         return super().form_valid(form)
-
-    def _process_excel_file(self, excel_file):
-        """Process Excel file and create/update reports."""
-        results = {"created": 0, "updated": 0, "errors": [], "skipped": 0}
-        user_email = self.request.user.email
-
-        logger.debug(
-            f"Processing Excel file - User: {user_email}, File: {excel_file.name}"
-        )
-
-        try:
-            workbook = openpyxl.load_workbook(excel_file)
-            worksheet = workbook.active
-
-            for row_num, row in enumerate(
-                worksheet.iter_rows(min_row=3, values_only=True), start=3
-            ):
-                # Skip empty rows
-                if not any(row):
-                    continue
-
-                # Skip title/header rows
-                if self._is_title_or_header_row(row):
-                    results["skipped"] += 1
-                    continue
-
-                try:
-                    with transaction.atomic():
-                        result = self._process_row(row, row_num)
-                        if result == "created":
-                            results["created"] += 1
-                        elif result == "updated":
-                            results["updated"] += 1
-                except ValidationError as e:
-                    error_msg = f"Row {row_num}: {e.message}"
-                    results["errors"].append(error_msg)
-                    logger.error(
-                        f"Bulk upload validation error - User: {user_email}, "
-                        f"File: {excel_file.name}, {error_msg}"
-                    )
-                except Exception as e:
-                    error_msg = f"Row {row_num}: {str(e)}"
-                    results["errors"].append(error_msg)
-                    logger.exception(
-                        f"Bulk upload unexpected error - User: {user_email}, "
-                        f"File: {excel_file.name}, {error_msg}"
-                    )
-
-        finally:
-            workbook.close()
-
-        logger.info(
-            f"Finished processing Excel file - User: {user_email}, "
-            f"File: {excel_file.name}, Created: {results['created']}, "
-            f"Updated: {results['updated']}, Skipped: {results['skipped']}, "
-            f"Errors: {len(results['errors'])}"
-        )
-
-        return results
-
-    def _is_title_or_header_row(self, row):
-        """Check if row is a title or header row."""
-        if not row or not row[0]:
-            return True
-
-        first_cell = str(row[0]).upper()
-        # Skip common title/header patterns
-        title_patterns = [
-            "REPORTE",
-            "REPORT",
-            "LAB",
-            "LABORATORIO",
-            "LABORATORY",
-            "NUMERO",
-            "NUMBER",
-        ]
-
-        return any(pattern in first_cell for pattern in title_patterns)
-
-    def _process_row(self, row, row_num):
-        """Process a single row from Excel."""
-        # Expected columns based on template
-        (
-            lab_number,
-            organization_name,
-            machine_name,
-            component_name,
-            lubricant,
-            lubricant_hours_kms,
-            serial_number_code,
-            sample_date,
-            per_number,
-            reception_date,
-            status,
-            condition,
-            notes,
-        ) = row[:14]
-
-        # Validate required fields
-        if not lab_number:
-            raise ValidationError(_("Lab Number is required"))
-
-        # Get or create related objects
-        organization = None
-        if organization_name:
-            try:
-                organization = users_models.Organization.objects.get(
-                    name__iexact=organization_name, is_active=True
-                )
-            except users_models.Organization.DoesNotExist:
-                raise ValidationError(
-                    _("Organization '%(name)s' not found")
-                    % {"name": organization_name}
-                )
-
-        machine = None
-        if machine_name:
-            try:
-                machine = equipment_models.Machine.objects.get(
-                    organization=organization,
-                    name__iexact=machine_name,
-                    serial_number__iexact=serial_number_code,
-                    is_active=True,
-                )
-            except equipment_models.Machine.DoesNotExist:
-                logger.debug(
-                    f"Machine lookup failed - Row {row_num}, "
-                    f"Machine: {machine_name}, Serial Number: {serial_number_code}, Organization: {organization_name}"
-                )
-                raise ValidationError(
-                    _("Machine '%(name)s' not found") % {"name": machine_name}
-                )
-            except equipment_models.Machine.MultipleObjectsReturned:
-                logger.debug(
-                    f"Multiple machines found - Row {row_num}, "
-                    f"Machine: {machine_name}, Organization: {organization_name}"
-                )
-                raise ValidationError(
-                    _("Multiple machines found with name '%(name)s'")
-                    % {"name": machine_name}
-                )
-
-        component = None
-        if component_name:
-            try:
-                component_name = component_name.replace("  ", " ").strip()
-                component = equipment_models.Component.objects.get(
-                    machine=machine,
-                    type__name__iexact=component_name,
-                    is_active=True,
-                )
-            except equipment_models.Component.DoesNotExist:
-                logger.debug(
-                    f"Component lookup failed - Row {row_num}, "
-                    f"Component: {component_name}, Machine: {machine_name}, "
-                    f"Organization: {organization_name}"
-                )
-                raise ValidationError(
-                    _("Component '%(name)s' not found")
-                    % {"name": component_name}
-                )
-
-        # Create or update report
-        lubricant_hours_kms = self._parse_integer(lubricant_hours_kms)
-        lub_hours = lubricant_hours_kms if lubricant_hours_kms < 1000 else 0
-        lub_kms = lubricant_hours_kms if lubricant_hours_kms >= 1000 else 0
-        report, created = models.Report.objects.update_or_create(
-            lab_number=lab_number,
-            defaults={
-                "organization": organization,
-                "machine": machine,
-                "component": component,
-                "lubricant": lubricant or "",
-                "lubricant_hours": self._parse_integer(lub_hours),
-                "lubricant_kms": self._parse_integer(lub_kms),
-                "serial_number_code": serial_number_code or "",
-                "sample_date": self._parse_date(sample_date),
-                "per_number": per_number or "",
-                "reception_date": self._parse_date(reception_date),
-                "status": self._parse_status(status),
-                "condition": self._parse_condition(condition)
-                or choices.ReportCondition.NORMAL,
-                "notes": notes or "",
-                "is_active": True,
-                "created_by": self.request.user,
-                "modified_by": self.request.user,
-            },
-        )
-
-        return "created" if created else "updated"
-
-    def _parse_status(self, status_value):
-        """Parse status value to valid ReportStatus choice."""
-        if not status_value:
-            return choices.ReportStatus.PENDING
-
-        options = dict(
-            pendiente="PENDING",
-            revisado="REVIEWED",
-            aprobado="APPROVED",
-            rechazado="REJECTED",
-        )
-        status_key = str(status_value).strip().lower()
-        if status_key in options:
-            return options[status_key]
-
-        return choices.ReportStatus.PENDING
-
-    def _parse_integer(self, number_value):
-        """Parse number value to integer."""
-        if not number_value or number_value == "-":
-            return 0
-
-        try:
-            # Clean the value from any text (like 'horas', 'km')
-            value_str = str(number_value).strip().lower()
-            value_str = value_str.replace("horas", "").replace("km", "").strip()
-
-            # Convert to integer
-            return int(float(value_str))
-        except (ValueError, TypeError):
-            return 0
-
-    def _parse_date(self, date_string):
-        """Parse date string to Django date object."""
-
-        if not date_string:
-            return None
-
-        # Convert to string if it's not already
-        date_str = str(date_string).strip()
-
-        # Handle common date formats
-        date_formats = [
-            "%d/%m/%Y",  # 18/12/2025
-            "%d-%m-%Y",  # 18-12-2025
-            "%Y-%m-%d",  # 2025-12-18 (ISO format)
-            "%m/%d/%Y",  # 12/18/2025 (US format)
-        ]
-
-        for date_format in date_formats:
-            try:
-                parsed_datetime = datetime.strptime(date_str, date_format)
-                return parsed_datetime.date()
-            except ValueError:
-                continue
-
-        # Try Django's built-in parser as fallback
-        parsed_date = parse_date(date_str)
-        if parsed_date:
-            return parsed_date
-
-        return None
-
-    def _parse_condition(self, condition_value):
-        """Parse condition value to valid ReportCondition choice."""
-        if not condition_value:
-            return choices.ReportCondition.NORMAL
-
-        options = dict(
-            normal=choices.ReportCondition.NORMAL,
-            caution=choices.ReportCondition.CAUTION,
-            critical=choices.ReportCondition.CRITICAL,
-        )
-        condition_key = str(condition_value).strip().lower()
-        if condition_key in options:
-            return options[condition_key]
-
-        return choices.ReportCondition.NORMAL
 
     def _show_results_messages(self, results):
         """Show result messages to user."""
@@ -506,57 +233,107 @@ class ReportBulkTemplateView(
         worksheet.title = "Reports Template"
 
         # Add title
-        worksheet.merge_cells("A1:M1")
-        worksheet["A1"] = "REPORTE DE REPORTES - TEMPLATE"
+        worksheet.merge_cells("A1:BF1")
+        worksheet["A1"] = "REPORTE DE INSPECCIONES - TEMPLATE"
         worksheet["A1"].font = Font(bold=True, size=14)
 
-        # Add headers
+        # Add headers for all 57 columns
         headers = [
-            "Lab Number *",
-            "Organization",
-            "Machine",
-            "Component",
-            "Lubricant",
-            "Lubricant Hours/Kms",
-            "Serial Number Code",
-            "Sample Date",
-            "PER Number",
-            "Reception Date",
-            "Status",
-            "Condition",
-            "Notes",
+            "N°",
+            "No. Lab *",
+            "Cliente",
+            "Equipo",
+            "Componente",
+            "Cód/Núm Serie",
+            "Lubricante",
+            "Fecha Muestra",
+            "Equipo Horas/Kms",
+            "Lubricante Horas/Kms",
+            "Fecha de Recepción",
+            "Fecha de Reporte",
+            "Cambio de Filtro",
+            "Cambio de Aceite",
+            "No.Per",
+            "Otros",
+            "Condición",
+            "Comentario",
+            "ITS 009/18 - Agua (Crackle test)",
+            "ASTM D 95-13 - Agua por destilación",
+            "ASTM D 7279-20 - Viscosidad a 40°C",
+            "ASTM D 7279-20 - Viscosidad a 100°C",
+            "ILT-096 - COMPATIBILIDAD",
+            "ASTM D 2896-21 - Número Básico (TBN)",
+            "ASTM D 664-24 - Número Acido (TAN)",
+            "ASTM E 2412-23 - Oxidación",
+            "ASTM E 2412-23 - Hollín",
+            "ASTM E 2412-23 - Nitración",
+            "ASTM E 2412-23 - Sulfatación",
+            "ASTM E 2412-23 - Glicol",
+            "ASTM E 2412-23 - Dilución",
+            "ASTM E 2412-23 - Agua FTIR",
+            "ITS 044/15 - PQ Index",
+            "ISO 4406:2021 - Conteo de Partículas",
+            "ASTM D 5185-18 - Hierro (Fe)",
+            "ASTM D 5185-18 - Cromo (Cr)",
+            "ASTM D 5185-18 - Plomo (Pb)",
+            "ASTM D 5185-18 - Cobre (Cu)",
+            "ASTM D 5185-18 - Estaño (Sn)",
+            "ASTM D 5185-18 - Aluminio (Al)",
+            "ASTM D 5185-18 - Níquel (Ni)",
+            "ASTM D 5185-18 - Plata (Ag)",
+            "ASTM D 5185-18 - Silicio (Si)",
+            "ASTM D 5185-18 - Boro (B)",
+            "ASTM D 5185-18 - Sodio (Na)",
+            "ASTM D 5185-18 - Magnesio (Mg)",
+            "ASTM D 5185-18 - Molibdeno (Mo)",
+            "ASTM D 5185-18 - Titanio (Ti)",
+            "ASTM D 5185-18 - Vanadio (V)",
+            "ASTM D 5185-18 - Manganeso (Mn)",
+            "ASTM D 5185-18 - Potasio (K)",
+            "ASTM D 5185-18 - Fósforo (P)",
+            "ASTM D 5185-18 - Zinc (Zn)",
+            "ASTM D 5185-18 - Calcio (Ca)",
+            "ASTM D 5185-18 - Bario (Ba)",
+            "ASTM D 5185-18 - Cadmio (Cd)",
+            "Apariencia - Visual",
         ]
 
         for col, header in enumerate(headers, 1):
             cell = worksheet.cell(row=2, column=col, value=header)
             cell.font = Font(bold=True)
 
-        # Add example data
+        # Add example data (basic report data only)
         example_data = [
-            "LAB001",
-            "Acme Corp",
-            "Engine 001",
-            "Motor",
-            "Shell Oil",
-            "1000",
-            "SN123456",
-            "2024-01-01",
-            "PER001",
-            "2024-01-02",
-            "PENDING",
-            "NORMAL",
-            "Example notes",
+            "1",  # N°
+            "20001L-25",  # No. Lab
+            "NEUMA PERU",  # Cliente
+            "TRANSPORTES SATURNO / BUO-805",  # Equipo
+            "MOTOR",  # Componente
+            "BUO-805",  # Cód/Núm Serie
+            "PETRONAS URANIA 15W40 CK-4",  # Lubricante
+            "30/11/2025",  # Fecha Muestra
+            "10377",  # Equipo Horas/Kms
+            "720",  # Lubricante Horas/Kms
+            "18/12/2025",  # Fecha de Recepción
+            "22/12/2025",  # Fecha de Reporte
+            "-",  # Cambio de Filtro
+            "-",  # Cambio de Aceite
+            "15886-25",  # No.Per
+            "",  # Otros
+            "Normal",  # Condición
+            "Example notes",  # Comentario
         ]
+        # Add empty values for lab analysis columns (18-56)
+        example_data.extend([""] * 39)
 
         for col, value in enumerate(example_data, 1):
             worksheet.cell(row=3, column=col, value=value)
 
-        # Set column widths
-        column_widths = [15, 20, 20, 15, 15, 18, 18, 15, 15, 15, 12, 12, 25]
-        for col, width in enumerate(column_widths, 1):
+        # Set column widths (basic width for all columns)
+        for col in range(1, 58):  # 57 columns
             worksheet.column_dimensions[
                 openpyxl.utils.get_column_letter(col)
-            ].width = width
+            ].width = 15
 
         # Generate response
         response = HttpResponse(

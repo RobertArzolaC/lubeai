@@ -123,6 +123,29 @@ class Report(TimeStampedModel, BaseUserTracked, IsActive):
         blank=True,
         help_text=_("Additional notes or observations"),
     )
+    report_date = models.DateField(
+        _("Report Date"),
+        null=True,
+        blank=True,
+        help_text=_("Date when the report was generated (Fecha de Reporte)"),
+    )
+    filter_change = models.CharField(
+        _("Filter Change"),
+        max_length=20,
+        blank=True,
+        help_text=_("Filter change indicator (Cambio de Filtro)"),
+    )
+    oil_change = models.CharField(
+        _("Oil Change"),
+        max_length=20,
+        blank=True,
+        help_text=_("Oil change indicator (Cambio de Aceite)"),
+    )
+    others = models.TextField(
+        _("Others"),
+        blank=True,
+        help_text=_("Other observations or notes (Otros)"),
+    )
 
     class Meta:
         verbose_name = _("Report")
