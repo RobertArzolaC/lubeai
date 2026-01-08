@@ -42,12 +42,12 @@
 {% block content %}
 <main class="container-xxl">
     <div class="row g-5 g-xl-8">
-        <!-- Report Information Card -->
+        <!-- General Information Card -->
         <div class="col-xl-6">
             <div class="card card-flush h-lg-100">
                 <div class="card-header pt-7">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bold text-gray-800">{% trans "Report Information" %}</span>
+                        <span class="card-label fw-bold text-gray-800">{% trans "General Information" %}</span>
                     </h3>
                 </div>
                 <div class="card-body pt-6">
@@ -115,6 +115,28 @@
                     </div>
 
                     <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Filter Change" %}</label>
+                        <div class="col-lg-8">
+                            {% if report.filter_change %}
+                                <span class="badge badge-light-info fs-7 fw-bold">{{ report.filter_change }}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Oil Change" %}</label>
+                        <div class="col-lg-8">
+                            {% if report.oil_change %}
+                                <span class="badge badge-light-info fs-7 fw-bold">{{ report.oil_change }}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
                         <label class="col-lg-4 fw-semibold text-muted">{% trans "Active" %}</label>
                         <div class="col-lg-8">
                             {% if report.is_active %}
@@ -124,23 +146,16 @@
                             {% endif %}
                         </div>
                     </div>
-
-                    <div class="row mb-7">
-                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Created" %}</label>
-                        <div class="col-lg-8">
-                            <span class="fw-semibold fs-6 text-gray-600">{{ report.created|date:"M d, Y H:i" }}</span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Related Information Card -->
+        <!-- Equipment & Component Card -->
         <div class="col-xl-6">
             <div class="card card-flush h-lg-100">
                 <div class="card-header pt-7">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bold text-gray-800">{% trans "Related Information" %}</span>
+                        <span class="card-label fw-bold text-gray-800">{% trans "Equipment & Component" %}</span>
                     </h3>
                 </div>
                 <div class="card-body pt-6">
@@ -178,6 +193,40 @@
                     </div>
 
                     <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Machine Hours" %}</label>
+                        <div class="col-lg-8">
+                            {% if report.machine_hours %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.machine_hours }} {% trans "hrs" %}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Machine Kilometers" %}</label>
+                        <div class="col-lg-8">
+                            {% if report.machine_kms %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.machine_kms }} {% trans "km" %}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lubricant Information Card -->
+        <div class="col-xl-6">
+            <div class="card card-flush h-lg-100">
+                <div class="card-header pt-7">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bold text-gray-800">{% trans "Lubricant Information" %}</span>
+                    </h3>
+                </div>
+                <div class="card-body pt-6">
+                    <div class="row mb-7">
                         <label class="col-lg-4 fw-semibold text-muted">{% trans "Lubricant" %}</label>
                         <div class="col-lg-8">
                             {% if report.lubricant %}
@@ -192,7 +241,7 @@
                         <label class="col-lg-4 fw-semibold text-muted">{% trans "Lubricant Hours" %}</label>
                         <div class="col-lg-8">
                             {% if report.lubricant_hours %}
-                                <span class="fw-bold fs-6 text-gray-800">{{ report.lubricant_hours }}</span>
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.lubricant_hours }} {% trans "hrs" %}</span>
                             {% else %}
                                 <span class="text-muted">-</span>
                             {% endif %}
@@ -203,7 +252,7 @@
                         <label class="col-lg-4 fw-semibold text-muted">{% trans "Lubricant Kilometers" %}</label>
                         <div class="col-lg-8">
                             {% if report.lubricant_kms %}
-                                <span class="fw-bold fs-6 text-gray-800">{{ report.lubricant_kms }}</span>
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.lubricant_kms }} {% trans "km" %}</span>
                             {% else %}
                                 <span class="text-muted">-</span>
                             {% endif %}
@@ -213,7 +262,7 @@
             </div>
         </div>
 
-        <!-- Dates Card -->
+        <!-- Important Dates Card -->
         <div class="col-xl-6">
             <div class="card card-flush h-lg-100">
                 <div class="card-header pt-7">
@@ -245,6 +294,24 @@
                     </div>
 
                     <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Report Date" %}</label>
+                        <div class="col-lg-8">
+                            {% if report.report_date %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.report_date|date:"M d, Y" }}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-4 fw-semibold text-muted">{% trans "Created" %}</label>
+                        <div class="col-lg-8">
+                            <span class="fw-semibold fs-6 text-gray-600">{{ report.created|date:"M d, Y H:i" }}</span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
                         <label class="col-lg-4 fw-semibold text-muted">{% trans "Last Updated" %}</label>
                         <div class="col-lg-8">
                             <span class="fw-semibold fs-6 text-gray-600">{{ report.modified|date:"M d, Y H:i" }}</span>
@@ -263,27 +330,479 @@
             </div>
         </div>
 
-        <!-- Notes Card -->
+        <!-- Notes & Others Card -->
+        <div class="col-xl-12">
+            <div class="card card-flush">
+                <div class="card-header pt-7">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bold text-gray-800">{% trans "Notes & Additional Information" %}</span>
+                    </h3>
+                </div>
+                <div class="card-body pt-6">
+                    <div class="row mb-7">
+                        <label class="col-lg-2 fw-semibold text-muted">{% trans "Notes" %}</label>
+                        <div class="col-lg-10">
+                            {% if report.notes %}
+                                <div class="text-gray-800">
+                                    {{ report.notes|linebreaks }}
+                                </div>
+                            {% else %}
+                                <div class="text-muted">{% trans "No notes available" %}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-2 fw-semibold text-muted">{% trans "Others" %}</label>
+                        <div class="col-lg-10">
+                            {% if report.others %}
+                                <div class="text-gray-800">
+                                    {{ report.others|linebreaks }}
+                                </div>
+                            {% else %}
+                                <div class="text-muted">{% trans "No additional information" %}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if report.analysis %}
+        <!-- Laboratory Analysis Summary -->
+        <div class="col-xl-12">
+            <div class="card card-flush bg-light-primary">
+                <div class="card-header pt-7">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bold text-gray-800 fs-2">
+                            <i class="ki-duotone ki-flask fs-2 me-2">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                            </i>
+                            {% trans "Laboratory Analysis Summary" %}
+                        </span>
+                    </h3>
+                </div>
+                <div class="card-body pt-6">
+                    <div class="row g-5">
+                        <!-- Total Wear Metals -->
+                        <div class="col-md-4">
+                            <div class="d-flex flex-column">
+                                <span class="fs-7 text-muted mb-2">{% trans "Total Wear Metals" %}</span>
+                                <div class="d-flex align-items-center">
+                                    <span class="fs-2x fw-bold text-gray-800 me-3">{{ report.analysis.total_wear_metals }}</span>
+                                    <span class="text-muted">ppm</span>
+                                    {% if report.analysis.total_wear_metals > 500 %}
+                                        <span class="badge badge-danger ms-3">{% trans "Critical" %}</span>
+                                    {% elif report.analysis.total_wear_metals > 200 %}
+                                        <span class="badge badge-warning ms-3">{% trans "Caution" %}</span>
+                                    {% else %}
+                                        <span class="badge badge-success ms-3">{% trans "Normal" %}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Total Contaminants -->
+                        <div class="col-md-4">
+                            <div class="d-flex flex-column">
+                                <span class="fs-7 text-muted mb-2">{% trans "Total Contaminants" %}</span>
+                                <div class="d-flex align-items-center">
+                                    <span class="fs-2x fw-bold text-gray-800 me-3">{{ report.analysis.total_contaminants }}</span>
+                                    <span class="text-muted">ppm</span>
+                                    {% if report.analysis.total_contaminants > 100 %}
+                                        <span class="badge badge-danger ms-3">{% trans "Critical" %}</span>
+                                    {% elif report.analysis.total_contaminants > 50 %}
+                                        <span class="badge badge-warning ms-3">{% trans "Caution" %}</span>
+                                    {% else %}
+                                        <span class="badge badge-success ms-3">{% trans "Normal" %}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Additive Depletion -->
+                        <div class="col-md-4">
+                            <div class="d-flex flex-column">
+                                <span class="fs-7 text-muted mb-2">{% trans "Additive Depletion" %}</span>
+                                <div class="d-flex align-items-center">
+                                    <span class="fs-2x fw-bold text-gray-800 me-3">{{ report.analysis.additive_depletion_pct|floatformat:1 }}</span>
+                                    <span class="text-muted">%</span>
+                                    {% if report.analysis.additive_depletion_pct > 50 %}
+                                        <span class="badge badge-danger ms-3">{% trans "Critical" %}</span>
+                                    {% elif report.analysis.additive_depletion_pct > 25 %}
+                                        <span class="badge badge-warning ms-3">{% trans "Caution" %}</span>
+                                    {% else %}
+                                        <span class="badge badge-success ms-3">{% trans "Normal" %}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Water Tests & Viscosity -->
         <div class="col-xl-6">
             <div class="card card-flush h-lg-100">
                 <div class="card-header pt-7">
                     <h3 class="card-title align-items-start flex-column">
-                        <span class="card-label fw-bold text-gray-800">{% trans "Notes" %}</span>
+                        <span class="card-label fw-bold text-gray-800">{% trans "Water Tests & Viscosity" %}</span>
                     </h3>
                 </div>
                 <div class="card-body pt-6">
-                    {% if report.notes %}
+                    <div class="row mb-7">
+                        <label class="col-lg-6 fw-semibold text-muted">{% trans "Water Crackle Test" %}</label>
+                        <div class="col-lg-6">
+                            {% if report.analysis.water_crackle %}
+                                {% if report.analysis.water_crackle == 'POSITIVE' %}
+                                    <span class="badge badge-danger">{{ report.analysis.water_crackle }}</span>
+                                {% else %}
+                                    <span class="badge badge-success">{{ report.analysis.water_crackle }}</span>
+                                {% endif %}
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-6 fw-semibold text-muted">{% trans "Water Distillation" %}</label>
+                        <div class="col-lg-6">
+                            {% if report.analysis.water_distillation %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.analysis.water_distillation }}%</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-6 fw-semibold text-muted">{% trans "Viscosity @ 40°C" %}</label>
+                        <div class="col-lg-6">
+                            {% if report.analysis.viscosity_40c %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.analysis.viscosity_40c }} cSt</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-6 fw-semibold text-muted">{% trans "Viscosity @ 100°C" %}</label>
+                        <div class="col-lg-6">
+                            {% if report.analysis.viscosity_100c %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.analysis.viscosity_100c }} cSt</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-6 fw-semibold text-muted">{% trans "Compatibility" %}</label>
+                        <div class="col-lg-6">
+                            {% if report.analysis.compatibility %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.analysis.compatibility }}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-6 fw-semibold text-muted">{% trans "TBN (Total Base Number)" %}</label>
+                        <div class="col-lg-6">
+                            {% if report.analysis.tbn %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.analysis.tbn }}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-6 fw-semibold text-muted">{% trans "TAN (Total Acid Number)" %}</label>
+                        <div class="col-lg-6">
+                            {% if report.analysis.tan %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.analysis.tan }}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FTIR Analysis & Particles -->
+        <div class="col-xl-6">
+            <div class="card card-flush h-lg-100">
+                <div class="card-header pt-7">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bold text-gray-800">{% trans "FTIR Analysis & Particles" %}</span>
+                    </h3>
+                </div>
+                <div class="card-body pt-6">
+                    <div class="row mb-7">
+                        <label class="col-lg-6 fw-semibold text-muted">{% trans "Oxidation" %}</label>
+                        <div class="col-lg-6">
+                            {% if report.analysis.oxidation %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.analysis.oxidation }} Abs/cm</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-6 fw-semibold text-muted">{% trans "Soot" %}</label>
+                        <div class="col-lg-6">
+                            {% if report.analysis.soot %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.analysis.soot }}%</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-6 fw-semibold text-muted">{% trans "Nitration" %}</label>
+                        <div class="col-lg-6">
+                            {% if report.analysis.nitration %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.analysis.nitration }} Abs/cm</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-6 fw-semibold text-muted">{% trans "Sulfation" %}</label>
+                        <div class="col-lg-6">
+                            {% if report.analysis.sulfation %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.analysis.sulfation }} Abs/cm</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-6 fw-semibold text-muted">{% trans "Glycol" %}</label>
+                        <div class="col-lg-6">
+                            {% if report.analysis.glycol %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.analysis.glycol }}%</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-6 fw-semibold text-muted">{% trans "Fuel Dilution" %}</label>
+                        <div class="col-lg-6">
+                            {% if report.analysis.fuel_dilution %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.analysis.fuel_dilution }}%</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-6 fw-semibold text-muted">{% trans "Water (FTIR)" %}</label>
+                        <div class="col-lg-6">
+                            {% if report.analysis.water_ftir %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.analysis.water_ftir }}%</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-6 fw-semibold text-muted">{% trans "PQ Index" %}</label>
+                        <div class="col-lg-6">
+                            {% if report.analysis.pq_index %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.analysis.pq_index }}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-7">
+                        <label class="col-lg-6 fw-semibold text-muted">{% trans "Particle Count ISO 4406" %}</label>
+                        <div class="col-lg-6">
+                            {% if report.analysis.particle_count_iso %}
+                                <span class="fw-bold fs-6 text-gray-800">{{ report.analysis.particle_count_iso }}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wear Metals -->
+        <div class="col-xl-6">
+            <div class="card card-flush h-lg-100">
+                <div class="card-header pt-7">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bold text-gray-800">{% trans "Wear Metals (ppm)" %}</span>
+                    </h3>
+                </div>
+                <div class="card-body pt-6">
+                    <div class="table-responsive">
+                        <table class="table table-row-bordered table-row-gray-300 align-middle gs-0 gy-3">
+                            <tbody>
+                                <tr>
+                                    <td class="fw-semibold text-muted">{% trans "Iron (Fe)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.iron_fe|default:"-" }}</td>
+                                    <td class="fw-semibold text-muted">{% trans "Chromium (Cr)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.chromium_cr|default:"-" }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-semibold text-muted">{% trans "Lead (Pb)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.lead_pb|default:"-" }}</td>
+                                    <td class="fw-semibold text-muted">{% trans "Copper (Cu)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.copper_cu|default:"-" }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-semibold text-muted">{% trans "Tin (Sn)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.tin_sn|default:"-" }}</td>
+                                    <td class="fw-semibold text-muted">{% trans "Aluminum (Al)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.aluminum_al|default:"-" }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-semibold text-muted">{% trans "Nickel (Ni)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.nickel_ni|default:"-" }}</td>
+                                    <td class="fw-semibold text-muted">{% trans "Silver (Ag)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.silver_ag|default:"-" }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contaminants -->
+        <div class="col-xl-6">
+            <div class="card card-flush h-lg-100">
+                <div class="card-header pt-7">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bold text-gray-800">{% trans "Contaminants (ppm)" %}</span>
+                    </h3>
+                </div>
+                <div class="card-body pt-6">
+                    <div class="table-responsive">
+                        <table class="table table-row-bordered table-row-gray-300 align-middle gs-0 gy-3">
+                            <tbody>
+                                <tr>
+                                    <td class="fw-semibold text-muted">{% trans "Silicon (Si)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.silicon_si|default:"-" }}</td>
+                                    <td class="fw-semibold text-muted">{% trans "Boron (B)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.boron_b|default:"-" }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-semibold text-muted">{% trans "Sodium (Na)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.sodium_na|default:"-" }}</td>
+                                    <td class="fw-semibold text-muted">{% trans "Magnesium (Mg)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.magnesium_mg|default:"-" }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-semibold text-muted">{% trans "Potassium (K)" %}</td>
+                                    <td class="text-end fw-bold" colspan="3">{{ report.analysis.potassium_k|default:"-" }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additives -->
+        <div class="col-xl-12">
+            <div class="card card-flush">
+                <div class="card-header pt-7">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bold text-gray-800">{% trans "Additives (ppm)" %}</span>
+                    </h3>
+                </div>
+                <div class="card-body pt-6">
+                    <div class="table-responsive">
+                        <table class="table table-row-bordered table-row-gray-300 align-middle gs-0 gy-3">
+                            <tbody>
+                                <tr>
+                                    <td class="fw-semibold text-muted">{% trans "Molybdenum (Mo)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.molybdenum_mo|default:"-" }}</td>
+                                    <td class="fw-semibold text-muted">{% trans "Titanium (Ti)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.titanium_ti|default:"-" }}</td>
+                                    <td class="fw-semibold text-muted">{% trans "Vanadium (V)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.vanadium_v|default:"-" }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-semibold text-muted">{% trans "Manganese (Mn)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.manganese_mn|default:"-" }}</td>
+                                    <td class="fw-semibold text-muted">{% trans "Phosphorus (P)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.phosphorus_p|default:"-" }}</td>
+                                    <td class="fw-semibold text-muted">{% trans "Zinc (Zn)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.zinc_zn|default:"-" }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-semibold text-muted">{% trans "Calcium (Ca)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.calcium_ca|default:"-" }}</td>
+                                    <td class="fw-semibold text-muted">{% trans "Barium (Ba)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.barium_ba|default:"-" }}</td>
+                                    <td class="fw-semibold text-muted">{% trans "Cadmium (Cd)" %}</td>
+                                    <td class="text-end fw-bold">{{ report.analysis.cadmium_cd|default:"-" }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visual Appearance -->
+        <div class="col-xl-12">
+            <div class="card card-flush">
+                <div class="card-header pt-7">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-bold text-gray-800">{% trans "Visual Appearance" %}</span>
+                    </h3>
+                </div>
+                <div class="card-body pt-6">
+                    {% if report.analysis.visual_appearance %}
                         <div class="text-gray-800">
-                            {{ report.notes|linebreaks }}
+                            {{ report.analysis.visual_appearance }}
                         </div>
                     {% else %}
-                        <div class="text-muted">
-                            {% trans "No notes available" %}
-                        </div>
+                        <div class="text-muted">{% trans "No visual appearance data available" %}</div>
                     {% endif %}
                 </div>
             </div>
         </div>
+        {% else %}
+            <!-- No Laboratory Analysis Available -->
+            <div class="col-xl-12">
+                <div class="card card-flush bg-light-warning">
+                    <div class="card-body text-center py-10">
+                        <i class="ki-duotone ki-information-3 fs-3x text-warning mb-5">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                            <span class="path3"></span>
+                        </i>
+                        <h3 class="text-gray-800 fw-bold mb-2">{% trans "No Laboratory Analysis Available" %}</h3>
+                        <p class="text-muted">{% trans "Laboratory analysis data has not been added to this report yet." %}</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     </div>
 </main>
 {% endblock %}

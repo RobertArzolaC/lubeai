@@ -1,5 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Count
+from django.db.models import (
+    Count,
+    Q,
+)
 from django.db.models.functions import TruncMonth
 from django.http import HttpResponse, JsonResponse
 from django.utils import timezone
@@ -109,7 +112,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 }
             )
         else:
-            # Check if user has organization access for export functionality
+            # Check if user has organization access
             user_profile = getattr(self.request.user, "account", None)
             has_organization = bool(
                 user_profile
@@ -118,13 +121,23 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 and not user_profile.organization.is_removed
             )
 
-            context.update(
-                {
-                    "is_admin": False,
-                    "has_organization": has_organization,
-                    "show_coming_soon": True,
-                }
-            )
+            # If user has organization, provide dashboard data
+            if has_organization:
+                organization = user_profile.organization
+                context.update(
+                    {
+                        "is_admin": False,
+                        "has_organization": has_organization,
+                        "organization": organization,
+                    }
+                )
+            else:
+                context.update(
+                    {
+                        "is_admin": False,
+                        "has_organization": has_organization,
+                    }
+                )
 
         context.update(
             {
@@ -487,3 +500,166 @@ class DashboardExportView(LoginRequiredMixin, OrganizationRequiredMixin, View):
 
         workbook.save(response)
         return response
+
+
+# ============================================================================
+# ORGANIZATION DASHBOARD API VIEWS
+# ============================================================================
+
+
+class OrganizationDashboardOverviewAPIView(
+    LoginRequiredMixin, OrganizationRequiredMixin, View
+):
+    """
+    API endpoint for organization dashboard overview.
+
+    Returns fleet summary KPIs including:
+    - Total machines count
+    - Critical alerts count
+    - Average fleet health score
+    - Reports count
+    """
+
+    def get(self, request, *args, **kwargs):
+        """
+        Get organization dashboard overview data.
+
+        Returns:
+            JsonResponse: Dictionary containing KPIs and summary data
+        """
+        if not self.has_organization_access():
+            return JsonResponse({"error": "Organization required"}, status=403)
+
+        organization = self.get_user_organization()
+        filter_end_date = timezone.now()
+        filter_start_date = filter_end_date.replace(day=1)
+
+        if request.GET.get("start_date"):
+            try:
+                filter_start_date = timezone.datetime.strptime(
+                    request.GET.get("start_date"), "%Y-%m-%d"
+                )
+                filter_start_date = timezone.make_aware(filter_start_date)
+            except ValueError:
+                pass
+
+        if request.GET.get("end_date"):
+            try:
+                filter_end_date = timezone.datetime.strptime(
+                    request.GET.get("end_date"), "%Y-%m-%d"
+                )
+                filter_end_date = timezone.make_aware(filter_end_date)
+            except ValueError:
+                pass
+
+        # Get all active reports for organization
+        reports_qs = Report.objects.filter(
+            organization=organization,
+            is_active=True,
+            sample_date__gte=filter_start_date,
+            sample_date__lte=filter_end_date,
+        ).select_related("machine", "component", "component__type")
+
+        # Reports this month
+        reports_this_month = reports_qs.count()
+
+        # Total unique machines
+        total_machines = Machine.objects.filter(
+            id__in=reports_qs.values_list("machine_id", flat=True).distinct()
+        ).count()
+
+        # Critical and caution alerts (based on condition)
+        critical_alerts = reports_qs.filter(
+            condition=ReportCondition.CRITICAL
+        ).count()
+        caution_alerts = reports_qs.filter(
+            condition=ReportCondition.CAUTION
+        ).count()
+        total_alerts = critical_alerts + caution_alerts
+
+        # Calculate average fleet health score (0-100)
+        # Based on condition distribution
+        total_reports = reports_qs.count()
+        if total_reports > 0:
+            normal_count = reports_qs.filter(
+                condition=ReportCondition.NORMAL
+            ).count()
+            caution_count = reports_qs.filter(
+                condition=ReportCondition.CAUTION
+            ).count()
+            critical_count = reports_qs.filter(
+                condition=ReportCondition.CRITICAL
+            ).count()
+
+            # Score calculation: Normal=100, Caution=50, Critical=0
+            avg_health_score = int(
+                (
+                    (normal_count * 100)
+                    + (caution_count * 50)
+                    + (critical_count * 0)
+                )
+                / total_reports
+            )
+        else:
+            avg_health_score = 0
+
+        # Get recent critical/caution reports (last 10)
+        recent_alerts = (
+            reports_qs.filter(
+                Q(condition=ReportCondition.CRITICAL)
+                | Q(condition=ReportCondition.CAUTION)
+            )
+            .order_by("-sample_date")[:10]
+            .values(
+                "id",
+                "lab_number",
+                "machine__name",
+                "condition",
+                "sample_date",
+                "component__type__name",
+            )
+        )
+
+        # Format recent alerts
+        recent_alerts_data = [
+            {
+                "id": alert["id"],
+                "lab_number": alert["lab_number"],
+                "machine_name": alert["machine__name"] or "N/A",
+                "component": alert["component__type__name"] or "N/A",
+                "condition": dict(ReportCondition.choices).get(
+                    alert["condition"], "Unknown"
+                ),
+                "condition_class": self._get_condition_class(
+                    alert["condition"]
+                ),
+                "sample_date": alert["sample_date"].strftime("%Y-%m-%d")
+                if alert["sample_date"]
+                else "N/A",
+            }
+            for alert in recent_alerts
+        ]
+
+        return JsonResponse(
+            {
+                "total_machines": total_machines,
+                "critical_alerts": critical_alerts,
+                "caution_alerts": caution_alerts,
+                "total_alerts": total_alerts,
+                "reports_this_month": reports_this_month,
+                "avg_health_score": avg_health_score,
+                "recent_alerts": recent_alerts_data,
+                "total_reports": total_reports,
+                "filter_start_date": filter_start_date.strftime("%Y-%m-%d"),
+                "filter_end_date": filter_end_date.strftime("%Y-%m-%d"),
+            }
+        )
+
+    def _get_condition_class(self, condition: str) -> str:
+        """Get CSS class for condition display."""
+        condition_classes = {
+            ReportCondition.NORMAL: "success",
+            ReportCondition.CAUTION: "warning",
+            ReportCondition.CRITICAL: "danger",
+        }
+        return condition_classes.get(condition, "secondary")

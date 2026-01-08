@@ -1,0 +1,310 @@
+{% load i18n static %}
+
+<!-- Organization Dashboard -->
+<main class="container-xxl">
+  <!-- Page Title -->
+  <div class="d-flex align-items-center justify-content-end mb-5">
+    <span class="text-muted">{% trans "Last updated" %}: <span id="last-updated-time">{{ last_updated|date:"Y-m-d H:i" }}</span></span>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="card mb-5">
+    <div class="card-body">
+      <form id="dashboard-filters-form" class="row g-4 align-items-end">
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">{% trans "Start Date" %}</label>
+          <input type="date" id="filter-start-date" class="form-control form-control-lg" />
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">{% trans "End Date" %}</label>
+          <input type="date" id="filter-end-date" class="form-control form-control-lg"  />
+        </div>
+        <div class="col-md-4">
+          <button type="button" id="apply-filters-btn" class="btn btn-primary btn-lg w-100">
+            <i class="ki-duotone ki-magnifier fs-2">
+              <span class="path1"></span>
+              <span class="path2"></span>
+            </i>
+            {% trans "Update Dashboard" %}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- KPI Cards Row -->
+  <div class="row g-5 g-xl-8 mb-5" id="kpi-cards">
+    <!-- Total Machines -->
+    <div class="col-xl-3">
+      <div class="card card-flush h-xl-100">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-center mb-5">
+            <div class="symbol symbol-60px me-5">
+              <span class="symbol-label bg-light-primary">
+                <i class="ki-duotone ki-wrench fs-2x text-primary">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+              </span>
+            </div>
+            <div class="flex-grow-1">
+              <span class="text-gray-400 fw-semibold d-block fs-7">{% trans "Total Machines" %}</span>
+              <span class="text-gray-800 fw-bold d-block fs-2x" id="kpi-total-machines">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Critical Alerts -->
+    <div class="col-xl-3">
+      <div class="card card-flush h-xl-100">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-center mb-5">
+            <div class="symbol symbol-60px me-5">
+              <span class="symbol-label bg-light-danger">
+                <i class="ki-duotone ki-notification fs-2x text-danger">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                  <span class="path3"></span>
+                </i>
+              </span>
+            </div>
+            <div class="flex-grow-1">
+              <span class="text-gray-400 fw-semibold d-block fs-7">{% trans "Critical Alerts" %}</span>
+              <span class="text-gray-800 fw-bold d-block fs-2x" id="kpi-critical-alerts">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Average Fleet Health -->
+    <div class="col-xl-3">
+      <div class="card card-flush h-xl-100">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-center mb-5">
+            <div class="symbol symbol-60px me-5">
+              <span class="symbol-label bg-light-success">
+                <i class="ki-duotone ki-shield-tick fs-2x text-success">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+              </span>
+            </div>
+            <div class="flex-grow-1">
+              <span class="text-gray-400 fw-semibold d-block fs-7">{% trans "Avg Fleet Health" %}</span>
+              <span class="text-gray-800 fw-bold d-block fs-2x" id="kpi-avg-health">0<span class="fs-6">%</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reports This Month -->
+    <div class="col-xl-3">
+      <div class="card card-flush h-xl-100">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-center mb-5">
+            <div class="symbol symbol-60px me-5">
+              <span class="symbol-label bg-light-info">
+                <i class="ki-duotone ki-chart-line-up fs-2x text-info">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+              </span>
+            </div>
+            <div class="flex-grow-1">
+              <span class="text-gray-400 fw-semibold d-block fs-7">{% trans "Reports" %}</span>
+              <span class="text-gray-800 fw-bold d-block fs-2x" id="kpi-reports-month">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overview Section -->
+  <div class="row g-5 mb-5">
+    <!-- Recent Alerts Table -->
+    <div class="col-xl-6">
+      <div class="card card-flush h-xl-100">
+        <div class="card-header pt-5">
+          <h3 class="card-title align-items-start flex-column">
+            <span class="card-label fw-bold text-gray-800">{% trans "Recent Alerts" %}</span>
+            <span class="text-gray-500 mt-1 fw-semibold fs-7">{% trans "Last 10 critical/caution reports" %}</span>
+          </h3>
+        </div>
+        <div class="card-body pt-6">
+          <div class="table-responsive">
+            <table class="table table-row-dashed align-middle gs-0 gy-4" id="recent-alerts-table">
+              <thead>
+                <tr class="fw-bold text-muted">
+                  <th>{% trans "Lab Number" %}</th>
+                  <th>{% trans "Machine" %}</th>
+                  <th>{% trans "Component" %}</th>
+                  <th>{% trans "Condition" %}</th>
+                  <th>{% trans "Date" %}</th>
+                </tr>
+              </thead>
+              <tbody id="recent-alerts-tbody">
+                <tr>
+                  <td colspan="5" class="text-center text-muted">{% trans "Loading..." %}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Condition Distribution Chart -->
+    <div class="col-xl-6">
+      <div class="card card-flush h-xl-100">
+        <div class="card-header pt-5">
+          <h3 class="card-title align-items-start flex-column">
+            <span class="card-label fw-bold text-gray-800">{% trans "Condition Distribution" %}</span>
+            <span class="text-gray-500 mt-1 fw-semibold fs-7">{% trans "Reports by condition" %}</span>
+          </h3>
+        </div>
+        <div class="card-body pt-6">
+          <div id="overview-condition-chart" style="min-height: 300px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% block extra_js %}
+<script>
+  // Dashboard state
+  const dashboardState = {
+    currentFilters: {
+      startDate: null,
+      endDate: '{{ last_updated|date:"Y-m-d" }}'
+    },
+    charts: {}
+  };
+
+  // Color scheme
+  const colors = {
+    success: '#50CD89',
+    warning: '#FFC700',
+    danger: '#F1416C',
+    primary: '#009EF7',
+    info: '#7239EA',
+    secondary: '#A1A5B7'
+  };
+
+  // Initialize dashboard on load
+  document.addEventListener('DOMContentLoaded', function() {
+    // Load initial data
+    loadOverviewData();
+
+    // Event listeners
+    document.getElementById('apply-filters-btn').addEventListener('click', applyFilters);
+  });
+
+  // Apply filters
+  function applyFilters() {
+    dashboardState.currentFilters.startDate = document.getElementById('filter-start-date').value;
+    dashboardState.currentFilters.endDate = document.getElementById('filter-end-date').value;
+
+    // Reload overview data
+    loadOverviewData();
+  }
+
+  // ============================================================================
+  // OVERVIEW SECTION
+  // ============================================================================
+
+  function loadOverviewData() {
+    let params = new URLSearchParams({
+      start_date: dashboardState.currentFilters.startDate,
+      end_date: dashboardState.currentFilters.endDate
+    });
+    fetch('{% url "apps.dashboard:org_overview_api" %}?'+params.toString())
+      .then(response => response.json())
+      .then(data => {
+        // Update KPI cards
+        document.getElementById('kpi-total-machines').textContent = data.total_machines;
+        document.getElementById('kpi-critical-alerts').textContent = data.critical_alerts;
+        document.getElementById('kpi-avg-health').innerHTML = data.avg_health_score + '<span class="fs-6">%</span>';
+        document.getElementById('kpi-reports-month').textContent = data.reports_this_month;
+
+        // Update recent alerts table
+        updateRecentAlertsTable(data.recent_alerts);
+
+        // Render condition distribution donut chart
+        renderConditionDonutChart(data);
+
+        // Update filter dates in case they were changed server-side
+        document.getElementById("filter-start-date").value = data.filter_start_date;
+        document.getElementById("filter-end-date").value = data.filter_end_date;
+      })
+      .catch(error => console.error('Error loading overview:', error));
+  }
+
+  function updateRecentAlertsTable(alerts) {
+    const tbody = document.getElementById('recent-alerts-tbody');
+    if (alerts.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">{% trans "No recent alerts" %}</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = alerts.map(alert => `
+      <tr>
+        <td class="fw-bold">${alert.lab_number}</td>
+        <td>${alert.machine_name}</td>
+        <td>${alert.component}</td>
+        <td><span class="badge badge-${alert.condition_class}">${alert.condition}</span></td>
+        <td>${alert.sample_date}</td>
+      </tr>
+    `).join('');
+  }
+
+  function renderConditionDonutChart(data) {
+    // Calculate condition counts
+    const criticalCount = data.critical_alerts || 0;
+    const cautionCount = data.caution_alerts || 0;
+    const normalCount = data.total_reports - criticalCount - cautionCount;
+
+    if (dashboardState.charts.conditionDonut) {
+      dashboardState.charts.conditionDonut.destroy();
+    }
+
+    const options = {
+      series: [normalCount, cautionCount, criticalCount],
+      chart: {
+        type: 'donut',
+        height: 300
+      },
+      labels: ['Normal', 'Caution', 'Critical'],
+      colors: [colors.success, colors.warning, colors.danger],
+      legend: {
+        position: 'bottom'
+      },
+      plotOptions: {
+        pie: {
+          donut: {
+            size: '65%'
+          }
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        formatter: function(val) {
+          return Math.round(val) + '%';
+        }
+      }
+    };
+
+    dashboardState.charts.conditionDonut = new ApexCharts(
+      document.querySelector("#overview-condition-chart"),
+      options
+    );
+    dashboardState.charts.conditionDonut.render();
+  }
+
+</script>
+{% endblock %}
