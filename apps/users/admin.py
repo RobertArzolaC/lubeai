@@ -15,6 +15,7 @@ class CustomUserAdmin(UserAdmin):
         "email",
         "first_name",
         "last_name",
+        "organization",
         "is_superuser",
         "is_staff",
         "is_active",
@@ -62,6 +63,13 @@ class CustomUserAdmin(UserAdmin):
     )
     search_fields = ("email",)
     ordering = ("email",)
+
+    def organization(self, obj):
+        if hasattr(obj, "account") and obj.account.organization:
+            return obj.account.organization.name
+        return "-"
+
+    organization.short_description = "Organization"
 
     def is_email_verified(self, obj):
         email = EmailAddress.objects.filter(user=obj, primary=True).first()

@@ -171,11 +171,10 @@
       </div>
     </div>
 
-    <!-- Charts Row 1: Wear Trends & Contamination -->
+    <!-- Wear Trends Chart -->
     <div class="row g-5 mb-5">
-      <!-- Wear Trends Chart -->
-      <div class="col-xl-6">
-        <div class="card card-flush h-100 shadow-sm">
+      <div class="col-xl-12">
+        <div class="card card-flush shadow-sm">
           <div class="card-header pt-7">
             <h3 class="card-title align-items-start flex-column">
               <span class="card-label fw-bold text-gray-900">{% trans "Wear Trends" %}</span>
@@ -183,14 +182,16 @@
             </h3>
           </div>
           <div class="card-body pt-5">
-            <div id="wear-trends-chart" style="min-height: 350px;"></div>
+            <div id="wear-trends-chart" style="min-height: 450px;"></div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Contamination Alerts Chart -->
-      <div class="col-xl-6">
-        <div class="card card-flush h-100 shadow-sm">
+    <!-- Contamination Alerts Chart -->
+    <div class="row g-5 mb-5">
+      <div class="col-xl-12">
+        <div class="card card-flush shadow-sm">
           <div class="card-header pt-7">
             <h3 class="card-title align-items-start flex-column">
               <span class="card-label fw-bold text-gray-900">{% trans "Contamination Alerts" %}</span>
@@ -198,32 +199,33 @@
             </h3>
           </div>
           <div class="card-body pt-5">
-            <div id="contamination-chart" style="min-height: 350px;"></div>
+            <div id="contamination-chart" style="min-height: 450px;"></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Charts Row 2: Oil Health & Additives -->
+    <!-- Oil Health Chart -->
     <div class="row g-5 mb-5">
-      <!-- Oil Health Chart -->
-      <div class="col-xl-6">
-        <div class="card card-flush h-100 shadow-sm">
+      <div class="col-xl-12">
+        <div class="card card-flush shadow-sm">
           <div class="card-header pt-7">
             <h3 class="card-title align-items-start flex-column">
               <span class="card-label fw-bold text-gray-900">{% trans "Oil Health" %}</span>
-              <span class="text-muted mt-1 fw-semibold fs-7">{% trans "TBN, TAN, Viscosity, Oxidation" %}</span>
+              <span class="text-muted mt-1 fw-semibold fs-7">{% trans "TBN, TAN, Viscosity, Oxidation, Lubricant" %}</span>
             </h3>
           </div>
           <div class="card-body pt-5">
-            <div id="oil-health-chart" style="min-height: 350px;"></div>
+            <div id="oil-health-chart" style="min-height: 450px;"></div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Additives Trend Chart -->
-      <div class="col-xl-6">
-        <div class="card card-flush h-100 shadow-sm">
+    <!-- Additives Trend Chart -->
+    <div class="row g-5 mb-5">
+      <div class="col-xl-12">
+        <div class="card card-flush shadow-sm">
           <div class="card-header pt-7">
             <h3 class="card-title align-items-start flex-column">
               <span class="card-label fw-bold text-gray-900">{% trans "Additive Elements" %}</span>
@@ -231,7 +233,7 @@
             </h3>
           </div>
           <div class="card-body pt-5">
-            <div id="additives-chart" style="min-height: 350px;"></div>
+            <div id="additives-chart" style="min-height: 450px;"></div>
           </div>
         </div>
       </div>
@@ -429,7 +431,7 @@
       series: data.series,
       chart: {
         type: 'line',
-        height: 350,
+        height: 450,
         toolbar: { show: true },
         zoom: { enabled: true }
       },
@@ -471,7 +473,7 @@
       series: data.series,
       chart: {
         type: 'line',
-        height: 350,
+        height: 450,
         toolbar: { show: true },
         zoom: { enabled: true }
       },
@@ -509,28 +511,186 @@
       oilHealthChart.destroy();
     }
 
+    // Defensive check for required data
+    if (!data || !data.series || !data.dates) {
+      console.error('Invalid oil health data structure:', data);
+      document.querySelector("#oil-health-chart").innerHTML =
+        '<div class="alert alert-warning">No hay datos disponibles</div>';
+      return;
+    }
+
+    // Separate series by type for mixed chart
+    const lineSeries = data.series.filter(s => s.type === 'line');
+    const columnSeries = data.series.filter(s => s.type === 'column');
+
+    // Calculate appropriate Y-axis range for lubricant data
+    const lubricantValues = columnSeries[0]?.data.filter(v => v !== null) || [];
+    const maxLubricant = lubricantValues.length > 0 ? Math.max(...lubricantValues) : 100;
+    const lubricantMax = Math.ceil(maxLubricant * 1.2 / 50) * 50; // Round up to nearest 50
+
+    // Prepare all series (bars first, then lines)
+    const allSeries = [...columnSeries, ...lineSeries];
+
     const options = {
-      series: data.series,
+      series: allSeries,
       chart: {
         type: 'line',
-        height: 350,
-        toolbar: { show: true },
+        height: 450,
+        toolbar: {
+          show: true,
+          tools: {
+            download: true,
+            selection: true,
+            zoom: true,
+            zoomin: true,
+            zoomout: true,
+            pan: true,
+            reset: true
+          }
+        },
         zoom: { enabled: true }
       },
-      dataLabels: { enabled: false },
-      stroke: { curve: 'smooth', width: 3 },
+      plotOptions: {
+        bar: {
+          columnWidth: '50%',
+          dataLabels: {
+            position: 'top',
+          }
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        enabledOnSeries: [0], // Only enable for first series (bar chart)
+        formatter: function(val) {
+          return val !== null ? val.toFixed(0) : '';
+        },
+        offsetY: -20,
+        style: {
+          fontSize: '10px',
+          fontWeight: 'bold',
+          colors: ['#6C757D']
+        },
+        background: {
+          enabled: false
+        }
+      },
+      stroke: {
+        width: [0, 3, 3, 3, 3], // No stroke for bars, 3px for lines
+        curve: 'smooth'
+      },
       xaxis: {
         categories: data.dates,
-        title: { text: '{% trans "Sample Date" %}' }
+        title: {
+          text: '{% trans "Sample Date" %}',
+          style: {
+            fontSize: '12px',
+            fontWeight: 600
+          }
+        },
+        labels: {
+          rotate: -45,
+          rotateAlways: false,
+          hideOverlappingLabels: true
+        }
       },
-      yaxis: {
-        title: { text: '{% trans "Value" %}' }
+      yaxis: [
+        {
+          // Y-axis for lubricant bars (left side)
+          seriesName: columnSeries[0]?.name,
+          title: {
+            text: data.unit_label || 'Lubricante',
+            style: {
+              fontSize: '12px',
+              fontWeight: 600,
+              color: '#A1A5B7'
+            }
+          },
+          min: 0,
+          max: lubricantMax,
+          tickAmount: 5,
+          labels: {
+            formatter: function(val) {
+              return val !== null ? val.toFixed(0) : '';
+            },
+            style: {
+              colors: ['#A1A5B7']
+            }
+          }
+        },
+        {
+          // Y-axis for line charts (right side)
+          opposite: true,
+          seriesName: lineSeries[0]?.name,
+          title: {
+            text: '{% trans "Value" %}',
+            style: {
+              fontSize: '12px',
+              fontWeight: 600
+            }
+          },
+          labels: {
+            formatter: function(val) {
+              return val !== null ? val.toFixed(2) : '';
+            }
+          }
+        },
+        {
+          // Additional axes for other line series (hidden, use same scale)
+          show: false,
+          seriesName: lineSeries[1]?.name,
+        },
+        {
+          show: false,
+          seriesName: lineSeries[2]?.name,
+        },
+        {
+          show: false,
+          seriesName: lineSeries[3]?.name,
+        }
+      ],
+      legend: {
+        position: 'top',
+        horizontalAlign: 'left',
+        fontSize: '12px',
+        fontWeight: 500,
+        markers: {
+          width: 10,
+          height: 10,
+          radius: 2
+        },
+        itemMargin: {
+          horizontal: 10,
+          vertical: 5
+        }
       },
-      legend: { position: 'top' },
+      tooltip: {
+        shared: true,
+        intersect: false,
+        x: {
+          show: true,
+          format: 'dd MMM yyyy'
+        },
+        y: {
+          formatter: function(val, opts) {
+            if (val === null) return 'N/A';
+
+            const seriesIndex = opts.seriesIndex;
+            const seriesType = allSeries[seriesIndex].type;
+
+            if (seriesType === 'column') {
+              return val.toFixed(0) + ' ' + (data.unit_label || '');
+            } else {
+              return val.toFixed(2);
+            }
+          }
+        }
+      },
+      colors: allSeries.map(s => s.color),
       annotations: {
         yaxis: [
           {
             y: data.thresholds.tbn.critical,
+            yAxisIndex: 1, // Apply to right Y-axis (line charts)
             borderColor: '#F1416C',
             label: {
               borderColor: '#F1416C',
@@ -539,6 +699,15 @@
             }
           }
         ]
+      },
+      grid: {
+        borderColor: '#F1F1F2',
+        strokeDashArray: 4,
+        yaxis: {
+          lines: {
+            show: true
+          }
+        }
       }
     };
 
@@ -555,7 +724,7 @@
       series: data.series,
       chart: {
         type: 'line',
-        height: 350,
+        height: 450,
         toolbar: { show: true },
         zoom: { enabled: true }
       },

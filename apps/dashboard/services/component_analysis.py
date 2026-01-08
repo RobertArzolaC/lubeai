@@ -247,18 +247,20 @@ class ComponentAnalysisService:
 
     def get_oil_health(self) -> Dict[str, Any]:
         """
-        Get oil health indicators (TBN, TAN, viscosity, oxidation).
+        Get oil health indicators (TBN, TAN, viscosity, oxidation) with lubricant usage.
 
         Returns:
-            Dictionary with series data and thresholds
+            Dictionary with series data, thresholds, and lubricant usage data
         """
         reports = self.reports_qs.filter(analysis__isnull=False)
+        measurement_unit = self.detect_measurement_unit()
 
         data_series = {
             "tbn": [],
             "tan": [],
             "viscosity_40c": [],
             "oxidation": [],
+            "lubricant_usage": [],
         }
         dates = []
 
@@ -267,6 +269,7 @@ class ComponentAnalysisService:
                 analysis = report.analysis
                 dates.append(report.sample_date.strftime("%Y-%m-%d"))
 
+                # Existing line series data
                 data_series["tbn"].append(
                     float(analysis.tbn) if analysis.tbn is not None else None
                 )
@@ -284,28 +287,58 @@ class ComponentAnalysisService:
                     else None
                 )
 
+                # Lubricant usage data for bar chart
+                if measurement_unit == "hours":
+                    lubricant_value = (
+                        float(report.lubricant_hours)
+                        if report.lubricant_hours is not None
+                        else None
+                    )
+                else:  # kilometers
+                    lubricant_value = (
+                        float(report.lubricant_kms)
+                        if report.lubricant_kms is not None
+                        else None
+                    )
+                data_series["lubricant_usage"].append(lubricant_value)
+
+        # Determine unit label for display
+        unit_label = "Horas" if measurement_unit == "hours" else "Kilómetros"
+
         return {
             "dates": dates,
+            "measurement_unit": measurement_unit,
+            "unit_label": unit_label,
             "series": [
                 {
                     "name": "TBN (mgKOH/g)",
                     "data": data_series["tbn"],
                     "color": "#50CD89",
+                    "type": "line",
                 },
                 {
                     "name": "TAN (mgKOH/g)",
                     "data": data_series["tan"],
                     "color": "#F1416C",
+                    "type": "line",
                 },
                 {
                     "name": "Viscosidad @ 40°C (cSt)",
                     "data": data_series["viscosity_40c"],
                     "color": "#009EF7",
+                    "type": "line",
                 },
                 {
                     "name": "Oxidación (Abs/cm)",
                     "data": data_series["oxidation"],
                     "color": "#FFC700",
+                    "type": "line",
+                },
+                {
+                    "name": f"Lubricante ({unit_label})",
+                    "data": data_series["lubricant_usage"],
+                    "color": "#A1A5B7",
+                    "type": "column",
                 },
             ],
             "thresholds": self.THRESHOLDS["oil_health"],

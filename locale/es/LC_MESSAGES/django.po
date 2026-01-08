@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-08 14:44-0500\n"
+"POT-Creation-Date: 2026-01-08 15:07-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -294,8 +294,7 @@ msgstr "Todas las Organizaciones"
 #: templates/equipment/machine/list.html:64
 #: templates/reports/report/detail.html:163
 #: templates/reports/report/list.html:68 templates/users/account/list.html:114
-#: templates/users/profile.html:69 templates/users/profile.html:103
-#: templates/users/settings.html:103
+#: templates/users/profile.html:69 templates/users/profile.html:99
 msgid "Organization"
 msgstr "Organización"
 
@@ -436,9 +435,9 @@ msgstr "Número de PER"
 msgid "Notes"
 msgstr "Notas"
 
-#: apps/dashboard/views.py:699 templates/dashboard/component_analysis.html:5
+#: apps/dashboard/views.py:702 templates/dashboard/component_analysis.html:5
 #: templates/dashboard/component_analysis.html:6
-#: templates/includes/aside.html:116
+#: templates/includes/aside.html:101
 msgid "Component Analysis"
 msgstr "Análisis de Componentes"
 
@@ -1117,7 +1116,7 @@ msgstr "Cuenta"
 
 #: apps/users/models.py:72 apps/users/views.py:108
 #: templates/includes/aside.html:56 templates/includes/navbar.html:124
-#: templates/users/account/form.html:146 templates/users/profile.html:158
+#: templates/users/account/form.html:146
 msgid "Accounts"
 msgstr "Cuentas"
 
@@ -1256,18 +1255,73 @@ msgstr ""
 "Por favor <a href=\"%(email_url)s\">emita una nueva solicitud de "
 "confirmación de correo electrónico</a>."
 
+#: templates/account/password_change.html:7
+#: templates/account/password_change.html:83
+#: templates/account/password_reset_from_key.html:7
+#: templates/account/password_reset_from_key.html:88
+#: templates/account/password_reset_from_key_done.html:7
+#: templates/users/settings.html:113 templates/users/settings.html:119
+msgid "Change Password"
+msgstr "Cambiar Contraseña"
+
+#: templates/account/password_change.html:30
+msgid "Security Settings"
+msgstr "Configuración de Seguridad"
+
+#: templates/account/password_change.html:37
+msgid "Protect your account with a strong password"
+msgstr "Proteja su cuenta con una contraseña segura"
+
+#: templates/account/password_change.html:40
+msgid "Enhanced security • Password encryption • Account protection"
+msgstr "Seguridad mejorada • Cifrado de contraseñas • Protección de la cuenta"
+
+#: templates/account/password_change.html:50
+#: templates/account/password_change.html:206
+msgid "Industrial Dashboard Platform"
+msgstr "Plataforma de Tablero Industrial"
+
+#: templates/account/password_change.html:86
+msgid "Update your account password to keep it secure"
+msgstr "Actualice la contraseña de su cuenta para mantenerla segura"
+
+#: templates/account/password_change.html:165
+msgid "Password Requirements:"
+msgstr "Requisitos de la Contraseña:"
+
+#: templates/account/password_change.html:168
+msgid "At least 8 characters long"
+msgstr "Al menos 8 caracteres de longitud"
+
+#: templates/account/password_change.html:169
+msgid "Include uppercase and lowercase letters"
+msgstr "Incluya letras mayúsculas y minúsculas"
+
+#: templates/account/password_change.html:170
+msgid "Include at least one number"
+msgstr "Incluya al menos un número"
+
+#: templates/account/password_change.html:179
+msgid "Update Password"
+msgstr "Actualizar Contraseña"
+
+#: templates/account/password_change.html:188
+msgid "Back to Settings"
+msgstr "Volver a Configuración"
+
+#: templates/account/password_change.html:196
+msgid "Your password is encrypted and secure"
+msgstr "Su contraseña está encriptada y segura"
+
+#: templates/account/password_change.html:237
+msgid "Updating..."
+msgstr "Actualizando..."
+
 #: templates/account/password_reset.html:6
 #: templates/account/password_reset_done.html:8
 #: templates/account/password_reset_done.html:18
 msgid "Password Reset"
 msgstr "Restablecimiento de Contraseña"
-
-#: templates/account/password_reset_from_key.html:7
-#: templates/account/password_reset_from_key.html:88
-#: templates/account/password_reset_from_key_done.html:7
-#: templates/users/settings.html:157 templates/users/settings.html:163
-msgid "Change Password"
-msgstr "Cambiar Contraseña"
 
 #: templates/account/password_reset_from_key.html:28
 #, python-format
@@ -1474,6 +1528,7 @@ msgid "Concentration (ppm)"
 msgstr "Concentración (ppm)"
 
 #: templates/dashboard/component_analysis.html:485
+#, python-format
 msgid "Concentration (ppm / %%)"
 msgstr "Concentración (ppm / %%)"
 
@@ -1760,7 +1815,7 @@ msgstr "Editar"
 #: templates/reports/report/list.html:223 templates/users/account/form.html:139
 #: templates/users/account/list.html:196
 #: templates/users/organization/detail.html:36
-#: templates/users/organization/list.html:133 templates/users/profile.html:150
+#: templates/users/organization/list.html:133
 msgid "Delete"
 msgstr "Eliminar"
 
@@ -1821,7 +1876,7 @@ msgstr "¡Sí, elimínalo!"
 #: templates/reports/report/list.html:222 templates/users/account/list.html:255
 #: templates/users/account/list.html:299 templates/users/account/list.html:343
 #: templates/users/organization/detail.html:228
-#: templates/users/organization/list.html:186 templates/users/settings.html:128
+#: templates/users/organization/list.html:186 templates/users/settings.html:84
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -1879,7 +1934,7 @@ msgstr "Descartar"
 
 #: templates/equipment/machine/form.html:210
 #: templates/users/account/form.html:179
-#: templates/users/organization/form.html:219 templates/users/settings.html:131
+#: templates/users/organization/form.html:219 templates/users/settings.html:87
 msgid "Save Changes"
 msgstr "Guardar Cambios"
 
@@ -1906,7 +1961,7 @@ msgstr "Acciones"
 
 #: templates/equipment/machine/list.html:119
 #: templates/reports/report/list.html:161 templates/users/account/form.html:136
-#: templates/users/organization/list.html:120 templates/users/profile.html:147
+#: templates/users/organization/list.html:120
 msgid "View"
 msgstr "Ver"
 
@@ -1926,7 +1981,7 @@ msgstr "Página no encontrada"
 msgid "System Error"
 msgstr "Error del sistema"
 
-#: templates/includes/aside.html:101
+#: templates/includes/aside.html:116
 msgid "Data Export"
 msgstr "Exportación de Datos"
 
@@ -1934,7 +1989,7 @@ msgstr "Exportación de Datos"
 msgid "My Profile"
 msgstr "Mi Perfil"
 
-#: templates/includes/navbar.html:131 templates/users/settings.html:95
+#: templates/includes/navbar.html:131
 msgid "Account Settings"
 msgstr "Configuración de la Cuenta"
 
@@ -2233,7 +2288,7 @@ msgstr "¿Está este informe activo?"
 msgid "Update Report"
 msgstr "Actualizar Informe"
 
-#: templates/reports/report/form.html:279 templates/users/settings.html:133
+#: templates/reports/report/form.html:279 templates/users/settings.html:89
 msgid "Please wait..."
 msgstr "Por favor espera..."
 
@@ -2284,15 +2339,15 @@ msgstr "Nombre Completo"
 msgid "Permissions Management"
 msgstr "Gestión de Permisos"
 
-#: templates/users/account/form.html:135 templates/users/profile.html:146
+#: templates/users/account/form.html:135
 msgid "Module"
 msgstr "Módulo"
 
-#: templates/users/account/form.html:137 templates/users/profile.html:148
+#: templates/users/account/form.html:137
 msgid "Create"
 msgstr "Crear"
 
-#: templates/users/account/form.html:138 templates/users/profile.html:149
+#: templates/users/account/form.html:138
 msgid "Update"
 msgstr "Actualizar"
 
@@ -2419,8 +2474,7 @@ msgstr "Ubicación"
 msgid "No organizations found"
 msgstr "No se encontraron organizaciones"
 
-#: templates/users/profile.html:71 templates/users/profile.html:105
-#: templates/users/settings.html:110
+#: templates/users/profile.html:71
 msgid "Individual"
 msgstr "Individual"
 
@@ -2432,26 +2486,9 @@ msgstr "Editar Perfil"
 msgid "Account Information"
 msgstr "Información de la Cuenta"
 
-#: templates/users/profile.html:99 templates/users/settings.html:101
-#: templates/users/settings.html:108
-msgid "Account Type"
-msgstr "Tipo de Cuenta"
-
-#: templates/users/profile.html:113 templates/users/settings.html:117
-msgid "Parent Account"
-msgstr "Cuenta Principal"
-
-#: templates/users/profile.html:123
+#: templates/users/profile.html:108
 msgid "Date Joined"
 msgstr "Fecha de Creación"
-
-#: templates/users/profile.html:138
-msgid "Permissions"
-msgstr "Permisos"
-
-#: templates/users/profile.html:192
-msgid "No permissions assigned"
-msgstr "No se asignaron permisos"
 
 #: templates/users/settings.html:15
 msgid "Personal Information"
@@ -2477,21 +2514,32 @@ msgstr "Tipos de archivo permitidos: png, jpg, jpeg."
 msgid "Email cannot be changed"
 msgstr "El correo electrónico no se puede cambiar"
 
-#: templates/users/settings.html:83
-msgid "User Type"
-msgstr "Tipo de Usuario"
-
-#: templates/users/settings.html:146
+#: templates/users/settings.html:102
 msgid "Security"
 msgstr "Seguridad"
 
-#: templates/users/settings.html:159
+#: templates/users/settings.html:115
 msgid ""
 "To change your password, please contact your administrator or use the "
 "password reset option."
 msgstr ""
 "Para cambiar su contraseña, comuníquese con su administrador o use la opción "
 "de restablecimiento de contraseña."
+
+#~ msgid "Account Type"
+#~ msgstr "Tipo de Cuenta"
+
+#~ msgid "Parent Account"
+#~ msgstr "Cuenta Principal"
+
+#~ msgid "Permissions"
+#~ msgstr "Permisos"
+
+#~ msgid "No permissions assigned"
+#~ msgstr "No se asignaron permisos"
+
+#~ msgid "User Type"
+#~ msgstr "Tipo de Usuario"
 
 #, fuzzy
 #~| msgid "Select Component Type"
@@ -2614,11 +2662,6 @@ msgstr ""
 
 #~ msgid "Installation Date"
 #~ msgstr "Fecha de instalación"
-
-#, fuzzy
-#~| msgid "Dashboard Filters"
-#~ msgid "Administrative Dashboard Filters"
-#~ msgstr "Filtros del Tablero"
 
 #~ msgid "Severe"
 #~ msgstr "Severo"

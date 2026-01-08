@@ -96,28 +96,13 @@
             </div>
             <div class="card-body p-9">
                 <div class="row mb-7">
-                    <label class="col-lg-4 fw-semibold text-muted">{% trans "Account Type" %}</label>
+                    <label class="col-lg-4 fw-semibold text-muted">{% trans "Organization" %}</label>
                     <div class="col-lg-8">
                         <span class="fw-bold fs-6 text-gray-900">
-                            {% if user.account.is_organization %}
-                                <span class="badge badge-light-primary">{% trans "Organization" %}</span>
-                            {% else %}
-                                <span class="badge badge-light-info">{% trans "Individual" %}</span>
-                            {% endif %}
+                            {{ user.account.organization }}
                         </span>
                     </div>
                 </div>
-
-                {% if user.account.parent_account %}
-                <div class="row mb-7">
-                    <label class="col-lg-4 fw-semibold text-muted">{% trans "Parent Account" %}</label>
-                    <div class="col-lg-8 fv-row">
-                        <span class="fw-semibold text-gray-900 fs-6">
-                            {{ user.account.parent_account.user.get_full_name }}
-                        </span>
-                    </div>
-                </div>
-                {% endif %}
 
                 <div class="row mb-7">
                     <label class="col-lg-4 fw-semibold text-muted">{% trans "Date Joined" %}</label>
@@ -130,74 +115,6 @@
             </div>
         </div>
         {% endif %}
-
-        <!-- User Permissions Card -->
-        <div class="card">
-            <div class="card-header">
-                <div class="card-title">
-                    <h3 class="fw-bold m-0">{% trans "Permissions" %}</h3>
-                </div>
-            </div>
-            <div class="card-body p-9">
-                <div class="table-responsive">
-                    <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
-                        <thead>
-                            <tr class="fw-bold text-muted">
-                                <th class="min-w-150px">{% trans "Module" %}</th>
-                                <th class="min-w-100px text-center">{% trans "View" %}</th>
-                                <th class="min-w-100px text-center">{% trans "Create" %}</th>
-                                <th class="min-w-100px text-center">{% trans "Update" %}</th>
-                                <th class="min-w-100px text-center">{% trans "Delete" %}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% if user.is_account and user.account %}
-                                <!-- Accounts -->
-                                {% if user.is_superuser or user.is_staff %}
-                                <tr>
-                                    <td class="fw-bold">{% trans "Accounts" %}</td>
-                                    <td class="text-center">
-                                        {% if user.account.can_view_account %}
-                                            <i class="ki-duotone ki-check-circle fs-2 text-success"></i>
-                                        {% else %}
-                                            <i class="ki-duotone ki-cross-circle fs-2 text-danger"></i>
-                                        {% endif %}
-                                    </td>
-                                    <td class="text-center">
-                                        {% if user.account.can_add_account %}
-                                            <i class="ki-duotone ki-check-circle fs-2 text-success"></i>
-                                        {% else %}
-                                            <i class="ki-duotone ki-cross-circle fs-2 text-danger"></i>
-                                        {% endif %}
-                                    </td>
-                                    <td class="text-center">
-                                        {% if user.account.can_change_account %}
-                                            <i class="ki-duotone ki-check-circle fs-2 text-success"></i>
-                                        {% else %}
-                                            <i class="ki-duotone ki-cross-circle fs-2 text-danger"></i>
-                                        {% endif %}
-                                    </td>
-                                    <td class="text-center">
-                                        {% if user.account.can_delete_account %}
-                                            <i class="ki-duotone ki-check-circle fs-2 text-success"></i>
-                                        {% else %}
-                                            <i class="ki-duotone ki-cross-circle fs-2 text-danger"></i>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                                {% endif %}
-                            {% else %}
-                                <tr>
-                                    <td colspan="5" class="text-center text-muted">
-                                        {% trans "No permissions assigned" %}
-                                    </td>
-                                </tr>
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
     </div>
 </main>
 {% endblock content %}
