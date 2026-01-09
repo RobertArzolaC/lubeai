@@ -11,8 +11,12 @@ class ComponentAnalysis(models.Model):
     """
 
     class Meta:
-        managed = False  # Don't create database table
+        managed = False
         default_permissions = ()  # Don't create default permissions
         permissions = [
             ("view_component_analysis", _("Can view component analysis")),
+            (
+                "export_component_analysis",
+                _("Can export component analysis data"),
+            ),
         ]

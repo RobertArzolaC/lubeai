@@ -73,3 +73,14 @@ LOGGING = {
         },
     },
 }
+
+# Email settings
+# https://docs.djangoproject.com/en/5.0/topics/email/
+
+EMAIL_BACKEND = config(
+    "EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend"
+)  # noqa
+EMAIL_HOST = config("EMAIL_HOST", default="sandbox.smtp.mailtrap.io")  # noqa
+EMAIL_PORT = config("EMAIL_PORT", default="587")  # noqa
+EMAIL_USE_TLS = False  # noqa
+EMAIL_USE_SSL = False

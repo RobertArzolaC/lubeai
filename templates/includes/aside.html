@@ -104,7 +104,7 @@
           {% endif %}
         </div>
         <div class="menu-item">
-          {% if request.user.is_authenticated and request.user.account.organization %}
+          {% if perms.dashboard.export_component_analysis %}
             <a class="menu-link {% if request.resolver_match.url_name == "export" %}active{% endif %}" href="{% url 'apps.dashboard:export' %}">
               <span class="menu-icon">
                 <i class="ki-duotone ki-file-down fs-2 me-2">

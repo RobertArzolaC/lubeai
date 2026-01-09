@@ -4,7 +4,7 @@
 {% load widget_tweaks %}
 
 {% block title_page %}
-    {% trans "Sign In" %} - Industrial Dashboard
+    {% trans "Sign In" %}
 {% endblock %}
 
 {% block content %}
@@ -27,17 +27,17 @@
                 <!-- Brand Title -->
                 <h1 class="lubricant-brand-title d-none d-lg-block fs-2qx pb-5 pb-md-8">
                     <i class="fas fa-cog lubricant-icon me-3 lubricant-pulse"></i>
-                    Welcome to {{ config.PROJECT_NAME }}
+                    {% trans "Welcome to" %} {{ config.PROJECT_NAME }}
                 </h1>
 
                 <!-- Brand Description -->
                 <div class="d-none d-lg-block">
                     <p class="lubricant-brand-subtitle fs-2 mb-4">
                         <i class="fas fa-oil-can lubricant-icon me-2"></i>
-                        Transform your lubricant business with intelligent automation
+                        {% trans "Transform your lubricant business with intelligent automation" %}
                     </p>
                     <p class="lubricant-brand-subtitle fs-4 opacity-75">
-                        Advanced dashboard generation • Real-time analytics • Industrial-grade reliability
+                        {% trans "Advanced dashboard generation • Real-time analytics • Industrial-grade reliability" %}
                     </p>
                 </div>
 
@@ -47,7 +47,7 @@
                         {{ config.PROJECT_NAME }}
                     </h2>
                     <p class="lubricant-brand-subtitle fs-6">
-                        Industrial Dashboard Platform
+                        {% trans "Industrial Dashboard Platform" %}
                     </p>
                 </div>
             </div>
@@ -80,10 +80,10 @@
 
                     <h1 class="text-lubricant-primary mb-4 fs-2x fw-bold">
                         <i class="fas fa-sign-in-alt lubricant-icon me-3"></i>
-                        Industrial Access
+                        {% trans "Industrial Access" %}
                     </h1>
                     <p class="text-lubricant-secondary fs-6 fw-semibold mb-6">
-                        Sign in to your dashboard platform
+                        {% trans "Sign in to your dashboard platform" %}
                     </p>
                     <hr class="lubricant-divider">
                 </div>
@@ -137,7 +137,7 @@
                     <div class="d-flex justify-content-start mb-8">
                         <a href="{% url 'account_reset_password' %}" class="lubricant-link fs-7 fw-semibold">
                             <i class="fas fa-question-circle me-2"></i>
-                            ¿Forgot your password?
+                            {% trans "Forgot your password?" %}
                         </a>
                     </div>
 
@@ -151,7 +151,7 @@
                         <button type="submit" class="btn btn-lg btn-primary py-4">
                             <span class="indicator-label fs-5 fw-bold">
                                 <i class="fas fa-arrow-right me-3"></i>
-                                Access Dashboard
+                                {% trans "Access Dashboard" %}
                             </span>
                         </button>
                     </div>
@@ -160,7 +160,7 @@
                     <div class="text-center">
                         <small class="text-lubricant-medium d-flex align-items-center justify-content-center">
                             <i class="fas fa-shield-alt me-2"></i>
-                            Secure industrial-grade authentication
+                            {% trans "Secure industrial-grade authentication" %}
                         </small>
                     </div>
                 </form>
@@ -170,7 +170,7 @@
             <div class="text-center mt-6">
                 <p class="text-lubricant-medium fs-7">
                     <i class="fas fa-copyright me-1"></i>
-                    {{ config.PROJECT_NAME }} - Industrial Dashboard Platform
+                    {{ config.PROJECT_NAME }} - {% trans "Industrial Dashboard Platform" %}
                 </p>
             </div>
         </div>

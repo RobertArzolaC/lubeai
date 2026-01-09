@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-08 15:07-0500\n"
+"POT-Creation-Date: 2026-01-09 12:20-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,7 +27,8 @@ msgid "Last Name"
 msgstr "Apellido"
 
 #: apps/authentication/forms.py:29 apps/core/models.py:37
-#: apps/users/forms.py:112 templates/equipment/machine/detail.html:115
+#: apps/users/forms.py:112 templates/account/password_reset.html:101
+#: templates/equipment/machine/detail.html:115
 #: templates/users/account/list.html:81
 #: templates/users/organization/detail.html:102
 #: templates/users/organization/list.html:56 templates/users/settings.html:74
@@ -146,7 +147,7 @@ msgstr "Otro"
 msgid "You do not have permission to delete this account."
 msgstr "No tienes permiso para eliminar esta cuenta."
 
-#: apps/core/models.py:16 apps/users/admin.py:140 apps/users/forms.py:215
+#: apps/core/models.py:16 apps/users/admin.py:148 apps/users/forms.py:215
 #: templates/users/organization/detail.html:149
 msgid "Address"
 msgstr "Dirección"
@@ -233,7 +234,7 @@ msgstr "Clave primaria del objeto relacionado."
 #: apps/reports/models.py:108 apps/users/filtersets.py:15
 #: apps/users/filtersets.py:46 templates/dashboard/admin_dashboard.html:51
 #: templates/dashboard/admin_dashboard.html:215
-#: templates/dashboard/export.html:71
+#: templates/dashboard/export.html:53
 #: templates/equipment/machine/detail.html:76
 #: templates/equipment/machine/detail.html:162
 #: templates/equipment/machine/list.html:66
@@ -273,7 +274,7 @@ msgid "Status Histories"
 msgstr "Historiales de estado"
 
 #: apps/core/templatetags/breadcrumb_tags.py:14
-#: templates/dashboard/export.html:17 templates/includes/aside.html:24
+#: templates/includes/aside.html:24
 msgid "Dashboard"
 msgstr "Tablero"
 
@@ -299,20 +300,20 @@ msgid "Organization"
 msgstr "Organización"
 
 #: apps/dashboard/filtersets.py:22 templates/dashboard/admin_dashboard.html:25
-#: templates/dashboard/export.html:39
+#: templates/dashboard/export.html:21
 #: templates/dashboard/organization_dashboard.html:15
 msgid "Start Date"
 msgstr "Fecha de Inicio"
 
 #: apps/dashboard/filtersets.py:27 templates/dashboard/admin_dashboard.html:29
-#: templates/dashboard/export.html:43
+#: templates/dashboard/export.html:25
 #: templates/dashboard/organization_dashboard.html:19
 msgid "End Date"
 msgstr "Fecha de Fin"
 
 #: apps/dashboard/filtersets.py:31 apps/reports/filtersets.py:25
 #: templates/dashboard/admin_dashboard.html:35
-#: templates/dashboard/export.html:52 templates/dashboard/index.html:71
+#: templates/dashboard/export.html:34 templates/dashboard/index.html:71
 msgid "All Machines"
 msgstr "Todas las máquinas"
 
@@ -325,7 +326,7 @@ msgstr "Todas las máquinas"
 #: templates/dashboard/admin_dashboard.html:33
 #: templates/dashboard/admin_dashboard.html:213
 #: templates/dashboard/component_analysis.html:133
-#: templates/dashboard/export.html:50
+#: templates/dashboard/export.html:32
 #: templates/dashboard/organization_dashboard.html:144
 #: templates/reports/report/detail.html:174
 #: templates/reports/report/list.html:69
@@ -334,13 +335,13 @@ msgstr "Máquina"
 
 #: apps/dashboard/filtersets.py:36 apps/reports/filtersets.py:36
 #: templates/dashboard/admin_dashboard.html:44
-#: templates/dashboard/export.html:64
+#: templates/dashboard/export.html:46
 msgid "All Conditions"
 msgstr "Todas las condiciones"
 
 #: apps/dashboard/filtersets.py:41 apps/reports/filtersets.py:30
 #: templates/dashboard/admin_dashboard.html:53
-#: templates/dashboard/export.html:73
+#: templates/dashboard/export.html:55
 msgid "All Statuses"
 msgstr "Todos los estados"
 
@@ -349,7 +350,7 @@ msgid "Select Machine"
 msgstr "Seleccionar Máquina"
 
 #: apps/dashboard/filtersets.py:68
-#: templates/dashboard/component_analysis.html:344
+#: templates/dashboard/component_analysis.html:346
 #, fuzzy
 #| msgid "Select Component Type"
 msgid "Select Component"
@@ -369,6 +370,12 @@ msgstr "Componente"
 #, fuzzy
 #| msgid "When this component was installed"
 msgid "Can view component analysis"
+msgstr "Cuándo se instaló este componente"
+
+#: apps/dashboard/models.py:20
+#, fuzzy
+#| msgid "When this component was installed"
+msgid "Can export component analysis data"
 msgstr "Cuándo se instaló este componente"
 
 #: apps/dashboard/views.py:417 apps/reports/models.py:48
@@ -400,10 +407,10 @@ msgstr "Código de número de serie"
 
 #: apps/dashboard/views.py:424 apps/reports/models.py:90
 #: templates/dashboard/admin_dashboard.html:216
-#: templates/dashboard/component_analysis.html:440
-#: templates/dashboard/component_analysis.html:482
-#: templates/dashboard/component_analysis.html:524
-#: templates/dashboard/component_analysis.html:566
+#: templates/dashboard/component_analysis.html:442
+#: templates/dashboard/component_analysis.html:484
+#: templates/dashboard/component_analysis.html:584
+#: templates/dashboard/component_analysis.html:735
 #: templates/reports/report/detail.html:275
 #: templates/reports/report/list.html:71
 msgid "Sample Date"
@@ -417,7 +424,7 @@ msgstr "Fecha de recepción"
 #: apps/dashboard/views.py:427 apps/reports/filtersets.py:37
 #: apps/reports/models.py:115 templates/dashboard/admin_dashboard.html:42
 #: templates/dashboard/admin_dashboard.html:214
-#: templates/dashboard/export.html:62
+#: templates/dashboard/export.html:44
 #: templates/dashboard/organization_dashboard.html:146
 #: templates/reports/report/detail.html:101
 #: templates/reports/report/list.html:73
@@ -442,13 +449,13 @@ msgid "Component Analysis"
 msgstr "Análisis de Componentes"
 
 #: apps/equipment/admin.py:43 apps/equipment/admin.py:104
-#: apps/equipment/admin.py:164 apps/users/admin.py:132
+#: apps/equipment/admin.py:164 apps/users/admin.py:140
 #: templates/users/organization/form.html:32
 msgid "Basic Information"
 msgstr "Información Básica"
 
 #: apps/equipment/admin.py:55 apps/equipment/admin.py:114
-#: apps/equipment/admin.py:174 apps/users/admin.py:153
+#: apps/equipment/admin.py:174 apps/users/admin.py:161
 msgid "Audit Information"
 msgstr "Información de auditoría"
 
@@ -998,7 +1005,7 @@ msgstr "Reporte actualizado con éxito."
 msgid "Skipped %(count)d header/title rows"
 msgstr "Omitidas %(count)d filas de encabezado/título"
 
-#: apps/users/admin.py:136 templates/users/organization/detail.html:96
+#: apps/users/admin.py:144 templates/users/organization/detail.html:96
 #: templates/users/organization/form.html:178
 msgid "Contact Information"
 msgstr "Información de Contacto"
@@ -1026,6 +1033,12 @@ msgstr "Se requiere ID de usuario"
 #: apps/users/api.py:76
 msgid "Verification email has been successfully sent"
 msgstr "El correo electrónico de verificación se ha enviado con éxito"
+
+#: apps/users/apps.py:8
+#, fuzzy
+#| msgid "Reports Management"
+msgid "Users Management"
+msgstr "Gestión de Informes"
 
 #: apps/users/forms.py:30 apps/users/forms.py:111
 #: templates/users/settings.html:68
@@ -1116,7 +1129,6 @@ msgstr "Cuenta"
 
 #: apps/users/models.py:72 apps/users/views.py:108
 #: templates/includes/aside.html:56 templates/includes/navbar.html:124
-#: templates/users/account/form.html:146
 msgid "Accounts"
 msgstr "Cuentas"
 
@@ -1186,9 +1198,40 @@ msgid "Account Inactive"
 msgstr "Cuenta Inactiva"
 
 #: templates/account/account_inactive.html:25 templates/account/login.html:7
-#: templates/account/password_reset_from_key_done.html:25
+#: templates/account/password_reset_from_key_done.html:125
 msgid "Sign In"
 msgstr "Iniciar Sesión"
+
+#: templates/account/email/password_reset_key_message.html:21
+msgid "Hello!"
+msgstr "¡Hola!"
+
+#: templates/account/email/password_reset_key_message.html:24
+msgid ""
+"You are receiving this email because we received a password reset request "
+"for your account. To proceed with the password reset please click on the "
+"button below:"
+msgstr ""
+"Ha recibido este correo electrónico porque hemos recibido una solicitud de "
+"restablecimiento de contraseña para su cuenta. Para continuar con el "
+"restablecimiento de la contraseña, haga clic en el botón de abajo:"
+
+#: templates/account/email/password_reset_key_message.html:28
+msgid "Reset Password"
+msgstr "Cambiar Contraseña"
+
+#: templates/account/email/password_reset_key_message.html:34
+msgid "Button not working? Try pasting this URL into your browser:"
+msgstr "¿El botón no funciona? Intente pegar esta URL en su navegador:"
+
+#: templates/account/email/password_reset_key_message.html:40
+msgid "Kind regards,"
+msgstr "Saludos cordiales,"
+
+#: templates/account/email/password_reset_key_message.html:42
+#, python-format
+msgid "The %(project_name)s Team."
+msgstr "El equipo de %(project_name)s."
 
 #: templates/account/email_confirm.html:8
 #: templates/account/email_confirm.html:21
@@ -1255,10 +1298,56 @@ msgstr ""
 "Por favor <a href=\"%(email_url)s\">emita una nueva solicitud de "
 "confirmación de correo electrónico</a>."
 
+#: templates/account/login.html:30 templates/account/password_reset.html:29
+#: templates/account/password_reset_done.html:31
+#: templates/account/password_reset_from_key.html:30
+#: templates/account/password_reset_from_key_done.html:30
+msgid "Welcome to"
+msgstr "Bienvenido a"
+
+#: templates/account/login.html:37
+msgid "Transform your lubricant business with intelligent automation"
+msgstr "Transforma tu negocio de lubricantes con automatización inteligente"
+
+#: templates/account/login.html:40
+msgid ""
+"Advanced dashboard generation • Real-time analytics • Industrial-grade "
+"reliability"
+msgstr ""
+"Generación avanzada de tableros • Análisis en tiempo real • Fiabilidad de "
+"grado industrial"
+
+#: templates/account/login.html:50 templates/account/login.html:173
+#: templates/account/password_change.html:50
+#: templates/account/password_change.html:206
+msgid "Industrial Dashboard Platform"
+msgstr "Plataforma de Tablero Industrial"
+
+#: templates/account/login.html:83
+msgid "Industrial Access"
+msgstr "Acceso Industrial"
+
+#: templates/account/login.html:86
+msgid "Sign in to your dashboard platform"
+msgstr "Inicie sesión en su plataforma de tablero"
+
+#: templates/account/login.html:140
+msgid "Forgot your password?"
+msgstr "¿Olvidaste tu contraseña?"
+
+#: templates/account/login.html:154
+msgid "Access Dashboard"
+msgstr "Acceder al Tablero"
+
+#: templates/account/login.html:163
+msgid "Secure industrial-grade authentication"
+msgstr "Autenticación segura de grado industrial"
+
 #: templates/account/password_change.html:7
 #: templates/account/password_change.html:83
 #: templates/account/password_reset_from_key.html:7
-#: templates/account/password_reset_from_key.html:88
+#: templates/account/password_reset_from_key.html:50
+#: templates/account/password_reset_from_key.html:239
 #: templates/account/password_reset_from_key_done.html:7
 #: templates/users/settings.html:113 templates/users/settings.html:119
 msgid "Change Password"
@@ -1275,11 +1364,6 @@ msgstr "Proteja su cuenta con una contraseña segura"
 #: templates/account/password_change.html:40
 msgid "Enhanced security • Password encryption • Account protection"
 msgstr "Seguridad mejorada • Cifrado de contraseñas • Protección de la cuenta"
-
-#: templates/account/password_change.html:50
-#: templates/account/password_change.html:206
-msgid "Industrial Dashboard Platform"
-msgstr "Plataforma de Tablero Industrial"
 
 #: templates/account/password_change.html:86
 msgid "Update your account password to keep it secure"
@@ -1319,24 +1403,250 @@ msgstr "Actualizando..."
 
 #: templates/account/password_reset.html:6
 #: templates/account/password_reset_done.html:8
-#: templates/account/password_reset_done.html:18
 msgid "Password Reset"
 msgstr "Restablecimiento de Contraseña"
 
-#: templates/account/password_reset_from_key.html:28
-#, python-format
+#: templates/account/password_reset.html:36
+msgid "Recover access to your account securely"
+msgstr "Recupere el acceso a su cuenta de forma segura"
+
+#: templates/account/password_reset.html:39
+msgid "Industrial-grade security • Encrypted recovery • Protected access"
+msgstr ""
+"Seguridad de grado industrial • Recuperación encriptada • Acceso protegido"
+
+#: templates/account/password_reset.html:49
+msgid "Password Recovery"
+msgstr "Recuperación de Contraseña"
+
+#: templates/account/password_reset.html:82
+msgid "Forgot Password?"
+msgstr "¿Olvidaste tu contraseña?"
+
+#: templates/account/password_reset.html:88
+msgid "Enter your email to reset your password."
+msgstr "Ingrese su dirección de correo electrónico"
+
+#: templates/account/password_reset.html:126
+msgid "Send Reset Link"
+msgstr "Enviar Enlace de Restablecimiento"
+
+#: templates/account/password_reset.html:135
+#: templates/account/password_reset_done.html:147
+#: templates/account/password_reset_from_key.html:117
+msgid "Back to Login"
+msgstr "Volver al Inicio"
+
+#: templates/account/password_reset.html:143
+msgid "Secure password recovery process"
+msgstr "Proceso seguro de recuperación de contraseña"
+
+#: templates/account/password_reset.html:153
+msgid "Check your email inbox for the reset link"
+msgstr ""
+"Revise la bandeja de entrada de su correo electrónico para el enlace de "
+"restablecimiento"
+
+#: templates/account/password_reset.html:168
+msgid "Sending..."
+msgstr "Enviando..."
+
+#: templates/account/password_reset_done.html:38
+msgid "Your password reset email is on the way"
+msgstr "Su correo electrónico de restablecimiento de contraseña está en camino"
+
+#: templates/account/password_reset_done.html:41
+msgid "Secure delivery • Protected link • Fast recovery"
+msgstr "Entrega segura • Enlace protegido • Recuperación rápida"
+
+#: templates/account/password_reset_done.html:51
+#: templates/account/password_reset_done.html:107
+msgid "Email Sent Successfully"
+msgstr "Correo enviado con éxito"
+
+#: templates/account/password_reset_done.html:92
+msgid "Check Your Email"
+msgstr "Revise su Correo Electrónico"
+
+#: templates/account/password_reset_done.html:109
+msgid ""
+"We have sent you an email with instructions to reset your password. If you "
+"have not received it, please check your spam folder. Otherwise, contact us "
+"if you do not receive it in a few minutes."
+msgstr ""
+"Le hemos enviado un correo electrónico con instrucciones para restablecer su "
+"contraseña. Si no lo ha recibido, revise su carpeta de spam. De lo "
+"contrario, contáctenos si no lo recibe en unos minutos."
+
+#: templates/account/password_reset_done.html:120
+msgid "Next Steps"
+msgstr "Próximos Pasos"
+
+#: templates/account/password_reset_done.html:125
+msgid "Check your email inbox"
+msgstr "Revise la bandeja de entrada de su correo electrónico"
+
+#: templates/account/password_reset_done.html:129
+msgid "Click the secure reset link"
+msgstr "Haga clic en el enlace de restablecimiento seguro"
+
+#: templates/account/password_reset_done.html:133
+msgid "Create your new password"
+msgstr "Cree su nueva contraseña"
+
+#: templates/account/password_reset_done.html:137
+msgid "Sign in with your new credentials"
+msgstr "Inicie sesión con sus nuevas credenciales"
+
+#: templates/account/password_reset_done.html:155
+msgid "This is a secure password recovery link"
+msgstr "Este es un enlace seguro de recuperación de contraseña"
+
+#: templates/account/password_reset_done.html:164
+msgid "Didn't receive the email?"
+msgstr "¿No recibió el correo electrónico?"
+
+#: templates/account/password_reset_done.html:168
+msgid "Try sending it again"
+msgstr "Intente enviarlo de nuevo"
+
+#: templates/account/password_reset_from_key.html:37
+msgid "Create a secure new password for your account"
+msgstr "Cree una nueva contraseña segura para su cuenta"
+
+#: templates/account/password_reset_from_key.html:40
+msgid "Strong encryption • Password protection • Secure authentication"
+msgstr "Cifrado fuerte • Protección de contraseña • Autenticación segura"
+
+#: templates/account/password_reset_from_key.html:91
+msgid "Invalid Reset Link"
+msgstr "Enlace de Restablecimiento Inválido"
+
+#: templates/account/password_reset_from_key.html:99
+msgid "Link Expired or Already Used"
+msgstr "Enlace Expirado o Ya Usado"
+
+#: templates/account/password_reset_from_key.html:102
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
-"used.  Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
-"a>."
+"used. Please request a new password reset."
 msgstr ""
 "El enlace de restablecimiento de contraseña no es válido, posiblemente "
-"porque ya se ha utilizado. Por favor solicite un <a "
-"href=\"%(passwd_reset_url)s\">nuevo restablecimiento de contraseña</a>"
+"porque ya se ha utilizado. Por favor solicite un <a href=\"%"
+"(passwd_reset_url)s\">nuevo restablecimiento de contraseña</a>"
 
-#: templates/account/password_reset_from_key_done.html:17
-msgid "Password is changed"
-msgstr "La contraseña ha sido cambiada."
+#: templates/account/password_reset_from_key.html:110
+msgid "Request New Reset Link"
+msgstr "Solicitar Nuevo Enlace de Restablecimiento"
+
+#: templates/account/password_reset_from_key.html:133
+msgid "Setup New Password"
+msgstr "Configurar Nueva Contraseña"
+
+#: templates/account/password_reset_from_key.html:136
+msgid "Create a strong password to secure your account"
+msgstr "Cree una contraseña segura para proteger su cuenta"
+
+#: templates/account/password_reset_from_key.html:139
+msgid "Already reset your password?"
+msgstr "¿Ya restableció su contraseña?"
+
+#: templates/account/password_reset_from_key.html:141
+msgid "Sign in here"
+msgstr "Inicie sesión aquí"
+
+#: templates/account/password_reset_from_key.html:157
+msgid "Please correct the following errors:"
+msgstr "Por favor corrija los siguientes errores:"
+
+#: templates/account/password_reset_from_key.html:173
+msgid "New Password"
+msgstr "Nueva Contraseña"
+
+#: templates/account/password_reset_from_key.html:183
+msgid "Enter new password"
+msgstr "Ingrese nueva contraseña"
+
+#: templates/account/password_reset_from_key.html:204
+msgid "Use 8 or more characters with a mix of letters, numbers & symbols."
+msgstr "Use 8 o más caracteres con una mezcla de letras, números y símbolos."
+
+#: templates/account/password_reset_from_key.html:211
+msgid "Confirm Password"
+msgstr "Confirmar Contraseña"
+
+#: templates/account/password_reset_from_key.html:221
+msgid "Confirm new password"
+msgstr "Confirme nueva contraseña"
+
+#: templates/account/password_reset_from_key.html:248
+msgid "Your password will be encrypted and stored securely"
+msgstr "Su contraseña será encriptada y almacenada de forma segura"
+
+#: templates/account/password_reset_from_key.html:284
+msgid "Changing Password..."
+msgstr "Cambiando Contraseña..."
+
+#: templates/account/password_reset_from_key_done.html:37
+msgid "Your password has been successfully changed"
+msgstr "Su contraseña ha sido cambiada con éxito"
+
+#: templates/account/password_reset_from_key_done.html:40
+msgid "Secure access • Protected account • Ready to use"
+msgstr "Acceso seguro • Cuenta protegida • Lista para usar"
+
+#: templates/account/password_reset_from_key_done.html:50
+#: templates/account/password_reset_from_key_done.html:91
+msgid "Password Changed Successfully"
+msgstr "Contraseña cambiada con éxito"
+
+#: templates/account/password_reset_from_key_done.html:102
+msgid "All Set!"
+msgstr "¡Todo listo!"
+
+#: templates/account/password_reset_from_key_done.html:104
+msgid ""
+"Your password has been successfully changed. You can now sign in to your "
+"account and start using the platform."
+msgstr ""
+"Su contraseña ha sido cambiada con éxito. Ahora puede iniciar sesión en su "
+"cuenta y comenzar a usar la plataforma."
+
+#: templates/account/password_reset_from_key_done.html:115
+msgid "What's Next?"
+msgstr "¿Qué sigue?"
+
+#: templates/account/password_reset_from_key_done.html:126
+msgid "Access your dashboard with your new password"
+msgstr "Acceda a su panel con su nueva contraseña"
+
+#: templates/account/password_reset_from_key_done.html:136
+msgid "Start Working"
+msgstr "Comience a trabajar"
+
+#: templates/account/password_reset_from_key_done.html:137
+msgid "Continue with your industrial projects"
+msgstr "Continúe con sus proyectos industriales"
+
+#: templates/account/password_reset_from_key_done.html:147
+msgid "Stay Secure"
+msgstr "Manténgase Seguro"
+
+#: templates/account/password_reset_from_key_done.html:148
+msgid "Your account is protected with your new password"
+msgstr "Su cuenta está protegida con su nueva contraseña"
+
+#: templates/account/password_reset_from_key_done.html:159
+msgid "Sign In to Your Account"
+msgstr "Inicie sesión en su cuenta"
+
+#: templates/account/password_reset_from_key_done.html:167
+msgid "Your password is encrypted and stored securely"
+msgstr "Su contraseña será encriptada y almacenada de forma segura"
+
+#: templates/account/password_reset_from_key_done.html:176
+msgid "Tip: Remember to use a strong, unique password"
+msgstr "Consejo: Recuerde usar una contraseña fuerte y única"
 
 #: templates/account/signup.html:7
 msgid "Signup"
@@ -1359,7 +1669,7 @@ msgstr "Filtrar"
 
 #: templates/dashboard/admin_dashboard.html:64
 #: templates/dashboard/component_analysis.html:60
-#: templates/dashboard/export.html:94
+#: templates/dashboard/export.html:76
 msgid "Clear"
 msgstr "Limpiar"
 
@@ -1432,7 +1742,7 @@ msgid "Apply Filters"
 msgstr "Aplicar Filtros"
 
 #: templates/dashboard/component_analysis.html:71
-#: templates/dashboard/export.html:154
+#: templates/dashboard/export.html:136
 #: templates/dashboard/organization_dashboard.html:152
 msgid "Loading..."
 msgstr "Cargando..."
@@ -1461,19 +1771,19 @@ msgstr "Resumen del Componente"
 msgid "Last Sample"
 msgstr "Última Muestra"
 
-#: templates/dashboard/component_analysis.html:181
+#: templates/dashboard/component_analysis.html:180
 msgid "Wear Trends"
 msgstr "Tendencias de Desgaste"
 
-#: templates/dashboard/component_analysis.html:182
+#: templates/dashboard/component_analysis.html:181
 msgid "Fe, Cu, Al over time"
 msgstr "Fe, Cu, Al a lo largo del tiempo"
 
-#: templates/dashboard/component_analysis.html:196
+#: templates/dashboard/component_analysis.html:197
 msgid "Contamination Alerts"
 msgstr "Alertas de Contaminación"
 
-#: templates/dashboard/component_analysis.html:197
+#: templates/dashboard/component_analysis.html:198
 msgid "Si, Na, Fuel dilution"
 msgstr "Si, Na, Dilución de Combustible"
 
@@ -1482,92 +1792,93 @@ msgid "Oil Health"
 msgstr "Salud del Aceite"
 
 #: templates/dashboard/component_analysis.html:215
-msgid "TBN, TAN, Viscosity, Oxidation"
+#, fuzzy
+#| msgid "TBN, TAN, Viscosity, Oxidation"
+msgid "TBN, TAN, Viscosity, Oxidation, Lubricant"
 msgstr "TBN, TAN, Viscosidad, Oxidación"
 
-#: templates/dashboard/component_analysis.html:229
+#: templates/dashboard/component_analysis.html:231
 msgid "Additive Elements"
 msgstr "Elementos Aditivos"
 
-#: templates/dashboard/component_analysis.html:230
+#: templates/dashboard/component_analysis.html:232
 msgid "Zn, P, Mg, Ca levels"
 msgstr "Niveles de Zn, P, Mg, Ca"
 
-#: templates/dashboard/component_analysis.html:264
+#: templates/dashboard/component_analysis.html:266
 msgid "Select the machine to analyze"
 msgstr "Seleccione la máquina para analizar"
 
-#: templates/dashboard/component_analysis.html:275
-#: templates/dashboard/component_analysis.html:300
-#: templates/dashboard/component_analysis.html:328
-#: templates/dashboard/component_analysis.html:597
-#: templates/dashboard/component_analysis.html:600
+#: templates/dashboard/component_analysis.html:277
+#: templates/dashboard/component_analysis.html:302
+#: templates/dashboard/component_analysis.html:330
+#: templates/dashboard/component_analysis.html:766
+#: templates/dashboard/component_analysis.html:769
 msgid "Select Machine first"
 msgstr "Seleccione primero la Máquina"
 
-#: templates/dashboard/component_analysis.html:355
+#: templates/dashboard/component_analysis.html:357
 msgid "Select the component to analyze"
 msgstr "Seleccione el componente para analizar"
 
-#: templates/dashboard/component_analysis.html:365
 #: templates/dashboard/component_analysis.html:367
+#: templates/dashboard/component_analysis.html:369
 msgid "Error loading components"
 msgstr "Error al cargar los componentes"
 
-#: templates/dashboard/component_analysis.html:376
+#: templates/dashboard/component_analysis.html:378
 msgid "Please select a machine and component"
 msgstr "Por favor seleccione una máquina y un componente"
 
-#: templates/dashboard/component_analysis.html:399
+#: templates/dashboard/component_analysis.html:401
 msgid "Error loading analysis data"
 msgstr "Error al cargar los datos de análisis"
 
-#: templates/dashboard/component_analysis.html:443
-#: templates/dashboard/component_analysis.html:569
+#: templates/dashboard/component_analysis.html:445
+#: templates/dashboard/component_analysis.html:738
 msgid "Concentration (ppm)"
 msgstr "Concentración (ppm)"
 
-#: templates/dashboard/component_analysis.html:485
+#: templates/dashboard/component_analysis.html:487
 #, python-format
 msgid "Concentration (ppm / %%)"
 msgstr "Concentración (ppm / %%)"
 
-#: templates/dashboard/component_analysis.html:527
+#: templates/dashboard/component_analysis.html:625
 msgid "Value"
 msgstr "Valor"
 
-#: templates/dashboard/export.html:5 templates/dashboard/export.html:13
-#: templates/dashboard/export.html:22
+#: templates/dashboard/export.html:5
 msgid "Export Data"
 msgstr "Exportar Datos"
 
-#: templates/dashboard/export.html:33
+#: templates/dashboard/export.html:15
 msgid "Export Filters"
 msgstr "Filtros de Exportación"
 
-#: templates/dashboard/export.html:87
+#: templates/dashboard/export.html:69
 msgid "Preview Count"
 msgstr "Vista previa del conteo"
 
-#: templates/dashboard/export.html:106
+#: templates/dashboard/export.html:88
 msgid "Export Preview"
 msgstr "Vista previa de exportación"
 
-#: templates/dashboard/export.html:115
+#: templates/dashboard/export.html:97
 msgid "Click 'Preview Count' to see how many records will be exported"
 msgstr ""
 "Haga clic en 'Vista previa del conteo' para ver cuántos registros se "
 "exportarán"
 
-#: templates/dashboard/export.html:122
+#: templates/dashboard/export.html:104
 msgid "Total Records"
 msgstr "Registros Totales"
 
-#: templates/dashboard/export.html:127
+#: templates/dashboard/export.html:109
 msgid "Will Export"
 msgstr "Se Exportará"
 
-#: templates/dashboard/export.html:137
+#: templates/dashboard/export.html:119
 #, python-format
 msgid ""
 "\n"
@@ -1580,56 +1891,56 @@ msgstr ""
 "razones de rendimiento.\n"
 "                "
 
-#: templates/dashboard/export.html:147
+#: templates/dashboard/export.html:129
 msgid "Download Excel"
 msgstr "Descargar Excel"
 
-#: templates/dashboard/export.html:156
+#: templates/dashboard/export.html:138
 msgid "Checking records..."
 msgstr "Comprobando registros..."
 
-#: templates/dashboard/export.html:170
+#: templates/dashboard/export.html:152
 msgid "Export Information"
 msgstr "Información de Exportación"
 
-#: templates/dashboard/export.html:173
+#: templates/dashboard/export.html:155
 msgid "Excel format (.xlsx)"
 msgstr "Formato Excel (.xlsx)"
 
-#: templates/dashboard/export.html:174
+#: templates/dashboard/export.html:156
 #, python-format
 msgid "Maximum %(max)s records per export"
 msgstr "Máximo de %(max)s registros por exportación"
 
-#: templates/dashboard/export.html:175
+#: templates/dashboard/export.html:157
 msgid "Filtered by your organization"
 msgstr "Filtrado por su organización"
 
-#: templates/dashboard/export.html:176
+#: templates/dashboard/export.html:158
 msgid "Includes all report details"
 msgstr "Incluye todos los detalles del informe"
 
-#: templates/dashboard/export.html:246
+#: templates/dashboard/export.html:228
 #: templates/equipment/machine/form.html:282
 #: templates/users/organization/form.html:240
 msgid "Error"
 msgstr "¡Error!"
 
-#: templates/dashboard/export.html:247
+#: templates/dashboard/export.html:229
 msgid "Error loading preview. Please try again."
 msgstr "Error al cargar la vista previa. Por favor, inténtelo de nuevo."
 
-#: templates/dashboard/export.html:248 templates/dashboard/export.html:286
+#: templates/dashboard/export.html:230 templates/dashboard/export.html:268
 #: templates/equipment/machine/form.html:285
 #: templates/users/organization/form.html:243
 msgid "OK"
 msgstr "Aceptar"
 
-#: templates/dashboard/export.html:284
+#: templates/dashboard/export.html:266
 msgid "Success"
 msgstr ""
 
-#: templates/dashboard/export.html:285
+#: templates/dashboard/export.html:267
 msgid "Export started! The file will download shortly."
 msgstr "¡Exportación iniciada! El archivo se descargará en breve."
 
@@ -1812,8 +2123,7 @@ msgstr "Editar"
 #: templates/equipment/machine/list.html:132
 #: templates/reports/report/detail.html:36
 #: templates/reports/report/list.html:175
-#: templates/reports/report/list.html:223 templates/users/account/form.html:139
-#: templates/users/account/list.html:196
+#: templates/reports/report/list.html:223 templates/users/account/list.html:196
 #: templates/users/organization/detail.html:36
 #: templates/users/organization/list.html:133
 msgid "Delete"
@@ -1927,13 +2237,13 @@ msgid "Add Component"
 msgstr "Agregar Componente"
 
 #: templates/equipment/machine/form.html:206
-#: templates/users/account/form.html:177
+#: templates/users/account/form.html:125
 #: templates/users/organization/form.html:215
 msgid "Discard"
 msgstr "Descartar"
 
 #: templates/equipment/machine/form.html:210
-#: templates/users/account/form.html:179
+#: templates/users/account/form.html:127
 #: templates/users/organization/form.html:219 templates/users/settings.html:87
 msgid "Save Changes"
 msgstr "Guardar Cambios"
@@ -1960,7 +2270,7 @@ msgid "Actions"
 msgstr "Acciones"
 
 #: templates/equipment/machine/list.html:119
-#: templates/reports/report/list.html:161 templates/users/account/form.html:136
+#: templates/reports/report/list.html:161
 #: templates/users/organization/list.html:120
 msgid "View"
 msgstr "Ver"
@@ -2335,22 +2645,6 @@ msgstr "Detalles"
 msgid "Full Name"
 msgstr "Nombre Completo"
 
-#: templates/users/account/form.html:126
-msgid "Permissions Management"
-msgstr "Gestión de Permisos"
-
-#: templates/users/account/form.html:135
-msgid "Module"
-msgstr "Módulo"
-
-#: templates/users/account/form.html:137
-msgid "Create"
-msgstr "Crear"
-
-#: templates/users/account/form.html:138
-msgid "Update"
-msgstr "Actualizar"
-
 #: templates/users/account/list.html:19
 msgid "Add Account"
 msgstr "Agregar Cuenta"
@@ -2525,6 +2819,33 @@ msgid ""
 msgstr ""
 "Para cambiar su contraseña, comuníquese con su administrador o use la opción "
 "de restablecimiento de contraseña."
+
+#~ msgid "Password is changed"
+#~ msgstr "La contraseña ha sido cambiada."
+
+#~ msgid "Enter your email to reset your password"
+#~ msgstr "Ingrese su dirección de correo electrónico"
+
+#~ msgid "Submit"
+#~ msgstr "Enviar"
+
+#~ msgid "Plan your blog post by choosing a topic creating"
+#~ msgstr "Planifique su publicación de blog eligiendo un tema creando"
+
+#~ msgid "an outline and checking facts"
+#~ msgstr "un esquema y verificando hechos"
+
+#~ msgid "Permissions Management"
+#~ msgstr "Gestión de Permisos"
+
+#~ msgid "Module"
+#~ msgstr "Módulo"
+
+#~ msgid "Create"
+#~ msgstr "Crear"
+
+#~ msgid "Update"
+#~ msgstr "Actualizar"
 
 #~ msgid "Account Type"
 #~ msgstr "Tipo de Cuenta"

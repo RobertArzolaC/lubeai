@@ -726,18 +726,30 @@ class ComponentAnalysisDataAPIView(
                 {"error": "Component ID is required"}, status=400
             )
 
-        # Verify component belongs to user's organization
-        organization = self.get_user_organization()
-        try:
-            component = Component.objects.select_related("machine").get(
-                id=component_id,
-                machine__organization=organization,
-                is_active=True,
-            )
-        except Component.DoesNotExist:
-            return JsonResponse(
-                {"error": "Component not found or access denied"}, status=404
-            )
+        # Check if user is admin (staff/superuser)
+        is_admin = request.user.is_staff or request.user.is_superuser
+        if is_admin:
+            # Admin can access all machines
+            try:
+                Component.objects.get(id=component_id, is_active=True)
+            except Component.DoesNotExist:
+                return JsonResponse(
+                    {"error": "Component not found"}, status=404
+                )
+        else:
+            # Verify component belongs to user's organization
+            organization = self.get_user_organization()
+            try:
+                Component.objects.get(
+                    id=component_id,
+                    machine__organization=organization,
+                    is_active=True,
+                )
+            except Component.DoesNotExist:
+                return JsonResponse(
+                    {"error": "Component not found or access denied"},
+                    status=404,
+                )
 
         # Use service to get analysis data
         try:
@@ -765,18 +777,26 @@ class ComponentsByMachineAPIView(
         if not machine_id:
             return JsonResponse({"error": "Machine ID is required"}, status=400)
 
-        # Verify machine belongs to user's organization
-        organization = self.get_user_organization()
-        try:
-            machine = Machine.objects.get(
-                id=machine_id,
-                organization=organization,
-                is_active=True,
-            )
-        except Machine.DoesNotExist:
-            return JsonResponse(
-                {"error": "Machine not found or access denied"}, status=404
-            )
+        # Check if user is admin (staff/superuser)
+        is_admin = request.user.is_staff or request.user.is_superuser
+        if is_admin:
+            # Admin can access all machines
+            try:
+                machine = Machine.objects.get(id=machine_id, is_active=True)
+            except Machine.DoesNotExist:
+                return JsonResponse({"error": "Machine not found"}, status=404)
+        else:
+            # Verify machine belongs to user's organization
+            organization = self.get_user_organization()
+            try:
+                machine = Machine.objects.get(
+                    id=machine_id,
+                    organization=organization,
+                    is_active=True,
+                )
+            except Machine.DoesNotExist:
+                error_message = "Machine not found or access denied"
+                return JsonResponse({"error": error_message}, status=404)
 
         # Get components for this machine
         components = Component.objects.filter(
