@@ -2,7 +2,9 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}{% trans "Export Data" %}{% endblock title %}
+{% block title %}
+  {% trans "Export Data" %}
+{% endblock title %}
 
 {% block content %}
 <main class="container-xxl">
@@ -28,13 +30,19 @@
             </div>
 
             <div class="row mb-4">
-              <div class="col-md-12 mb-3">
+              <div class="col-md-6 mb-3">
                 <label class="form-label">{% trans "Machine" %}</label>
                 <select class="form-select" name="machine_id" id="machine_id">
                   <option value="">{% trans "All Machines" %}</option>
                   {% for machine in machines %}
                     <option value="{{ machine.id }}">{{ machine.name }}</option>
                   {% endfor %}
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">{% trans "Component" %}</label>
+                <select class="form-select" name="component_id" id="component_id" disabled>
+                  <option value="">{% trans "Select Machine first" %}</option>
                 </select>
               </div>
             </div>
@@ -173,8 +181,83 @@ document.addEventListener('DOMContentLoaded', function() {
     const previewSection = document.getElementById('previewSection');
     const previewResults = document.getElementById('previewResults');
     const loadingSection = document.getElementById('loadingSection');
+    const machineSelect = document.getElementById('machine_id');
+    const componentSelect = document.getElementById('component_id');
 
     let lastPreviewParams = null;
+
+    // Initialize Select2 for machine
+    if (machineSelect) {
+        $(machineSelect).select2({
+            placeholder: '{% trans "All Machines" %}',
+            allowClear: true,
+            width: '100%'
+        });
+    }
+
+    // Initialize Select2 for component
+    if (componentSelect) {
+        $(componentSelect).select2({
+            placeholder: '{% trans "Select Machine first" %}',
+            allowClear: true,
+            width: '100%'
+        });
+    }
+
+    // Load components when machine changes
+    if (machineSelect) {
+        $(machineSelect).on('change', function() {
+            const machineId = this.value;
+            loadComponentsForMachine(machineId);
+        });
+    }
+
+    // Function to load components for selected machine
+    async function loadComponentsForMachine(machineId) {
+        if (!machineId) {
+            // No machine selected - reset component select
+            componentSelect.disabled = true;
+            $(componentSelect).empty().append(
+                '<option value="">{% trans "Select Machine first" %}</option>'
+            ).trigger('change');
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `{% url 'apps.dashboard:components_api' %}?machine_id=${machineId}`
+            );
+            const data = await response.json();
+
+            if (response.ok && data.components) {
+                // Clear and enable component select
+                $(componentSelect).empty();
+                componentSelect.disabled = false;
+
+                // Add "All Components" option
+                $(componentSelect).append(
+                    '<option value="">{% trans "All Components" %}</option>'
+                );
+
+                // Add component options
+                data.components.forEach(component => {
+                    const option = new Option(component.name, component.id, false, false);
+                    $(componentSelect).append(option);
+                });
+
+                // Trigger change to update Select2
+                $(componentSelect).trigger('change');
+            } else {
+                throw new Error(data.error || 'Failed to load components');
+            }
+        } catch (error) {
+            console.error('Error loading components:', error);
+            componentSelect.disabled = true;
+            $(componentSelect).empty().append(
+                '<option value="">{% trans "Error loading components" %}</option>'
+            ).trigger('change');
+        }
+    }
 
     // Preview button click
     previewBtn.addEventListener('click', function() {
@@ -239,6 +322,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Clear button click
     clearBtn.addEventListener('click', function() {
         document.getElementById('exportFilters').reset();
+
+        // Reset component select
+        componentSelect.disabled = true;
+        $(componentSelect).empty().append(
+            '<option value="">{% trans "Select Machine first" %}</option>'
+        ).trigger('change');
+
         previewSection.classList.remove('d-none');
         previewResults.classList.add('d-none');
         loadingSection.classList.add('d-none');

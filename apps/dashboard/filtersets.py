@@ -31,6 +31,11 @@ class ReportFilter(django_filters.FilterSet):
         empty_label=_("All Machines"),
         label=_("Machine"),
     )
+    component = django_filters.ModelChoiceFilter(
+        queryset=equipment_models.Component.objects.filter(is_active=True),
+        empty_label=_("All Components"),
+        label=_("Component"),
+    )
     condition = django_filters.ChoiceFilter(
         field_name="condition",
         empty_label=_("All Conditions"),
@@ -49,6 +54,7 @@ class ReportFilter(django_filters.FilterSet):
             "start_date",
             "end_date",
             "machine",
+            "component",
             "condition",
             "status",
         ]

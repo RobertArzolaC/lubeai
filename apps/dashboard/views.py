@@ -305,22 +305,22 @@ class ExportPageView(
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        machines = Machine.objects.filter(is_active=True)
         if self.has_organization_access():
             organization = self.get_user_organization()
 
-            # Get machines for the organization
-            machines = Machine.objects.filter(
+            machines = machines.filter(
                 organization=organization, is_active=True
             )
 
-            context.update(
-                {
-                    "machines": machines,
-                    "condition_choices": ReportCondition.choices,
-                    "status_choices": ReportStatus.choices,
-                    "max_records": 10000,
-                }
-            )
+        context.update(
+            {
+                "machines": machines,
+                "condition_choices": ReportCondition.choices,
+                "status_choices": ReportStatus.choices,
+                "max_records": 10000,
+            }
+        )
 
         return context
 
@@ -331,21 +331,20 @@ class ExportPreviewAPIView(LoginRequiredMixin, OrganizationRequiredMixin, View):
     """
 
     def get(self, request, *args, **kwargs):
-        if not self.has_organization_access():
-            return JsonResponse({"error": "Organization required"}, status=403)
+        reports_qs = Report.objects.filter(is_active=True)
+        if self.has_organization_access():
+            organization = self.get_user_organization()
 
-        organization = self.get_user_organization()
-
-        # Base queryset
-        reports_qs = Report.objects.filter(
-            organization=organization, is_active=True
-        )
+            reports_qs = reports_qs.filter(
+                organization=organization, is_active=True
+            )
 
         # Prepare filter data
         filter_data = {
             "start_date": request.GET.get("start_date"),
             "end_date": request.GET.get("end_date"),
             "machine": request.GET.get("machine_id"),
+            "component": request.GET.get("component_id"),
             "condition": request.GET.get("condition"),
             "status": request.GET.get("status"),
         }
@@ -378,21 +377,21 @@ class DashboardExportView(LoginRequiredMixin, OrganizationRequiredMixin, View):
     """
 
     def get(self, request, *args, **kwargs):
-        if not self.has_organization_access():
-            return JsonResponse({"error": "Organization required"}, status=403)
+        organization = None
+        reports_qs = Report.objects.filter(is_active=True)
+        if self.has_organization_access():
+            organization = self.get_user_organization()
 
-        organization = self.get_user_organization()
-
-        # Base queryset
-        reports_qs = Report.objects.filter(
-            organization=organization, is_active=True
-        )
+            reports_qs = reports_qs.filter(
+                organization=organization, is_active=True
+            )
 
         # Prepare filter data
         filter_data = {
             "start_date": request.GET.get("start_date"),
             "end_date": request.GET.get("end_date"),
             "machine": request.GET.get("machine_id"),
+            "component": request.GET.get("component_id"),
             "condition": request.GET.get("condition"),
             "status": request.GET.get("status"),
         }
@@ -410,7 +409,11 @@ class DashboardExportView(LoginRequiredMixin, OrganizationRequiredMixin, View):
         # Create Excel workbook
         workbook = Workbook()
         worksheet = workbook.active
-        worksheet.title = f"Dashboard Reports - {organization.name}"
+
+        if organization:
+            worksheet.title = f"Dashboard Reports - {organization.name}"
+        else:
+            worksheet.title = "Dashboard Reports"
 
         # Define headers
         headers = [
@@ -500,7 +503,13 @@ class DashboardExportView(LoginRequiredMixin, OrganizationRequiredMixin, View):
             content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
 
-        filename = f"dashboard_reports_{organization.name}_{timezone.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+        current_time = timezone.now().strftime("%Y%m%d_%H%M%S")
+        if organization:
+            filename = (
+                f"dashboard_reports_{organization.name}_{current_time}.xlsx"
+            )
+        else:
+            filename = f"dashboard_reports_{current_time}.xlsx"
         response["Content-Disposition"] = f'attachment; filename="{filename}"'
 
         workbook.save(response)
