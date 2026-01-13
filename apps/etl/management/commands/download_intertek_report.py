@@ -1,10 +1,3 @@
-"""
-Management command to download Intertek inspection reports.
-
-This command demonstrates how to use the IntertekAPIClient service
-to download inspection detail reports from the Intertek OILCM API.
-"""
-
 import logging
 
 from django.core.management.base import BaseCommand, CommandError
@@ -51,11 +44,6 @@ class Command(BaseCommand):
             choices=[1, 2, 3],
             help="Export file type: 1=CSV, 2=PDF, 3=Excel (default: 3)",
         )
-        parser.add_argument(
-            "--list",
-            action="store_true",
-            help="List inspection details as JSON instead of downloading file",
-        )
 
     def handle(self, *args, **options) -> None:
         """
@@ -72,7 +60,6 @@ class Command(BaseCommand):
         lab_number = options["lab_number"]
         page_size = options["page_size"]
         file_type = options["file_type"]
-        list_only = options["list"]
 
         self.stdout.write("Connecting to Intertek API...")
 
@@ -80,59 +67,25 @@ class Command(BaseCommand):
             # Get configured API client
             client = utils.get_intertek_client()
 
-            if list_only:
-                # Fetch inspection details as JSON
-                self.stdout.write("Fetching inspection details...")
+            # Download inspection report file
+            self.stdout.write("Downloading inspection report...")
 
-                data = client.get_inspection_details(
-                    search_text=search_text,
-                    lab_number=lab_number,
-                    page_size=page_size,
+            file_path = client.download_inspection_report(
+                search_text=search_text,
+                lab_number=lab_number,
+                page_size=page_size,
+                file_type=file_type,
+            )
+
+            self.stdout.write(
+                self.style.SUCCESS(
+                    f"\nReport downloaded successfully to:\n{file_path}"
                 )
+            )
 
-                # Display results
-                if data.get("success"):
-                    records = data.get("data", [])
-                    total = data.get("totalRecords", 0)
-
-                    self.stdout.write(
-                        self.style.SUCCESS(
-                            f"\nFound {total} records, showing {len(records)}:"
-                        )
-                    )
-
-                    for record in records:
-                        lab_num = record.get("labNumber", "N/A")
-                        client_name = record.get("clientName", "N/A")
-                        sample_date = record.get("sampleDate", "N/A")
-
-                        self.stdout.write(
-                            f"  - Lab: {lab_num} | Client: {client_name} | Date: {sample_date}"
-                        )
-                else:
-                    message = data.get("message", "Unknown error")
-                    raise CommandError(f"API request failed: {message}")
-
-            else:
-                # Download inspection report file
-                self.stdout.write("Downloading inspection report...")
-
-                file_path = client.download_inspection_report(
-                    search_text=search_text,
-                    lab_number=lab_number,
-                    page_size=page_size,
-                    file_type=file_type,
-                )
-
-                self.stdout.write(
-                    self.style.SUCCESS(
-                        f"\nReport downloaded successfully to:\n{file_path}"
-                    )
-                )
-
-                # Display file info
-                file_size = file_path.stat().st_size
-                self.stdout.write(f"File size: {file_size:,} bytes")
+            # Display file info
+            file_size = file_path.stat().st_size
+            self.stdout.write(f"File size: {file_size:,} bytes")
 
             # Close client connection
             client.close()

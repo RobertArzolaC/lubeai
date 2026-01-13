@@ -86,55 +86,6 @@ def download_intertek_report_task(
 
 
 @shared_task
-def fetch_inspection_details_task(
-    search_text: str = "",
-    lab_number: str = "",
-    page_size: int = 50,
-) -> Dict:
-    """
-    Celery task to fetch inspection details from Intertek API.
-
-    Args:
-        search_text: Text to search for in reports.
-        lab_number: Laboratory number to filter by.
-        page_size: Number of records per page.
-
-    Returns:
-        Dictionary with inspection details data.
-    """
-    logger.info("Starting Intertek inspection details fetch task")
-
-    client = None
-
-    try:
-        # Get configured API client
-        client = utils.get_intertek_client()
-
-        # Fetch inspection details
-        data = client.get_inspection_details(
-            search_text=search_text,
-            lab_number=lab_number,
-            page_size=page_size,
-        )
-
-        logger.info("Inspection details fetched successfully")
-
-        return data
-
-    except exceptions.ETLException as e:
-        logger.error(f"ETL error in fetch task: {e}")
-        return {"success": False, "error": str(e)}
-
-    except Exception as e:
-        logger.error(f"Unexpected error in fetch task: {e}")
-        return {"success": False, "error": str(e)}
-
-    finally:
-        if client:
-            client.close()
-
-
-@shared_task
 def process_downloaded_report_task(file_path: str) -> Dict[str, str]:
     """
     Celery task to process a downloaded inspection report.

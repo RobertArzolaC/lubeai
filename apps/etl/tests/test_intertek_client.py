@@ -5,10 +5,9 @@ Test cases for authentication, token management, and file download
 operations with the Intertek OILCM API.
 """
 
-import json
-from datetime import datetime, timedelta
+from datetime import timedelta
 from pathlib import Path
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 from django.core.cache import cache
 from django.test import TestCase
@@ -106,7 +105,9 @@ class IntertekAPIClientTestCase(TestCase):
         """Test authentication handles request exceptions."""
         import requests
 
-        mock_post.side_effect = requests.exceptions.RequestException("Network error")
+        mock_post.side_effect = requests.exceptions.RequestException(
+            "Network error"
+        )
 
         with self.assertRaises(exceptions.AuthenticationError) as context:
             self.client._authenticate()
@@ -320,40 +321,6 @@ class IntertekAPIClientTestCase(TestCase):
 
         # Verify file extension matches file type
         self.assertTrue(str(file_path).endswith(".csv"))
-
-    @patch.object(IntertekAPIClient, "_make_authenticated_request")
-    def test_get_inspection_details_success(
-        self, mock_request: Mock
-    ) -> None:
-        """Test successful retrieval of inspection details."""
-        mock_response = Mock()
-        mock_response.json.return_value = {
-            "success": True,
-            "data": [{"id": 1, "labNumber": "LAB123"}],
-        }
-        mock_request.return_value = mock_response
-
-        result = self.client.get_inspection_details()
-
-        self.assertTrue(result["success"])
-        self.assertIn("data", result)
-        mock_request.assert_called_once()
-
-    @patch.object(IntertekAPIClient, "_make_authenticated_request")
-    def test_get_inspection_details_invalid_json(
-        self, mock_request: Mock
-    ) -> None:
-        """Test handling of invalid JSON response."""
-        mock_response = Mock()
-        mock_response.json.side_effect = json.JSONDecodeError(
-            "Invalid JSON", "", 0
-        )
-        mock_request.return_value = mock_response
-
-        with self.assertRaises(exceptions.APIRequestError) as context:
-            self.client.get_inspection_details()
-
-        self.assertIn("Invalid response format", str(context.exception))
 
     def test_close_session(self) -> None:
         """Test that close method closes the HTTP session."""

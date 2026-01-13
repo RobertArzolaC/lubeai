@@ -47,44 +47,6 @@ print(f"Reporte descargado en: {file_path}")
 client.close()
 ```
 
-### Uso Avanzado
-
-```python
-from apps.etl.services import IntertekAPIClient
-from apps.etl import exceptions
-
-# Crear cliente con credenciales específicas
-client = IntertekAPIClient(
-    username="USUARIO",
-    password="CONTRASEÑA"
-)
-
-try:
-    # Obtener detalles de inspección como JSON
-    data = client.get_inspection_details(
-        search_text="equipo",
-        lab_number="LAB123",
-        page_size=100
-    )
-
-    print(f"Total de registros: {data['totalRecords']}")
-
-    # Descargar archivo CSV
-    csv_file = client.download_inspection_report(
-        lab_number="LAB123",
-        file_type=1  # CSV
-    )
-
-    # Procesar archivo...
-
-except exceptions.AuthenticationError as e:
-    print(f"Error de autenticación: {e}")
-except exceptions.FileDownloadError as e:
-    print(f"Error al descargar archivo: {e}")
-finally:
-    client.close()
-```
-
 ## Comando de Management
 
 ### Descargar Reportes
@@ -98,9 +60,6 @@ python manage.py download_intertek_report --lab-number LAB123 --page-size 100
 
 # Descargar en formato CSV
 python manage.py download_intertek_report --file-type 1
-
-# Listar detalles sin descargar archivo
-python manage.py download_intertek_report --list
 
 # Ver ayuda
 python manage.py download_intertek_report --help

@@ -3,7 +3,7 @@ import logging
 import tempfile
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Optional
 
 import requests
 from django.core.cache import cache
@@ -326,61 +326,6 @@ class IntertekAPIClient:
             logger.error(f"Unexpected error during download: {e}")
             raise exceptions.FileDownloadError(
                 f"Unexpected error: {str(e)}"
-            ) from e
-
-    def get_inspection_details(
-        self,
-        search_text: str = "",
-        lab_number: str = "",
-        page_number: int = 0,
-        page_size: int = 50,
-        sort_field: str = "Id",
-        sort_type: int = 1,
-    ) -> Dict:
-        """
-        Get inspection details as JSON data.
-
-        Args:
-            search_text: Text to search for in reports.
-            lab_number: Laboratory number to filter by.
-            page_number: Page number for pagination.
-            page_size: Number of records per page.
-            sort_field: Field to sort by.
-            sort_type: Sort direction (1 for ascending, 0 for descending).
-
-        Returns:
-            Dictionary containing inspection details.
-
-        Raises:
-            APIRequestError: If the request fails.
-        """
-        logger.info("Fetching inspection details")
-
-        url = f"{self.API_BASE_URL}/Report/InspectionDetail"
-
-        params = {
-            "searchText": search_text,
-            "labNumber": lab_number,
-            "pageNumber": page_number,
-            "pageSize": page_size,
-            "sortField": sort_field,
-            "sortType": sort_type,
-        }
-
-        try:
-            response = self._make_authenticated_request(
-                "GET", url, params=params, timeout=30
-            )
-
-            data = response.json()
-            logger.info("Inspection details retrieved successfully")
-
-            return data
-
-        except json.JSONDecodeError as e:
-            logger.error(f"Invalid JSON response: {e}")
-            raise exceptions.APIRequestError(
-                f"Invalid response format: {str(e)}"
             ) from e
 
     def close(self) -> None:
