@@ -195,7 +195,7 @@
           <div class="card-header pt-7">
             <h3 class="card-title align-items-start flex-column">
               <span class="card-label fw-bold text-gray-900">{% trans "Contamination Alerts" %}</span>
-              <span class="text-muted mt-1 fw-semibold fs-7">{% trans "Si, Na, Fuel dilution" %}</span>
+              <span class="text-muted mt-1 fw-semibold fs-7">{% trans "Si, Na, K" %}</span>
             </h3>
           </div>
           <div class="card-body pt-5">
@@ -484,7 +484,7 @@
         title: { text: '{% trans "Sample Date" %}' }
       },
       yaxis: {
-        title: { text: '{% trans "Concentration (ppm / %)" %}' }
+        title: { text: '{% trans "Concentration (ppm)" %}' }
       },
       legend: { position: 'top' },
       annotations: {
@@ -496,6 +496,34 @@
               borderColor: '#FFC700',
               style: { color: '#fff', background: '#FFC700' },
               text: 'Si Critical: ' + data.thresholds.silicon_si.critical + ' ppm'
+            }
+          },
+          {
+            y: data.thresholds.sodium_na.critical,
+            borderColor: '#009EF7',
+            label: {
+              borderColor: '#009EF7',
+              style: { color: '#fff', background: '#009EF7' },
+              text: 'Na Critical: ' + data.thresholds.sodium_na.critical + ' ppm'
+            }
+          },
+          {
+            y: data.thresholds.potassium_k.warning,
+            borderColor: '#50CD89',
+            strokeDashArray: 4,
+            label: {
+              borderColor: '#50CD89',
+              style: { color: '#fff', background: '#50CD89' },
+              text: 'K Warning: ' + data.thresholds.potassium_k.warning + ' ppm'
+            }
+          },
+          {
+            y: data.thresholds.potassium_k.critical,
+            borderColor: '#50CD89',
+            label: {
+              borderColor: '#50CD89',
+              style: { color: '#fff', background: '#50CD89' },
+              text: 'K Critical: ' + data.thresholds.potassium_k.critical + ' ppm'
             }
           }
         ]

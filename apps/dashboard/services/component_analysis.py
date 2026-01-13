@@ -20,7 +20,7 @@ class ComponentAnalysisService:
         "contamination": {
             "silicon_si": {"warning": 15, "critical": 20, "unit": "ppm"},
             "sodium_na": {"warning": 30, "critical": 50, "unit": "ppm"},
-            "fuel_dilution": {"warning": 1.5, "critical": 2.0, "unit": "%"},
+            "potassium_k": {"warning": 10, "critical": 15, "unit": "ppm"},
         },
         "oil_health": {
             "silicon_si": {"warning": 15, "critical": 20, "unit": "ppm"},
@@ -178,7 +178,7 @@ class ComponentAnalysisService:
 
     def get_contamination_alerts(self) -> Dict[str, Any]:
         """
-        Get contamination data (Si, Na, fuel dilution).
+        Get contamination data (Si, Na, K).
 
         Returns:
             Dictionary with series data and thresholds
@@ -188,7 +188,7 @@ class ComponentAnalysisService:
         data_series = {
             "silicon_si": [],
             "sodium_na": [],
-            "fuel_dilution": [],
+            "potassium_k": [],
         }
         dates = []
 
@@ -207,9 +207,9 @@ class ComponentAnalysisService:
                     if analysis.sodium_na is not None
                     else None
                 )
-                data_series["fuel_dilution"].append(
-                    float(analysis.fuel_dilution)
-                    if analysis.fuel_dilution is not None
+                data_series["potassium_k"].append(
+                    float(analysis.potassium_k)
+                    if analysis.potassium_k is not None
                     else None
                 )
 
@@ -227,9 +227,9 @@ class ComponentAnalysisService:
                     "color": "#009EF7",
                 },
                 {
-                    "name": "Dilución Combustible (%)",
-                    "data": data_series["fuel_dilution"],
-                    "color": "#F1416C",
+                    "name": "Potasio (K)",
+                    "data": data_series["potassium_k"],
+                    "color": "#50CD89",
                 },
             ],
             "thresholds": self.THRESHOLDS["contamination"],
