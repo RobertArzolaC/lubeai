@@ -19,6 +19,10 @@ CONSTANCE_CONFIG = {
     "JSON_FIELD_EXAMPLE": ({"name": "test"}, _("Test json field"), "json_field"),
     "ENABLE_SEND_EMAIL": (True, _("Enable sending emails.")),
     "ENABLE_VERIFICATION_EMAIL": (True, _("Enable email verification.")),
+    # Intertek API Configuration
+    "INTERTEK_API_USERNAME": ("KMELGAR", _("Intertek API username for authentication.")),
+    "INTERTEK_API_PASSWORD": ("KMELGAR", _("Intertek API password for authentication.")),
+    "INTERTEK_API_ENABLED": (True, _("Enable Intertek API integration.")),
 }
 
 CONSTANCE_CONFIG_FIELDSETS = {
@@ -32,5 +36,13 @@ CONSTANCE_CONFIG_FIELDSETS = {
             "ENABLE_VERIFICATION_EMAIL",
         ),
         "collapse": False,
+    },
+    "2. Intertek API Configuration": {
+        "fields": (
+            "INTERTEK_API_ENABLED",
+            "INTERTEK_API_USERNAME",
+            "INTERTEK_API_PASSWORD",
+        ),
+        "collapse": True,
     },
 }

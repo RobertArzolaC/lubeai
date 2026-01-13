@@ -1,10 +1,3 @@
-"""
-Report Bulk Upload Service.
-
-Business logic for processing Excel files and creating/updating reports
-with their associated laboratory analyses.
-"""
-
 import logging
 from datetime import datetime
 from typing import Any, Dict, Optional, Tuple

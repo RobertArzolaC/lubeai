@@ -55,6 +55,7 @@ LOCAL_APPS = [
     "apps.equipment.apps.EquipmentConfig",
     "apps.reports.apps.ReportsConfig",
     "apps.dashboard.apps.DashboardConfig",
+    "apps.etl.apps.EtlConfig",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
