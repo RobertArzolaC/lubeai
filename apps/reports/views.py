@@ -196,27 +196,30 @@ class ReportBulkUploadView(
                 % {"count": results["created"]},
             )
 
-        if results["updated"]:
-            messages.info(
-                self.request,
-                _("Successfully updated %(count)d reports")
-                % {"count": results["updated"]},
-            )
-
         if results["skipped"]:
-            messages.info(
+            messages.warning(
                 self.request,
-                _("Skipped %(count)d header/title rows")
+                _(
+                    "Skipped %(count)d duplicate reports (lab numbers already exist)"
+                )
                 % {"count": results["skipped"]},
             )
 
         if results["errors"]:
             for error in results["errors"]:
-                messages.error(self.request, error)
+                # Handle both string and dict error formats
+                if isinstance(error, dict):
+                    error_msg = (
+                        f"Row {error.get('row_number', 'N/A')}: "
+                        f"{error.get('error', str(error))}"
+                    )
+                else:
+                    error_msg = str(error)
+                messages.error(self.request, error_msg)
 
         logger.info(
             f"Bulk upload summary displayed - User: {self.request.user.email}, "
-            f"Created: {results['created']}, Updated: {results['updated']}, "
+            f"Created: {results['created']}, "
             f"Skipped: {results['skipped']}, Errors: {len(results['errors'])}"
         )
 

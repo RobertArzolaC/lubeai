@@ -30,3 +30,5 @@ celery==5.5.0
 requests==2.32.3
 setuptools==70.0.0
 openpyxl==3.1.5
+polars>=0.20.0
+fastexcel==0.18.0
