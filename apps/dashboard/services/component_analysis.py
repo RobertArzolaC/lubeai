@@ -23,14 +23,14 @@ class ComponentAnalysisService:
             "fuel_dilution": {"warning": 1.5, "critical": 2.0, "unit": "%"},
         },
         "oil_health": {
-            "tbn": {"warning": 7, "critical": 5, "unit": "mgKOH/g"},
-            "tan": {"warning": 2, "critical": 3, "unit": "mgKOH/g"},
-            "viscosity_40c": {
+            "silicon_si": {"warning": 15, "critical": 20, "unit": "ppm"},
+            "sodium_na": {"warning": 30, "critical": 50, "unit": "ppm"},
+            "potassium_k": {"warning": 10, "critical": 15, "unit": "ppm"},
+            "viscosity_100c": {
                 "warning_low": None,  # Will be calculated dynamically
                 "warning_high": None,
                 "unit": "cSt",
             },
-            "oxidation": {"warning": 0.3, "critical": 0.5, "unit": "Abs/cm"},
         },
         "additives": {
             "zinc_zn": {"warning": 800, "critical": 600, "unit": "ppm"},
@@ -84,7 +84,7 @@ class ComponentAnalysisService:
         if not self.component:
             return {}
 
-        latest_report = self.reports_qs.first()
+        latest_report = self.reports_qs.last()
         measurement_unit = self.detect_measurement_unit()
 
         return {
@@ -111,21 +111,11 @@ class ComponentAnalysisService:
         Returns:
             "hours" or "kilometers" based on available data
         """
-        # Check recent reports to determine which field has more data
-        recent_reports = self.reports_qs[:10]
+        last_report = self.reports_qs.last()
 
-        hours_count = sum(
-            1
-            for r in recent_reports
-            if r.machine_hours is not None or r.lubricant_hours is not None
-        )
-        kms_count = sum(
-            1
-            for r in recent_reports
-            if r.machine_kms is not None or r.lubricant_kms is not None
-        )
+        is_transport = True if str(last_report.machine.name).upper() else False
 
-        return "hours" if hours_count >= kms_count else "kilometers"
+        return "kilometers" if is_transport else "hours"
 
     def get_wear_trends(self) -> Dict[str, Any]:
         """
@@ -247,7 +237,7 @@ class ComponentAnalysisService:
 
     def get_oil_health(self) -> Dict[str, Any]:
         """
-        Get oil health indicators (TBN, TAN, viscosity, oxidation) with lubricant usage.
+        Get oil health indicators (Si, Na, K, viscosity) with lubricant usage.
 
         Returns:
             Dictionary with series data, thresholds, and lubricant usage data
@@ -256,10 +246,10 @@ class ComponentAnalysisService:
         measurement_unit = self.detect_measurement_unit()
 
         data_series = {
-            "tbn": [],
-            "tan": [],
-            "viscosity_40c": [],
-            "oxidation": [],
+            "silicon_si": [],
+            "sodium_na": [],
+            "potassium_k": [],
+            "viscosity_100c": [],
             "lubricant_usage": [],
         }
         dates = []
@@ -269,21 +259,25 @@ class ComponentAnalysisService:
                 analysis = report.analysis
                 dates.append(report.sample_date.strftime("%Y-%m-%d"))
 
-                # Existing line series data
-                data_series["tbn"].append(
-                    float(analysis.tbn) if analysis.tbn is not None else None
-                )
-                data_series["tan"].append(
-                    float(analysis.tan) if analysis.tan is not None else None
-                )
-                data_series["viscosity_40c"].append(
-                    float(analysis.viscosity_40c)
-                    if analysis.viscosity_40c is not None
+                # Line series data for metals and viscosity
+                data_series["silicon_si"].append(
+                    float(analysis.silicon_si)
+                    if analysis.silicon_si is not None
                     else None
                 )
-                data_series["oxidation"].append(
-                    float(analysis.oxidation)
-                    if analysis.oxidation is not None
+                data_series["sodium_na"].append(
+                    float(analysis.sodium_na)
+                    if analysis.sodium_na is not None
+                    else None
+                )
+                data_series["potassium_k"].append(
+                    float(analysis.potassium_k)
+                    if analysis.potassium_k is not None
+                    else None
+                )
+                data_series["viscosity_100c"].append(
+                    float(analysis.viscosity_100c)
+                    if analysis.viscosity_100c is not None
                     else None
                 )
 
@@ -311,34 +305,34 @@ class ComponentAnalysisService:
             "unit_label": unit_label,
             "series": [
                 {
-                    "name": "TBN (mgKOH/g)",
-                    "data": data_series["tbn"],
-                    "color": "#50CD89",
-                    "type": "line",
-                },
-                {
-                    "name": "TAN (mgKOH/g)",
-                    "data": data_series["tan"],
-                    "color": "#F1416C",
-                    "type": "line",
-                },
-                {
-                    "name": "Viscosidad @ 40°C (cSt)",
-                    "data": data_series["viscosity_40c"],
-                    "color": "#009EF7",
-                    "type": "line",
-                },
-                {
-                    "name": "Oxidación (Abs/cm)",
-                    "data": data_series["oxidation"],
-                    "color": "#FFC700",
-                    "type": "line",
-                },
-                {
                     "name": f"Lubricante ({unit_label})",
                     "data": data_series["lubricant_usage"],
                     "color": "#A1A5B7",
                     "type": "column",
+                },
+                {
+                    "name": "Silicio (Si) - ppm",
+                    "data": data_series["silicon_si"],
+                    "color": "#181C32",
+                    "type": "line",
+                },
+                {
+                    "name": "Sodio (Na) - ppm",
+                    "data": data_series["sodium_na"],
+                    "color": "#009EF7",
+                    "type": "line",
+                },
+                {
+                    "name": "Potasio (K) - ppm",
+                    "data": data_series["potassium_k"],
+                    "color": "#50CD89",
+                    "type": "line",
+                },
+                {
+                    "name": "Viscosidad @ 100°C (cSt)",
+                    "data": data_series["viscosity_100c"],
+                    "color": "#FFC700",
+                    "type": "line",
                 },
             ],
             "thresholds": self.THRESHOLDS["oil_health"],

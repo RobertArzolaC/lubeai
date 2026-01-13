@@ -212,7 +212,7 @@
           <div class="card-header pt-7">
             <h3 class="card-title align-items-start flex-column">
               <span class="card-label fw-bold text-gray-900">{% trans "Oil Health" %}</span>
-              <span class="text-muted mt-1 fw-semibold fs-7">{% trans "TBN, TAN, Viscosity, Oxidation, Lubricant" %}</span>
+              <span class="text-muted mt-1 fw-semibold fs-7">{% trans "Si, Na, K, Viscosity, Lubricant" %}</span>
             </h3>
           </div>
           <div class="card-body pt-5">
@@ -689,13 +689,23 @@
       annotations: {
         yaxis: [
           {
-            y: data.thresholds.tbn.critical,
+            y: data.thresholds.silicon_si.critical,
             yAxisIndex: 1, // Apply to right Y-axis (line charts)
             borderColor: '#F1416C',
             label: {
               borderColor: '#F1416C',
               style: { color: '#fff', background: '#F1416C' },
-              text: 'TBN Critical: ' + data.thresholds.tbn.critical
+              text: 'Si Critical: ' + data.thresholds.silicon_si.critical + ' ppm'
+            }
+          },
+          {
+            y: data.thresholds.sodium_na.critical,
+            yAxisIndex: 1,
+            borderColor: '#009EF7',
+            label: {
+              borderColor: '#009EF7',
+              style: { color: '#fff', background: '#009EF7' },
+              text: 'Na Critical: ' + data.thresholds.sodium_na.critical + ' ppm'
             }
           }
         ]
